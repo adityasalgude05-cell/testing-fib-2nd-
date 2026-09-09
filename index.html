@@ -1,624 +1,404 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-dark="1">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Grand RP Police Wiki — rules, penal code, traffic code, arrest procedures and event guides.">
+<meta name="description" content="Grand RP Police Wiki — Unified wiki database and operational utility console.">
 <title>Grand RP Police Wiki</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 :root {
-  --bg: #f5f7fb; --panel: #fff; --panel2: #f8fafc; --text: #111827; --muted: #6b7280;
-  --line: #e5e7eb; --accent: #2563eb; --accent2: #1d4ed8; --sidebar: #0f172a;
-  --sidebarText: #cbd5e1; --sidebarMuted: #94a3b8; --danger: #dc2626; --success: #059669;
-  --shadow: 0 8px 30px rgba(15,23,42,.07); --radius: 16px; --hover-bg: #f1f5f9;
+  /* Default Dark Mode (Rangrove Style) */
+  --bg: #09090b; 
+  --panel: #18181b; 
+  --panel2: #27272a; 
+  --text: #f4f4f5; 
+  --muted: #a1a1aa;
+  --line: #27272a; 
+  --sidebar: #09090b; 
+  --hover-bg: #27272a;
+  --accent: #3b82f6; 
+  --accent-hover: #2563eb;
+  --radius: 12px;
+  --shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
+
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; font-family: Inter, system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; }
+body { margin: 0; font-family: Inter, system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
 button, input { font: inherit; }
+
 .app { display: flex; min-height: 100vh; }
-.sidebar { position: fixed; inset: 0 auto 0 0; width: 270px; background: var(--sidebar); color: #fff; padding: 20px 14px; overflow: auto; z-index: 20; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-.brand { display: flex; align-items: center; gap: 12px; padding: 7px 10px 22px; }
-.logo { width: 42px; height: 42px; border-radius: 13px; background: linear-gradient(135deg, #3b82f6, #7c3aed); display: grid; place-items: center; font-weight: 800; box-shadow: 0 8px 24px #0004; }
-.brand strong { font-size: 15px; }
-.brand small { display: block; color: var(--sidebarMuted); margin-top: 2px; font-size: 11px; }
-.nav-title { padding: 14px 10px 7px; color: #64748b; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
-.nav button { width: 100%; border: 0; background: transparent; color: var(--sidebarText); padding: 10px 11px; border-radius: 10px; text-align: left; display: flex; gap: 10px; align-items: center; cursor: pointer; margin: 2px 0; font-size: 13px; transition: all 0.2s; }
-.nav button:hover { background: #1e293b; color: #fff; transform: translateX(4px); }
-.nav button.active { background: #2563eb; color: #fff; box-shadow: 0 5px 16px #2563eb44; }
-.nav .ico { width: 18px; text-align: center; opacity: .9; }
-.main { margin-left: 270px; width: calc(100% - 270px); transition: margin-left 0.3s, width 0.3s; }
-.topbar { height: 72px; background: rgba(255,255,255,.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 12px; padding: 0 28px; position: sticky; top: 0; z-index: 10; transition: background 0.3s, border-color 0.3s; }
-.search { flex: 1; max-width: 680px; position: relative; }
-.search input { width: 100%; padding: 12px 44px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel2); outline: none; transition: all 0.2s; color: var(--text); }
-.search input:focus { border-color: #93c5fd; box-shadow: 0 0 0 3px #3b82f622; background: var(--panel); }
-.search span { position: absolute; left: 14px; top: 11px; color: var(--muted); }
-.kbd { position: absolute; right: 10px; top: 8px; border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; color: var(--muted); font-size: 10px; background: var(--panel); }
-.top-actions { margin-left: auto; display: flex; gap: 8px; }
-.iconbtn { border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 10px; width: 40px; height: 40px; cursor: pointer; transition: all 0.2s; display: grid; place-items: center; }
-.iconbtn:hover { background: var(--hover-bg); transform: scale(1.05); }
-.content { max-width: 1250px; margin: auto; padding: 30px; animation: fadeIn 0.4s ease-out; }
+
+/* Sidebar */
+.sidebar { position: fixed; inset: 0 auto 0 0; width: 280px; background: var(--sidebar); border-right: 1px solid var(--line); padding: 24px 16px; overflow-y: auto; z-index: 20; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.brand { display: flex; align-items: center; gap: 12px; padding: 0 8px 30px; }
+.logo { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); display: grid; place-items: center; font-weight: 800; color: #fff; box-shadow: 0 4px 15px rgba(59,130,246,0.3); }
+.brand strong { font-size: 16px; letter-spacing: -0.02em; }
+.brand small { display: block; color: var(--muted); margin-top: 2px; font-size: 12px; }
+
+.nav-title { padding: 16px 12px 8px; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
+.nav button { width: 100%; border: 0; background: transparent; color: var(--muted); padding: 10px 12px; border-radius: 8px; text-align: left; display: flex; gap: 12px; align-items: center; cursor: pointer; margin: 2px 0; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+.nav button:hover { background: var(--hover-bg); color: var(--text); }
+.nav button.active { background: rgba(59,130,246,0.1); color: var(--accent); font-weight: 600; }
+.nav .ico { width: 20px; text-align: center; font-size: 16px; }
+
+/* Main Area & Topbar */
+.main { margin-left: 280px; width: calc(100% - 280px); display: flex; flex-direction: column; }
+.topbar { height: 70px; background: rgba(9,9,11,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; position: sticky; top: 0; z-index: 10; }
+
+.search { position: relative; width: 300px; }
+.search input { width: 100%; padding: 10px 40px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--text); outline: none; font-size: 14px; transition: border 0.2s; }
+.search input:focus { border-color: var(--accent); }
+.search span.icon { position: absolute; left: 14px; top: 10px; color: var(--muted); }
+.kbd { position: absolute; right: 10px; top: 8px; border: 1px solid var(--line); border-radius: 4px; padding: 2px 6px; color: var(--muted); font-size: 10px; background: var(--bg); }
+
+/* IC / OOC Clocks */
+.top-actions { display: flex; align-items: center; gap: 20px; }
+.clocks { display: flex; gap: 16px; }
+.clock { display: flex; flex-direction: column; align-items: flex-end; }
+.clock-label { font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; }
+.clock-time { font-size: 15px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+
+/* Content Grid */
+.content { max-width: 1200px; margin: 0 auto; padding: 40px 32px; width: 100%; flex: 1; animation: fadeIn 0.4s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.hero { background: linear-gradient(135deg, #111827, #1e3a8a); color: #fff; border-radius: 22px; padding: 30px; box-shadow: var(--shadow); margin-bottom: 24px; position: relative; overflow: hidden; }
-.hero::after { content: ''; position: absolute; top: -50%; right: -10%; width: 50%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%); transform: rotate(30deg); }
-.hero h1 { margin: 0 0 8px; font-size: 30px; position: relative; z-index: 2; }
-.hero p { margin: 0; color: #dbeafe; max-width: 750px; line-height: 1.6; position: relative; z-index: 2; }
-.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 20px 0 26px; }
-.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 17px; box-shadow: var(--shadow); transition: transform 0.2s; }
-.stat:hover { transform: translateY(-3px); }
-.stat b { font-size: 22px; display: block; color: var(--text); }
-.stat span { font-size: 11px; color: var(--muted); }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); margin: 0 0 18px; overflow: hidden; }
-.card-head { padding: 18px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--panel2); }
-.card-head h2 { margin: 0; font-size: 17px; color: var(--text); }
-.card-body { padding: 20px; }
-.rule { border: 1px solid var(--line); border-radius: 12px; margin: 10px 0; background: var(--panel); overflow: hidden; transition: border-color 0.2s; }
-.rule:hover { border-color: #93c5fd; }
-.rule summary { list-style: none; cursor: pointer; padding: 13px 15px; font-weight: 700; display: flex; gap: 10px; align-items: flex-start; color: var(--text); user-select: none; }
-.rule summary::-webkit-details-marker { display: none; }
-.rule summary:before { content: '›'; color: var(--accent); font-size: 19px; line-height: 16px; transition: transform 0.2s; }
-.rule[open] summary:before { transform: rotate(90deg); }
-.rule .desc { padding: 0 15px 15px 39px; color: var(--muted); line-height: 1.65; font-size: 13px; }
-.badge { font-size: 10px; padding: 4px 7px; border-radius: 999px; background: rgba(37,99,235,0.1); color: var(--accent); font-weight: 800; white-space: nowrap; }
-.tablewrap { overflow: auto; border: 1px solid var(--line); border-radius: 12px; }
-.table { width: 100%; border-collapse: collapse; min-width: 650px; }
-.table th { background: var(--panel2); color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .07em; text-align: left; padding: 11px; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 2; }
-.table td { padding: 11px; border-bottom: 1px solid var(--line); font-size: 12px; vertical-align: middle; color: var(--text); }
-.table tr:last-child td { border-bottom: 0; }
-.table tr { transition: background 0.15s; }
+
+.hero { margin-bottom: 30px; }
+.hero h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.02em; }
+.hero p { margin: 0; color: var(--muted); font-size: 15px; }
+
+/* Cards & Tables */
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 24px; box-shadow: var(--shadow); overflow: hidden; }
+.card-head { padding: 16px 24px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
+.card-head h2 { margin: 0; font-size: 16px; font-weight: 600; }
+.card-body { padding: 24px; }
+
+.tablewrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; text-align: left; }
+.table th { padding: 12px 16px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.table td { padding: 14px 16px; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--text); vertical-align: middle; }
+.table tr:last-child td { border-bottom: none; }
 .table tr:hover { background: var(--hover-bg); }
-.code { font-weight: 800; color: var(--accent); white-space: nowrap; }
-.money { font-weight: 700; white-space: nowrap; color: #16a34a; }
-.copy-btn { padding: 4px 8px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); border-radius: 6px; font-size: 10px; cursor: pointer; transition: all 0.2s; font-weight: 600; text-transform: uppercase; margin-left: auto; display: block; }
+
+.copy-btn { padding: 6px 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s; font-weight: 600; text-transform: uppercase; display: inline-flex; justify-content: center; align-items: center; }
 .copy-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-.notice { padding: 13px 15px; border-left: 4px solid var(--accent); background: rgba(37,99,235,0.05); border-radius: 0 8px 8px 0; color: var(--text); font-size: 12px; line-height: 1.6; margin-bottom: 15px; }
-.warn { border-left-color: #f59e0b; background: rgba(245,158,11,0.05); }
-.section-title { font-size: 24px; margin: 0 0 7px; color: var(--text); }
-.section-sub { color: var(--muted); margin: 0 0 22px; font-size: 13px; }
-.procedure .step { position: relative; padding: 17px 18px 17px 58px; border: 1px solid var(--line); border-radius: 13px; margin: 10px 0; background: var(--panel); transition: transform 0.2s; }
-.procedure .step:hover { transform: translateX(4px); border-color: var(--accent); }
-.stepno { position: absolute; left: 17px; top: 17px; width: 27px; height: 27px; border-radius: 50%; background: rgba(37,99,235,0.1); color: var(--accent); display: grid; place-items: center; font-size: 11px; font-weight: 800; }
-.step h3 { margin: 0 0 7px; font-size: 14px; color: var(--text); display: flex; justify-content: space-between; align-items: center;}
-.step p { font-size: 13px; line-height: 1.65; color: var(--muted); margin: 0;}
-.quote { border-left: 3px solid var(--accent); background: var(--panel2); padding: 12px 14px; margin: 10px 0 0 0; font-style: italic; font-size: 13px; font-weight: 600; color: var(--text); border-radius: 0 8px 8px 0; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.map { width: 100%; max-height: 560px; object-fit: contain; background: #020617; border-radius: 12px; }
-.eventgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-.eventcard { border: 1px solid var(--line); border-radius: 13px; padding: 17px; background: var(--panel); transition: transform 0.2s, border-color 0.2s; }
-.eventcard:hover { transform: translateY(-3px); border-color: var(--accent); }
-.eventcard h3 { margin: 0 0 10px; font-size: 15px; color: var(--text); }
-.eventcard li { font-size: 12px; line-height: 1.65; margin: 5px 0; color: var(--muted); }
-.footer { color: var(--muted); text-align: center; font-size: 11px; padding: 25px; }
-.modal { position: fixed; inset: 0; background: rgba(2,6,23,0.6); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: none; align-items: flex-start; justify-content: center; padding-top: 10vh; z-index: 50; opacity: 0; transition: opacity 0.2s; }
-.modal.show { display: flex; opacity: 1; }
-.modalbox { width: min(720px, 92vw); background: var(--panel); border-radius: 18px; box-shadow: 0 30px 80px rgba(0,0,0,0.3); overflow: hidden; transform: translateY(-20px); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid var(--line); }
-.modal.show .modalbox { transform: translateY(0); }
-.modalbox input { width: 100%; padding: 18px; border: 0; border-bottom: 1px solid var(--line); outline: 0; background: var(--panel); color: var(--text); font-size: 16px; }
-.results { max-height: 55vh; overflow: auto; }
-.result { padding: 12px 18px; border-bottom: 1px solid var(--line); cursor: pointer; transition: background 0.15s; }
-.result:hover { background: var(--hover-bg); border-left: 3px solid var(--accent); padding-left: 15px; }
-.result b { display: block; font-size: 13px; color: var(--text); margin-bottom: 4px; }
-.result span { font-size: 11px; color: var(--muted); display: block; }
-.toast { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: #fff; padding: 12px 24px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-size: 13px; font-weight: 600; z-index: 100; transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+.rule { border: 1px solid var(--line); border-radius: 8px; margin-bottom: 12px; background: var(--bg); }
+.rule summary { padding: 14px 16px; cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; list-style: none; }
+.rule summary::-webkit-details-marker { display: none; }
+.rule .desc { padding: 0 16px 16px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+.badge { font-size: 11px; padding: 4px 8px; border-radius: 4px; background: rgba(59,130,246,0.15); color: var(--accent); font-weight: 700; white-space: nowrap; }
+
+.step { border-left: 2px solid var(--accent); padding-left: 20px; margin-bottom: 24px; position: relative; }
+.step::before { content: ''; position: absolute; left: -6px; top: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--panel); }
+.step h3 { margin: 0 0 8px; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
+.step p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
+.quote { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 13px; font-family: monospace; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
+
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 100; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
 .toast.show { transform: translateY(0); opacity: 1; }
-.mobilebtn { display: none; font-size: 18px; }
 
-/* Dark Mode Overrides */
-[data-dark="1"] {
-  --bg: #0f172a; --panel: #1e293b; --panel2: #0f172a; --text: #f8fafc; --muted: #94a3b8;
-  --line: #334155; --sidebar: #020617; --hover-bg: #334155;
-}
+.mobilebtn { display: none; background: transparent; border: 1px solid var(--line); color: var(--text); width: 40px; height: 40px; border-radius: 8px; font-size: 20px; cursor: pointer; }
 
-@media(max-width:1000px){
+@media(max-width: 900px) {
   .sidebar { transform: translateX(-100%); }
-  .sidebar.open { transform: none; box-shadow: 20px 0 50px rgba(0,0,0,0.5); }
+  .sidebar.open { transform: translateX(0); box-shadow: 20px 0 50px rgba(0,0,0,0.8); }
   .main { margin-left: 0; width: 100%; }
-  .mobilebtn { display: grid; }
-  .grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media(max-width:650px){
-  .content { padding: 17px; }
-  .topbar { padding: 0 14px; }
-  .hero { padding: 22px; }
-  .hero h1 { font-size: 24px; }
-  .grid { grid-template-columns: 1fr 1fr; }
-  .eventgrid { grid-template-columns: 1fr; }
-  .kbd { display: none; }
-  .topbar { background: var(--panel); }
+  .mobilebtn { display: block; }
+  .top-actions { gap: 10px; }
+  .search { display: none; } /* Hide search on mobile header to save space */
 }
 </style>
 </head>
 <body>
 <div class="app">
 <aside class="sidebar" id="sidebar">
-  <div class="brand"><div class="logo">GR</div><div><strong>Grand RP Wiki</strong><small>Police / State Handbook</small></div></div>
+  <div class="brand">
+    <div class="logo">GW</div>
+    <div><strong>Grand Wiki</strong><small>Unified Utility Console</small></div>
+  </div>
   <div class="nav" id="nav">
-    <div class="nav-title">Overview</div>
-    <button data-page="dashboard"><span class="ico">⌂</span>Dashboard</button>
-    <button data-page="general"><span class="ico">◈</span>General Rules</button>
-    <button data-page="state"><span class="ico">◉</span>State Rules</button>
-    <button data-page="green"><span class="ico">●</span>Green Zone Rules</button>
-    <button data-page="ghetto"><span class="ico">◆</span>Ghetto Rules</button>
-    <div class="nav-title">Police Handbook</div>
-    <button data-page="traffic-stop"><span class="ico">10</span>10-51 Traffic Stop</button>
-    <button data-page="arrest"><span class="ico">15</span>10-15 Arrest</button>
-    <button data-page="penal"><span class="ico">§</span>Penal Code</button>
-    <button data-page="traffic"><span class="ico">↔</span>Traffic Code</button>
-    <button data-page="events"><span class="ico">★</span>Event Rules</button>
-    <button data-page="map"><span class="ico">⌖</span>Territory Map</button>
+    <div class="nav-title">Menu</div>
+    <button data-page="dashboard" class="active"><span class="ico">⌂</span>Home</button>
+    <button data-page="arrest"><span class="ico">⚖️</span>Arrest Procedure Tool</button>
+    <button data-page="traffic-stop"><span class="ico">🚔</span>Traffic Stops (10-51)</button>
+    <button data-page="penal"><span class="ico">📖</span>Penal Code Tool</button>
+    <button data-page="traffic"><span class="ico">🚗</span>Traffic & Parking</button>
+    
     <div class="nav-title">Reference</div>
-    <button data-page="terms"><span class="ico">?</span>Roleplay Terms</button>
+    <button data-page="general"><span class="ico">📜</span>Server Rules</button>
+    <button data-page="state"><span class="ico">🏢</span>State Rules</button>
+    <button data-page="ghetto"><span class="ico">💀</span>Ghetto & Captures</button>
+    <button data-page="green"><span class="ico">🛡️</span>Green Zones</button>
+    <button data-page="events"><span class="ico">🎯</span>Events Guide</button>
+    <button data-page="terms"><span class="ico">💬</span>RP Terminology</button>
   </div>
 </aside>
 <main class="main">
 <header class="topbar">
-  <button class="iconbtn mobilebtn" id="mobileMenu">☰</button>
-  <div class="search"><span>⌕</span><input id="searchInput" placeholder="Search rules, PC, TC, procedures..." autocomplete="off"><span class="kbd">Ctrl K</span></div>
-  <div class="top-actions"><button class="iconbtn" id="themeBtn" title="Toggle theme">☾</button></div>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <button class="mobilebtn" id="mobileMenu">☰</button>
+    <div class="search">
+      <span class="icon">⌕</span>
+      <input id="searchInput" placeholder="Search guides, rules, codes..." autocomplete="off">
+      <span class="kbd">Ctrl K</span>
+    </div>
+  </div>
+  <div class="top-actions">
+    <div class="clocks">
+      <div class="clock">
+        <span class="clock-label">IC TIME</span>
+        <span class="clock-time" id="ic-time">00:00:00</span>
+      </div>
+      <div class="clock">
+        <span class="clock-label">OOC TIME</span>
+        <span class="clock-time" id="ooc-time">00:00:00</span>
+      </div>
+    </div>
+  </div>
 </header>
 <div class="content" id="content"></div>
-<div class="footer">Grand RP Wiki • Advanced Format • Built for Active RP</div>
 </main>
 </div>
-<div class="modal" id="modal"><div class="modalbox"><input id="modalSearch" placeholder="Search the wiki..."><div class="results" id="results"></div></div></div>
+<div class="modal" id="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:100; padding:10vh 20px; align-items:flex-start; justify-content:center;">
+  <div style="background:var(--panel); width:100%; max-width:600px; border-radius:12px; border:1px solid var(--line); overflow:hidden;">
+    <input id="modalSearch" placeholder="Type to search..." style="width:100%; padding:20px; border:none; border-bottom:1px solid var(--line); background:var(--bg); color:var(--text); font-size:16px; outline:none;">
+    <div id="results" style="max-height:60vh; overflow-y:auto; padding:10px;"></div>
+  </div>
+</div>
 <div id="toast" class="toast">Copied to clipboard!</div>
 
 <script>
+// ---------- CLOCK LOGIC (IC & OOC) ----------
+function updateClocks() {
+  const now = new Date();
+  // OOC TIME = Local Time
+  document.getElementById('ooc-time').textContent = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  // IC TIME = Server Time (Usually UTC)
+  document.getElementById('ic-time').textContent = now.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+setInterval(updateClocks, 1000);
+updateClocks();
+
+// ---------- DATA OBJECTS ----------
 const rules = {
   general: {
-    title: "General Rules", sub: "Official server rules and regulations. Violating these rules will result in the listed penalties.",
+    title: "Server Rules", sub: "Official Grand RP server rules and regulations.",
     groups: [
       ["Account Rules", [
         ["1.1", "Created account is property of the creator, your account cannot be shared or traded.", "PERMANENT BAN"],
-        ["1.2", "Player is fully responsible for his account. The administration of Grand Role Play does not carry the responsibility for your own account. When access to account is lost (e.g. being hacked), your account will face the same punishments.", ""],
-        ["1.3", "Any fraud against players is prohibited. We do not compensate lost money.", "PERMANENT BAN"],
-        ["1.4", "It is forbidden to have more than 1 additional account (Twinking).", "Permanent ban to all accounts except main account. Main account will get ban up to 60 days"],
-        ["1.5", "It is forbidden to have more than 1 business, including additional accounts. 1 person – 1 business.", "Ban 30 days each account"],
+        ["1.4", "It is forbidden to have more than 1 additional account (Twinking).", "Permanent ban to all except main (60 days)"],
         ["1.6", "The attempt to sell/buy game property for real money is prohibited.", "PERMANENT BAN"],
-        ["1.7", "It is forbidden to transfer property as a gift (including neon shoes), whose total amount exceeds $5,000,000 (You are allowed to receive $5,000,000 and transfer $5,000,000 per day). It is allowed to withdraw/deposit money from/to family balance.", "Ban 60 days"],
-        ["1.8", "It is prohibited to interact between your main account and twink. Any transfer of property or money will lead to PERMANENT ban of both accounts.", "PERMANENT BAN"],
-        ["1.9", "It is forbidden to evade our systems of selling/buying. If you are evading TAX (e.g. selling/buying/trading house/items/cars/clothes for 1k and then taking money).", "Ban 60 days"]
-      ]],
-      ["Nickname Creation", [
-        ["2.1", "Names must be realistic, relate to names in the real world, and cannot be names of famous persons.", "Jail 10 min and change nickname"]
-      ]],
-      ["Rules of Communication", [
-        ["3.1", "Insulting of the person (OOC) is strictly prohibited.", "Mute 180 minutes or ban up to 7 days"],
-        ["3.2", "Parents should not be mentioned in all chats, including voice.", "Mute 180 minutes or ban up to 7 days"],
-        ["3.3", "All players must be able to communicate in English and IC chat must be English only. Other languages may be used in private only if everyone who can see has agreed to it.", "Mute 120 min"]
-      ]],
-      ["Hacking and Use of Software", [
-        ["4.1", "Players must not have any kind of software that gives any advantage (disabling drug effects, hacks, bots etc.).", "Ban 60 days"]
-      ]],
-      ["Rules About Administration", [
-        ["5.1", "It is strictly prohibited to use report for questions that are not related to the game or problems on the server.", "Mute 20-60 minutes"],
-        ["5.2", "All players must be adequate while communicating with the administration. In case of disagreement with the decision of the administration — leave the complaint for consideration to the chief administrator.", ""],
-        ["5.3", "Insulting the administration is strictly prohibited. Complaint is the best way to achieve justice.", "Ban 7 days"]
+        ["1.7", "Forbidden to transfer property as a gift exceeding $5,000,000 per day.", "Ban 60 days"],
+        ["1.8", "Prohibited to interact between your main account and twink.", "PERMANENT BAN"]
       ]],
       ["Rules of Play", [
-        ["6.1", "Incorrect use of the /me /do /try /todo commands is prohibited. The player is obliged to play only the truth. Note: /try can only be used 2 times per situation.", ""],
-        ["6.2", "It is forbidden to leave the RP situation by refusing to continue the RP situation, not accepting/refusing first aid, leaving the game, AFK or entering in an interior, etc.", "WARN"],
-        ["6.3", "It is forbidden to empty the warehouse of the organisation for personal purposes.", "Permanent ban"],
-        ["6.4", "It is forbidden to play the bad side of an employee of state structures (e.g. a bad cop, a politician) without having an RP biography.", "WARN"],
-        ["6.5", "It is prohibited to do any criminal acts against EMS employees (kill, rob, etc.).", "WARN"],
+        ["6.2", "Forbidden to leave RP situation (refusing first aid, leaving game, AFK, interior).", "WARN"],
         ["6.6", "Forbidden to heal and loot in the gunfight.", "Jail 60 min"],
-        ["6.7", "If you got killed you cannot go back in a fight for 15 minutes.", "WARN"],
-        ["6.8", "It is restricted to do any amoral actions in relation to an unconscious person (e.g. spitting, sexual animations, etc.).", "BAN 3-7 days"],
-        ["6.9", "It is restricted to do any sexual actions in relation to any person. It is allowed to leave in case if you are a victim of sexual harassment (RP rape), etc.", "BAN 3-7 days"],
-        ["6.10", "It is prohibited to move IC situations to OOC (e.g. insulting someone in Discord Chat relating to an IC situation). Any instances of this will be punished in Discord as well as In-Game Bans.", "Ban 1-7 days"],
-        ["6.11", "It is forbidden to play on an additional account (TWINK) for the \"vice versa\" organization. If your main is STATE, twink can only be STATE — if main is GANG, twink can only be GANG.", "WARN for both accounts"],
-        ["6.12", "Harassing EMS employee during duty or showing inappropriate behaviour in relation to EMS employees is restricted. Exception: EMS employee was disrespectful.", "Ban up to 7 days"],
-        ["6.13", "It is restricted to kill person who is unconscious to help him to avoid RP situation (Mercy killing).", "Demorgan 120 min or WARN"],
-        ["6.14", "It is allowed to rob from inventory ONLY Ammunition, Guns, any armor (Gang, FIB, LSPD etc.), balaclava and Drugs. MONEY can be robbed only using system functionality of gangs.", "Ban 1-7 days"],
-        ["6.15", "When outside the GHETTO you must engage in RP before shooting someone. For example issue them demands and if they do not listen to your demands within 5 seconds you can shoot them.", "WARN"],
-        ["6.16", "During robbery of person, armoured car, trucks (any kind of transport) must be at least 2 cars and 4 persons to stop them and rob. In case if they did not stop it is considered as \"Power Gaming\".", "Jail 120 min or WARN"],
-        ["6.18", "It is forbidden to use helicopters to gain access to roofs that cannot be accessed by foot or ladder.", "Jail 120 min"],
-        ["6.19", "F-words and N-words are restricted.", "Ban 1-3 days"],
-        ["6.20", "Muting other players, which leads to avoiding RP shall not exempt from liability to punishment and falls under Fail RP.", "Warn"],
-        ["6.21", "It is forbidden to abuse armored cars (impossible to shoot players inside).", "Warn"],
-        ["6.22", "It is forbidden to sell/buy family businesses or withdraw/deposit money on/from fam balance without fam leaders approval, as well as taking from warehouse and family cars. Falls under rule of scam 1.3.", ""],
-        ["6.23", "Any kind of bug abuse is forbidden.", "BAN up to PERMANENT"],
-        ["6.24", "It is forbidden to rob/kidnap people who working on starting jobs such as busmen/taxi drivers/electricians, etc.", ""],
-        ["6.25", "It is forbidden to rob/kidnap people on the territory of Fort Zancudo (National Guard).", "WARN"],
-        ["6.26", "It is forbidden to abuse EMS clothes if you are not EMS employee.", "WARN or BAN up to 7 days"],
-        ["6.27", "Placing contraband machines inside other objects or physically inaccessible areas is not allowed.", "Ban 1-3 days"]
+        ["6.13", "Restricted to kill person who is unconscious to help him avoid RP (Mercy killing).", "Demorgan 120 min / WARN"],
+        ["6.15", "Outside GHETTO you must engage in RP before shooting (e.g. demands within 5 secs).", "WARN"]
       ]]
     ]
   },
   state: {
-    title: "State Rules", sub: "Official server rules and regulations. Violating these rules will result in the listed penalties.",
+    title: "State Rules", sub: "Regulations for State Organizations (LSPD, SAHP, FIB, NG, GOV).",
     groups: [
-      ["General Rules for State", [
-        ["1.1", "All staff members are required to comply with established standards.", ""],
-        ["1.2", "It is forbidden to transfer your members of organisation into another organisation. Exception: If both leaders of organisations agree for it.", "Verbal warning to the leader"],
-        ["1.3", "It is forbidden to accept people with criminal record.", ""],
-        ["1.4", "It is forbidden to drive an armor vehicle in the city without an escort. Note: armored cars like Kuruma, Insurgents, BTR.", ""],
-        ["1.5", "Employees of LSPD have the right to search a car. If they find any illegal weapons or drugs they have the right to confiscate them. All of it should be recorded on video.", ""],
-        ["1.6", "It is forbidden to search a car without Role play commands /try, /do, /me.", ""],
-        ["1.7", "FIB could take a lead on the special operations if other organisations take part in it.", ""],
-        ["1.8", "Laws are wrote by the government and every state organisation should follow them.", ""],
-        ["1.9", "If there is an emergency state all state organisation must react including: EMS who have to send two emergency cars to the selected point.", ""],
-        ["1.10", "All state organisation must not wear a mask on duty. Exceptions are special forces of FIB / LSPD / SAHP / USSS / NG — which are allowed to use on duty ONLY masks available in Warehouse of their organisation.", ""],
-        ["1.11", "All state employees are forbidden to search cars or people without role play commands or if there is not a role play situation. Note: If there is a raid all state employees require a search warrant.", ""],
-        ["1.12", "Players in state organisations could play their character as a \"bad cop\". Note: 5 bad cops are the limit per org. Player must write a biography approved by senior curator of state. Bad cops are allowed to ask for illegal items.", ""],
-        ["1.13", "The title district of the gang is the place (skull on the map) where the gang is most active. State employees cannot come without an IC reason (e.g. Raid).", ""],
-        ["1.14", "You have 25 minutes to put a person in jail starting from the moment of cuffing them. If a lawyer is present this time can be increased.", "Demorgan 120 min"],
-        ["1.15", "Looting in a gun fight is forbidden for state employees.", "Demorgan 120 min"],
-        ["1.16", "Running with a person while he is handcuffed is forbidden.", "Demorgan 120 min"],
-        ["1.17", "It is prohibited to shoot from armoured cars (e.g. Kuruma).", "Demorgan 120 min"],
-        ["1.18", "EMS employees must not assist unconscious people during an active gunfight. You must leave the area until it is deemed safe.", "Demorgan 120 min"],
-        ["1.19", "It is forbidden to put barricades in front of the alarm panel. All markers must be easily reached by gangs.", ""],
-        ["1.20", "Governor must conduct a meeting with all leaders of state orgs and put a screenshot of amendments made in the channel called \"legislation change\".", "WARN (to leader)"],
-        ["1.21", "Leaders must review the legislation change within the limit of 48 hours.", "Verbal warning"],
-        ["1.22", "If a leader agrees with legislation changes he has to write \"approved\" in the channel called \"legislation change\".", ""],
-        ["1.23", "A leader cannot disagree to a legislation change without a valid reason.", "Verbal Warning"],
-        ["1.24", "All amendments made should be approved by Senior Curator of State which the governor has to tag in the channel \"legislation change\".", "WARN (to leader)"],
-        ["1.25", "Every state organisation must do ghetto patrols 3 times in a week (Minimum 8 people).", ""]
-      ]],
-      ["Government", [
-        ["2.1", "Employees have the right to use all available means of defense in case of danger to senior officials.", ""],
-        ["2.2", "The government has the right to hold events for citizens of a large-scale nature once a day: a car fair, a trading platform, etc.", ""],
-        ["2.3", "Events of a larger scale should always be co-ordinated with the curator of your faction.", ""],
-        ["2.4", "The government has the right to establish regulations for civilians visiting the Capitol.", ""],
-        ["2.5", "A lawyer has the right to ask for evidence against the accused and his ask cannot be denied.", ""],
-        ["2.6", "The government has the right to establish regulations for public and private inspections. (No more than 7 checks per week, and no more than 2 checks of one faction per week.)", ""],
-        ["2.7", "A government audit has the right to dismiss an employee of a public or private organisation if, after internal review, it has revealed any violations.", ""],
-        ["2.8", "The government is obliged to negotiate all laws and bills with other heads of public and private organizations if the laws affect the work of these organizations.", ""],
-        ["2.9", "The government has the right to create laws/bills, provided that they do not contradict the RP component or logic.", ""],
-        ["2.10", "The government has no right to use the treasury for personal purposes.", ""],
-        ["2.11", "The government has the power to issue various licenses. The price is regulated by the leader of the organization.", ""],
-        ["2.12", "The government should have at least two lawyers on staff who will be qualified and will be able to represent someone's interests.", ""],
-        ["2.13", "The state government is required to conduct small or medium events for state residents at least once every 3 days.", ""]
-      ]],
-      ["EMS", [
-        ["3.1", "Hospital staff are obliged to provide assistance to absolutely every player, without exception.", ""],
-        ["3.2", "The chief doctor sets the internal regulations of the hospital, with approval with the government and the curator.", ""],
-        ["3.3", "The chief doctor has the right to check state organizations for any diseases no more than twice in a week per organization.", ""]
-      ]],
-      ["National Guard", [
-        ["4.1", "All national guard employees cannot leave Fort Zancudo during their duty. Exception: If leader allows it.", ""],
-        ["4.2", "National guard must follow all state laws.", ""],
-        ["4.3", "National guard can arrest a person and deliver to any state organisation except for EMS.", ""],
-        ["4.4", "National guard employees can use weapons in emergency situations.", ""],
-        ["4.5", "National guard special division can patrol the state for the presence of crime activity.", ""]
+      ["General State", [
+        ["1.14", "You have 25 minutes to put a person in jail starting from cuffing moment.", "Demorgan 120 min"],
+        ["1.15", "Looting in a gun fight is forbidden for state employees.", "Demorgan 120 min"]
       ]],
       ["LSPD / SAHP / FIB", [
-        ["5.1", "All those state organisations can arrest a person if they suspected him of a criminal activity.", ""],
-        ["5.2", "LSPD/SAHP/FIB cannot stop a person, search him or ask for passport without an IC reason.", ""],
-        ["5.3", "LSPD/SAHP/FIB could use weapons if a role-play situation requires it.", ""],
-        ["5.4", "LSPD/SAHP/FIB cannot arrest a person while gunfight is not finished.", "Verbal Warning"],
-        ["5.5", "LSPD/SAHP/FIB could patrol ghetto if there are more than two special officers.", "Verbal Warning"],
-        ["5.6", "LSPD/SAHP/FIB require to have a bodycam for each arrest.", "Verbal warning (no evidence)"],
-        ["5.7", "If LSPD/FIB/SAHP employee is attacked, he can request all the forces for supporting him (Code 0).", ""],
-        ["5.8", "It is forbidden to remove masks from critically wounded criminals.", "Demorgan 300 min"],
-        ["5.9", "It is allowed to unmask only for identification and further detention, as well as for entering a person into the state database.", ""],
-        ["5.10", "LSPD/FIB/SAHP employees are obliged to use only official transport for calls. Exception: Undercover officers may go out discreetly for investigation.", "Verbal warning"],
-        ["5.11", "LSPD/FIB/SAHP/NG/GOV/EMS employees cannot use official vehicles for personal use.", "Verbal warning"],
-        ["5.12", "LSPD/FIB/SAHP employees cannot stop EMS employees in case of their movement on calls. Exception: special operation.", "Demorgan 120 min"]
-      ]],
-      ["Raid Rules", [
-        ["6.1", "It is forbidden to do raid without a serious IC reason (e.g. Case file).", ""],
-        ["6.2", "It is forbidden to leave a game while there is a raid.", ""],
-        ["6.3", "Raids are carried out on the territory of a criminal organization or group.", ""],
-        ["6.4", "During the raid state employees can search any person on the territory of the raid.", ""],
-        ["6.5", "There has to be a minimum of 20 state employees who take part in the raid.", ""],
-        ["6.6", "Each state organisation can do a raid no more than once in 48 hours.", ""],
-        ["6.7", "Prime time for raids: 19:00 to 00:00.", ""],
-        ["6.8", "Raid warrant is issued by the Attorney General's Office: Attorney General and/or his deputy/governor. In the absence of an active government, the raid warrant is issued by the head of the FIB department.", ""],
-        ["6.9", "It is allowed to search vehicles located on the territory of the criminal faction.", ""],
-        ["6.10", "PDA is counting as OOC information. If you found a wanted criminal and want to arrest him, you have to ask him to show his passport for identification. If he refuses, state employees have all rights to arrest him for identification.", ""]
-      ]],
-      ["Lifeinvader", [
-        ["7.1", "Talent show must be once in two weeks.", ""]
-      ]]
-    ]
-  },
-  green: {
-    title: "Green Zone Rules", sub: "A Green Zone is a place where all criminal activities are forbidden.",
-    groups: [
-      ["General Rules for Green Zone", [
-        ["1.1", "Green Zone killings are prohibited.", "Warn"],
-        ["1.2", "It is forbidden to buy weapons, drugs. Also to kidnap, rob people and put bags on player's head.", "Warn"],
-        ["1.3", "It is forbidden to leave RP situation by joining in a green zone.", "Warn"]
-      ]],
-      ["List of All Green Zones", [
-        ["2.1", "Government agencies: Central Hospital, Government, FIB, LSPD, SAHP.", ""],
-        ["2.2", "Initial and public works: Truckers, Electricians, Sawmill, Farm 1-2, Bus workers, Taxi companies, Oil rig.", ""],
-        ["2.3", "Enterprises: Car dealerships, Motorcycle dealerships, Boat sales, Air transport sales, Service stations, Shops 24/7, Clothing stores, Jewelry store, Parking spaces, Burger shop, Gas station, Construction site, Bar, Black market.", ""],
-        ["2.4", "Other: Lifeinvader, LS Airport, Licensing Center, Trade Market, Stadium, Casino, Prison, Post Office, Auto Fair, Real Estate Agency, Recruiting Office, Weapon Assembly, Beach Gym, Resource Exchange Points, Purchasing Rooms, Bank, ATM, Fishing Pier, Residential complex, Auto theft, Bunker.", ""]
+        ["5.2", "Cannot stop a person, search him or ask for passport without an IC reason.", "WARN"],
+        ["5.4", "Cannot arrest a person while gunfight is not finished.", "Verbal Warning"],
+        ["5.6", "Require to have a bodycam for each arrest.", "Verbal Warning"],
+        ["5.8", "Forbidden to remove masks from critically wounded criminals.", "Demorgan 300 min"]
       ]]
     ]
   },
   ghetto: {
-    title: "Ghetto Rules", sub: "Official server rules and regulations. Violating these rules will result in the listed penalties.",
+    title: "Ghetto & Captures", sub: "Gang and territory rules.",
     groups: [
-      ["General Ghetto Rules", [
-        ["1.1", "Ghetto territories are colored sections of the city that are marked on the Map of Ghetto.", ""],
-        ["1.2", "Being on the HQ of a gang, you are required to do all the requirements of the gang.", "WARN"],
-        ["1.3", "On the HQ of a gang, it is forbidden to visit without IC reason (e.g. Raid, talk to deputies/leader) for all organisations.", "WARN"],
-        ["1.4", "It is forbidden to push/kill gang members on their HQ. You are not allowed to enter on HQ of another gang without permission.", "WARN"],
-        ["1.5", "If you are standing on your HQ it is forbidden to start shooting from your own territory.", "WARN"],
-        ["1.6", "If a gang member gets chased by cops/gangs, he cannot get back to his HQ for 5 minutes.", "WARN"],
-        ["1.7", "All gang members must wear top and pants of their gang's color.", "Demorgan 180 min"],
-        ["1.8", "It is allowed to rob/kidnap people only in ghetto or outside the city.", "WARN"],
-        ["1.9", "Robbery of Fort Zancudo is allowed from 12:00 PM to 10:05 PM.", ""],
-        ["1.10", "Gang members on their HQ can kill everybody in case if you do not agree with their demands.", ""],
-        ["1.11", "It is forbidden to force people into doing animations. Exceptions are raising hands or getting on knees (only for cops).", "Warn"],
-        ["1.12", "If a person complies with given demands it's not allowed to kill them.", "Jail 120 min"],
-        ["1.13", "Leaders or deputies must set the time for robbery of Fort Zancudo within 1-2 hours before starting robbery.", "Warn"],
-        ["1.14", "Each robbery of Fort Zancudo has to have a cooldown of 2 hours.", "Warn"],
-        ["1.15", "Gangs and families (including unofficial orgs) cannot take hostages and rob from event which just finished.", ""]
+      ["Ghetto Rules", [
+        ["1.2", "On HQ of a gang, you are required to do all requirements of the gang.", "WARN"],
+        ["1.8", "Allowed to rob/kidnap people only in ghetto or outside the city.", "WARN"],
+        ["1.12", "If a person complies with given demands it's not allowed to kill them.", "Jail 120 min"]
       ]],
       ["Capture Rules", [
-        ["2.1", "Capture of territory is an OOC situation. It is forbidden for state employees to interrupt capture.", ""],
-        ["2.2", "Only members of criminal organizations can take part in the capture (Attack and defense).", ""],
-        ["2.3", "Capture is allowed only on Monday, Wednesday, Friday and Sunday.", ""],
-        ["2.4", "Capture is allowed from 04:00 PM to 11:05 PM.", ""],
-        ["2.5", "4 attacks and 4 defenses are allowed per day for 1 gang.", ""],
-        ["2.6", "Leaders must be informed in Discord no more than 30 minutes and no less than 20 minutes before it starts.", ""],
-        ["2.7", "After the capture, both gangs get a freeze for 25 minutes. Other gangs cannot capture those gangs for 25 minutes.", ""],
-        ["2.8", "It is forbidden to do a capture for gangs that do not have a leader.", ""],
-        ["2.9", "If the gang is taking part in a robbery of Fort Zancudo, it is forbidden to do a capture of the territory 20 minutes prior, during, and 10 minutes after the robbery.", ""],
-        ["2.10", "Minimum number of participants is 5 people.", ""],
-        ["2.11", "Maximum number of participants is 10 people.", ""],
-        ["2.13", "The defense side must accept the terms of the attack side.", ""],
-        ["2.14", "The gang must start capture exactly at the time it informed in Discord and join capture area in full force at the same time.", ""],
-        ["2.15", "All players who do not participate in the capture are prohibited to stay in the territory of capture.", ""],
-        ["2.16", "Anti-capture is prohibited within 10 minutes before the start and during the capture.", ""],
-        ["2.17", "Members of the gang cannot change his gang for a reason of capture and return back to their first gang.", ""],
-        ["2.18", "Forbidden to heal and loot in the gunfight.", ""],
-        ["2.19", "Forbidden to use body armor.", ""],
-        ["2.20", "During the capture, it is prohibited to use any roofs. All players must be only on the ground.", ""],
-        ["2.21", "Forbidden to use painted weapons during the capture.", ""],
-        ["2.22", "Forbidden to use drugs.", ""],
-        ["2.23", "Each participant must hold playback of the capture for 48 hours.", ""],
-        ["2.24", "It is forbidden to use software such as VPN.", ""],
-        ["2.25", "If a participant of capture got banned for cheats, all the territories in which player was a participant will return back to the gangs.", ""],
-        ["2.26", "If participant is unconscious, it is forbidden to heal him.", ""],
-        ["2.27", "The defense must enter the capture at least 2 minutes before end of capture.", ""],
-        ["2.28", "The attack gang must set kind of a weapon and number of participants (e.g. 10x10 Weapon – Revolver).", ""],
-        ["2.29", "It is forbidden to go into the interior.", "Demorgan 120 min"],
-        ["2.30", "It is forbidden to delete capture in discord channel #capture.", "Verbal warning"],
-        ["2.31", "It is forbidden to go out from the capture zone (red circle). It is allowed to avoid obstacles within 7 seconds.", "Demorgan 120 min"],
-        ["2.32", "5 minutes before the capture, all participants are considered as OOC players and should be in their respective Gang HQ.", ""],
-        ["2.33", "If a playback is demanded, you have 24h to provide the video.", "Ban 7 days for not providing"],
-        ["2.34", "It is restricted to drive a car into red circle.", "Warn to the leader / Turf canceling"],
-        ["2.36", "All POV requests must be uploaded to YouTube or Streamable Platform.", ""],
-        ["2.38", "You can sell/buy 3 turfs maximum each turf day.", "Up to disband"],
-        ["2.39", "You are not allowed to right hand peak.", "7 day ban"],
-        ["2.40", "Juices are forbidden in turf.", "Up to ban 7 days"],
-        ["2.41", "It is forbidden to change gang to participate in a turf for another roster (alt accounts count as well).", ""]
+        ["2.1", "Capture is an OOC situation. State employees cannot interrupt.", "WARN"],
+        ["2.18", "Forbidden to heal and loot in the gunfight.", "WARN"],
+        ["2.29", "Forbidden to go into the interior during capture.", "Demorgan 120 min"]
       ]]
     ]
   }
 };
 
-const events = {
-  "Ghetto Patrol": ["Heavy Weapons are allowed.", "Minimum 8-10 Units should be there including four cars.", "Should be in ghetto for minimum of 15 minutes.", "Should patrol from near 3 gang HQs.", "Necessary to take halt for 5 minutes in Fake Parking."],
-  "FZ Raid": ["Happens in NG Base.", "Heavy Weapons are NOT allowed.", "Accessing roof is NOT allowed.", "Can't stay in base after raid is over."],
-  "Bank Protection": ["Only Heavy Shotgun is allowed, other heavy weapons are NOT allowed.", "Event happens alternate day at 21:30.", "You are NOT allowed to shoot people who just entered the tunnel."],
-  "Store Robbery / Gun Store Robbery": ["Don't shoot outside the perimeter from inside.", "Don't shoot inside the perimeter from outside.", "Don't shoot without taking demands from gangster.", "Heavy Weapons are NOT allowed."],
-  "ACC (Aircraft Carrier Protection)": ["Happens alternate day at 21:30 on the Aircraft Carrier.", "NOT allowed to shoot people inside the water.", "Heavy Weapons are NOT allowed."],
-  "Prison Protection": ["Happens only on Friday at 22:10.", "Heavy Weapons are NOT allowed."],
-  "Submarine Protection": ["Happens everyday at 00:00.", "Heavy Weapons are NOT allowed."],
-  "Gang Raid": ["Happens with coordination with FIB during Special Operation.", "Heavy Weapons are NOT allowed."],
-  "Black Market Raid": ["Happens with coordination with FIB during Special Operation.", "Heavy Weapons are NOT allowed.", "Can't shoot anyone without demands inside the perimeter.", "NOT allowed to shoot outside the perimeter from inside."]
-};
-
-const terms = [
-  ["RP", "Roleplay — The acting out or performance of a regular person in-game (e.g. acting like a regular civilian, a gangster, Hispanic, African American, etc.)."],
-  ["IC", "In Character (IC) — Your character's roleplay; his/her actions and words being said."],
-  ["OOC", "Out of Character (OOC) — When you, as a player, are talking or doing actions outside of In Character actions. Examples are talking in /b (OOC chat) about topics not related to your IC roleplay."],
-  ["MG", "Metagaming (MG) — Using information you have gotten from Out of Character ways and using it In Character. Using VoIP programs (Teamspeak, Skype, Discord) to communicate IC whilst in-game is strictly forbidden."],
-  ["PG", "Powergaming (PG) — Performing acts that are not humanlike; forcing roleplay on others without giving them a fair chance; making up things which did not happen so that you can benefit."],
-  ["DM", "Deathmatching (DM) — Killing another person without a sufficient roleplay reason is not allowed."],
-  ["Non-RP", "Non-RP — Doing things that are not sufficient to be considered good standard roleplay depending on the situation at hand."],
-  ["RK", "Revenge Killing (RK) — When a player who has fully died respawns and sets out to kill the person/people who killed them. Not allowed because the player who died has no recollection/memory of the event."],
-  ["CR", "Car Ramming — Using a vehicle to crash into people or vehicles."],
-  ["PRV", "Provoking — Purposely annoying/irritating players to get a reaction from them."],
-  ["UB", "Unrealistic Behavior (UB) — Actions that are unrealistic or hurt the roleplay experience of other players."]
-];
-
 const procedure = [
-  ["Phase 1: Cuffing & Securing", "ALWAYS HOLSTER YOUR WEAPON BEFORE DOING ANY ACTIONS!! The suspect must be standing still or unconscious to attempt to handcuff. If fleeing or not standing still, use your tazer to demand them to stop moving/running. Demand 3 times to stop running/moving. Flex your Z Muscle to attempt to handcuff the suspect. Remember the time of cuffs! Inform the suspect you will be grabbing them by their arm.", "Okay Sir/Ma'am I'm going to be placing you in cuffs. ... Okay Sir/Ma'am I'm going to be grabbing you by the arm, please follow me."],
-  ["Phase 2: Placing in Vehicle", "ALWAYS TELL A SUSPECT TO \"WATCH THEIR HEAD\" AS YOU PLACE OR REMOVE THEM FROM A VEHICLE. When you have the suspect at the vehicle, look at the suspect and flex your G Muscle > Organization > Place in vehicle. Inform the suspect of all of their charges and why as soon as possible, best done while driving/safe from any danger. Inform dispatch you are heading to DOC.", "Okay Sir/Ma'am I'm going to be placing you into the vehicle please watch your head. ... Alright Sir/Ma'am today you are being charged with [Charge 1], [Charge 2]... ... (BADGE NUMBER) To Dispatch, show me 10-17 to DOC with (NUMBER) of 10-15 and (ADDITIONALS/CONVOY)"],
-  ["Phase 3: Transport & Miranda Rights", "MAKE SURE TO DRIVE CAREFULLY TO DOC, AVOIDING THE HIGHWAYS AND DO NOT BREAK SPEED LIMIT UNLESS YOU HAVE TO (BEING CHASED). Read the suspect their Miranda rights. If the suspect ignores or says they dont understand it, then you must wait 5 seconds and repeat the rights again (3 in total). After the second attempt if the suspect is still ignoring you, inform them that you have read them their rights 3 times.", "You have the right to remain silent, Anything you say can and will be used against you in the court of law. You have the right to an attorney, If you cannot afford an attorney, one will be appointed to you by the state if available. Do you understand the rights I just read to you?"],
-  ["Phase 4: Legal Requests (If Applicable)", "If the suspect requests a private or state lawyer, pause the 25 minutes timer. Private: Detainee must give cell number. State: Radio in to dispatch. IF A SUSPECT CALLS FOR A LAWYER, MAKE SURE THE SUSPECT HAS NO MASK ON. Give them 10 seconds to remove it, if they dont then forcefully remove it, then search the suspect for identification before the lawyer arrives.", "(BADGE NUMBER) To Dispatch, my 10-15 is requesting a state lawyer at DOC"],
-  ["Phase 5: Arrival at DOC & Medical", "Remove the suspect from the vehicle, tell the suspect to \"WATCH THEIR HEAD\". MAKE SURE TO GIVE THE SUSPECT MEDICAL ATTENTION WHEN YOU ARRIVE AT DOC. At the front counter of the DOC ask the suspect what size jumpsuit they are. If the suspect does not tell you a size you grab \"universal\". Type /me grabs a *SIZE* jumpsuit from behind the counter. If the suspect request a lawyer after you grab the jumpsuit. You Must stop the arresting procedure and request a lawyer.", "Sir/Mam What size jumpsuit are you?"],
-  ["Phase 6: Searching & Confiscation", "Escort the suspect to a cell, ensure you lock doors behind you at all times. Inform the suspect you are going to reach into their pockets to find their passport. Flex your G muscle, organization(2), find out your personal information(7). IF THE SUSPECT IS WEARING A MASK YOU MUST GIVE THEM A CHANCE TO REMOVE IT NOW. Inform the suspect you are going to search them for any illegal items. Any illegal weapons with serial number \"XXX\" or any government agency weapons are to be seized. The only weapons they can have will be tagged as \"AMMO\" and they can keep this if they have a valid gun licence. Take a photo and log it in the #confiscation-logs.", "/me reaches into the suspect's pockets to retrieve their passport"],
-  ["Phase 7: Charges & Imprisonment", "Inform the suspect of their charges again and how long their sentence and fine will be. Flex your J Muscle to pull out your PDA and issue the suspect a wanted level and applicable fines. For every crime being charged, they have to be input separately. Ask the suspect if they have any final questions. Tell the suspect you will be placing them in their jumpsuit now. Exit the cell ensuring you \"LOCK\" it behind you. Radio into Dispatch to confirm.", "Sir/Mam I am going to be putting you in your jumpsuit now ... (BADGE NUMBER) to dispatch, show my last 10-15 is now 10-99 and I am 10-19"]
+  ["Phase 1: Cuffing & Securing", "Always holster your weapon! Demand 3 times to stop moving. Cuff suspect and inform them.", "Sir/Ma'am I am placing you in cuffs. I am grabbing you by the arm, follow me."],
+  ["Phase 2: Placing in Vehicle", "Tell suspect to 'Watch their head'. Inform them of charges. Radio dispatch.", "(BADGE) To Dispatch, show me 10-17 to DOC with (NUMBER) of 10-15."],
+  ["Phase 3: Transport & Miranda Rights", "Drive safely. Read Miranda rights. If ignored, repeat up to 3 times.", "You have the right to remain silent. Anything you say can be used against you..."],
+  ["Phase 4: Legal Requests", "Pause 25 min timer if lawyer requested. Remove mask for ID before lawyer arrives.", "(BADGE) To Dispatch, my 10-15 requests a state lawyer at DOC."],
+  ["Phase 5: Arrival at DOC & Medical", "Give medical attention if needed. Ask for jumpsuit size.", "Sir/Mam, what size jumpsuit are you? *grabs jumpsuit*"],
+  ["Phase 6: Searching & Confiscation", "Escort to cell. Lock doors. Search and seize illegal items. Take photo for logs.", "*Reaches into pockets for passport and illegal items*"],
+  ["Phase 7: Charges & Imprisonment", "Use PDA to issue wanted level and fines. Place in cell. Update dispatch.", "(BADGE) to dispatch, my last 10-15 is 10-99 and I am 10-19."]
 ];
 
 const trafficStop = [
-  ["Step 1", "Activate Radar", "While inside the vehicle, flex the J muscle and press the \"Turn On Radar\" option. This will display the speed and details of the vehicle ahead.", ""],
-  ["Step 2", "Issue Stop Notification", "If the vehicle is detected speeding, flex J again to send a Stop Notification and signal the vehicle to pull over. You must give 3 demands with a duration of 5 seconds between each. City speed limit: 120 km/h • Outside city speed limit: 180 km/h", ""],
-  ["Step 3", "Vehicle Stop Compliance", "If the driver pulls over: Instruct them to turn off the engine and exit the vehicle calmly. If the driver does not pull over after 3 demands: Block the driver's engine and assess the situation: If the driver gets out to fight: Take out your gun and neutralize the threat. If the driver stays in the vehicle: Break the window (if not already broken) and use a stun gun.", ""],
-  ["Step 4", "Initial Radio Dispatch", "Once the driver exits the vehicle, call dispatch.", "Badge Number, show me conducting a 10-51 on a [vehicle color/type]. We are Code 4 at [location]."],
-  ["Step 5", "Contact Phase", "Exit your vehicle, place a barricade behind your patrol vehicle, and update dispatch. Approach the driver, explain the reason for the stop, and request their passport/identification.", "We are Code 6 now."]
+  ["Step 1: Activate Radar", "Flex J muscle -> Turn On Radar. Check vehicle speed."],
+  ["Step 2: Issue Stop Notification", "Send Stop Notification. Give 3 demands (5s between each). Speed Limits: City 120 km/h, Highway 180 km/h."],
+  ["Step 3: Vehicle Stop Compliance", "If stopped: Turn off engine, exit. If fleeing: Block engine. If fighting: Neutralize."],
+  ["Step 4: Initial Radio Dispatch", "Call dispatch once driver exits.", "(BADGE) show me 10-51 on a [vehicle]. Code 4 at [location]."],
+  ["Step 5: Contact Phase", "Place barricade behind patrol car. Approach driver, ask for passport.", "(BADGE) We are Code 6 now."]
 ];
 
 const penal = [
-["2.1.1","Possession of Narcotics - Less than 4 or less Units","$15,000","-","-"],["2.1.1","Repeat Offense","$10,000","15","1"],["2.1.2","Possession of Narcotics – 5 to 9 Units","$20,000","30","2"],["2.1.3","Possession of Narcotics with Intent to Distribute","$30,000","45","3"],["2.1.6","Possession of Prohibited Items (Less than 3)","$20,000","30","2"],["2.1.7","Possession of Prohibited Items with Intent to Distribute (More than 3)","$30,000","45","3"],
-["2.2.1","Culpable Homicide / Manslaughter","$20,000","30","2"],["2.2.2","Murder or Attempted Murder","$40,000","60","4"],["2.2.3","Murder or Attempted Murder - Premediated","$50,000","75","5"],["2.3.1","Assault by Threat","$20,000","30","2"],
-["2.4.1","Abandonment","$10,000","15","1"],["2.4.2","Failure to Act / Abandonment by Civil Servant","$20,000","30","2"],
-["2.5.1","Kidnapping or Attempted Kidnapping","$30,000","45","3"],["2.5.2","Kidnapping or Attempted Kidnapping - Civil Servant","$40,000","60","4"],["2.5.3","Kidnapping or Attempted Kidnapping - LEO","$50,000","75","5"],["2.6.1","Taking a Hostage","$50,000","75","5"],
-["2.7.1","Sexual Harassment","$30,000","45","3"],["2.7.2","Sexual Assault","$40,000","60","4"],["2.7.3","Rape","$50,000","75","5"],
-["2.8.1","Forgery of Documents","$20,000","30","2"],["2.8.2","Dealing in Forged Documents","$30,000","45","3"],
-["2.9.1","Petty Larceny or Theft","$10,000","15","1"],["2.9.1","Repeat Offence","$20,000","30","2"],["2.9.4","Grand Theft Auto","$40,000","60","4"],
-["2.10","Armed Robbery","$40,000","60","4"],["2.11","Heist","$40,000","60","4"],["2.12","Extortion","$40,000","60","4"],["2.13","Fraud","$20,000","30","2"],["2.14","Creation of Criminal Community","$40,000","60","4"],
-["2.15.1","Participation in Banditry","$40,000","60","4"],["2.15.2","Banditry as a Leader","$50,000","75","5"],
-["2.16.1","Assault","$10,000","-","-"],["2.16.2","Assault with Intent to Harm","$10,000","15","1"],["2.16.3","Assault GBH","$20,000","30","2"],
-["2.17.1","Unlicensed Firearms Carry","$10,000","-","-"],["2.17.2","Excessive Firearms Carry (Overcarrying)","$40,000","60","4"],["2.17.3","Possession of Illegal Firearms","$20,000","30","2"],["2.17.4","Dealing in Illegal Firearms","$40,000","60","4"],["2.17.5","Possession of State Issued Items","$40,000","60","4"],["2.17.6","Possession of Illegal Body Armour","$20,000","30","2"],["2.17.7","Brandishing a Firearm","$30,000","45","3"],["2.17.8","Discharging of a Firearm","$10,000","-","-"],["2.17.8","Repeat Offense","$20,000","30","2"],["2.17.9","Public Carrying of a Firearm","$10,000","-","-"],["2.17.9","Repeat Offence","$10,000","15","1"],
-["2.18.1","Misappropriation of a Vehicle (Reckless Driving)","$20,000","30","2"],["2.18.2","Misappropriation of a Official or State Vehicle","$30,000","45","3"],["2.18.3","Misuse of a Vehicle","$10,000","15","1"],["2.18.4","Vehicle Used in Criminal Activity","$10,000","-","-"],["2.19","Pimping","$20,000","30","2"],["2.2","Prostitution","$10,000","-","-"],["2.2","Repeat Offense","$10,000","15","1"],["2.21","Hooliganism","$40,000","60","4"],["2.22","Bribery or Attempted Bribery of an Official","$30,000","45","3"],["2.23","Failure to Pay Fines","$50,000","60","4"],["2.24.1","Leaving the Scene","$20,000","30","2"],["2.24.2","Evading Arrest","$40,000","60","4"],["2.25","Attempted or Actual Escape from Custody","$50,000","75","5"],["2.26","Insubordination / Failure to Comply","$30,000","45","3"],["2.27","Violation of Privacy","$20,000","30","2"],["2.28","Intentional Spreading of Disease","$20,000","30","2"],["2.29","Breaking and Entering into a Private Residence","$30,000","45","3"],["2.30.1","Animal Cruelty","$20,000","30","2"],["2.30.2","Killing on Animal or Pet","$30,000","45","3"],
-["3.1.1","Terrorism as a Participant","$40,000","60","4"],["3.1.2","Leading of Terrorism","$50,000","75","5"],["3.2.1","Participating in a Riot","$20,000","30","2"],["3.2.2","Leading of a Riot","$30,000","45","3"],["3.3.1","Sedition as a Participant","$30,000","45","3"],["3.3.2","Leading of Sedition","$40,000","60","4"],["3.4.1","Treason as a Participant","$50,000","75","5"],["3.4.2","Leading of Treason (High Treason)","$50,000","75","5"],["3.5.1","Obstruction of an Investigation","$20,000","30","2"],["3.5.2","Obstruction of an Officer or Civil Servant","$30,000","45","3"],["3.5.3","Obstruction of an Arrest or Detention","$40,000","60","4"],["3.6.1","Murder, or Attempted Murder of LEO in the Line of Duty (NG Raid or Store Robbery)","$40,000","60","4"],["3.6.2","Murder, or Attempted Murder of a Civil Servant or LEO","$50,000","75","5"],["3.7","False Reporting","$40,000","60","4"],["3.8.1","Trespassing","$20,000","30","2"],["3.8.2","Trespassing on Secure Facility","$30,000","45","3"],["3.9.1","Collusion with criminal elements","$30,000","45","3"],["3.11.1","Failure to Submit documents","$10,000","15","1"],["3.11.2","Failure to identify","$20,000","30","2"],["3.12.1","Disclosure of Information","$40,000","60","4"],["3.12.2","Disclosure of Classified Information","$50,000","75","5"],["3.13.1","Posing as a Civil Servant","$30,000","45","3"],["3.13.2","Posing as a Law Enforcement Officer","$40,000","60","4"],["3.14.1","Corruption by a State Employee","$40,000","60","4"],
-["4.1.1","Disobeying an Order of a Superior","$40,000","60","4"],["4.1.2","Disobeying an Order of a State Leader","$40,000","60","4"],["4.1.3","Disobeying an Order of a Judicial Authority","$40,000","60","4"],["4.2.1","Negligence by a Civil Servant","$40,000","60","4"],["4.2.2","Negligence by a Law Enforcement Officer","$30,000","45","3"],["4.3","Sabotage","$75,000","75","5"],["4.4.1","Disclosure of Police Information","$30,000","45","3"],["4.4.1","Disclosure of Federal Information","$40,000","60","4"],["4.4.2","Disclosure of State Information","$50,000","75","5"],["4.5","Arbitrariness","$20,000","30","2"],["4.6","Receiving a Bribe","$40,000","60","4"],["4.7.1","Conduct Unbecoming","$20,000","30","2"],["4.7.2","Gross Ethics Violations","$30,000","45","3"],
-["5.1.1","Speeding up to 30km/h over the limit","$5,000","-","-"],["5.1.2","Speeding up to 60 km/h over the limit","$10,000","-","-"],["5.1.3","Speeding up to 90 km/h over the limit","$15,000","-","-"],["5.1.4","Speeding in Excess of 90km/h over the limit","$20,000","30","2"],
-["5.5","Abandoning a Vehicle (Impound)","$5,000","-","-"],["5.6","Unsafe Transporting of a Passenger","$10,000","-","-"],
-["6.1.1","Contempt of Court","$30,000","45","3"],["6.1.1","Contempt of Court by a State Employee","$40,000","60","4"],["6.2.1","Disruption of the Trial","$30,000","45","3"],["6.2.2","Disruption of the Trial by a State Employee","$40,000","60","4"],["6.3","Threats to Litigants","$40,000","60","4"],["6.4","Falsification of Evidence","$40,000","60","4"],["6.5","Perjury","$40,000","60","4"],
-["8.1.1","Selling of Prohibited Items (Less than 5)","$20,000","15","1"],["8.1.2","Distribution of Prohibited Items (5 - 10)","$20,000","30","2"],["8.1.3","Dealing in Prohibited Items (10 or more)","$30,000","45","3"],["8.2.1","False Advertising","$15,000","-","-"],["8.3.1","Tax Evasion","$30,000","",""],["8.3.2","Felony Tax Evasion","$40,000","60","4"],
-["9.2.1","Smuggling of Contraband","$30,000","45","3"],["9.2.2","Smuggling of Contraband by a State Employee","$40,000","60","4"],["9.3.1","Aiding an Escape","$50,000","75","5"],["9.3.2","Aiding an Escape by a State Employee","$30,000","45","3"],["9.4.1","Aiding a Mass Escape","$50,000","75","5"],["9.4.1","Aiding a Mass Escape by a State Employee","$50,000","75","5"],["9.5.1","Sexual Acts with Inmates by a Civilian","$20,000","30","2"],["9.5.2","Sexual Acts with Inmates by a State Employee","$20,000","30","2"]
+  ["2.1.1","Possession of Narcotics (< 4 Units)","$15,000","0","0"],
+  ["2.1.2","Possession of Narcotics (5-9 Units)","$20,000","30","2"],
+  ["2.1.3","Narcotics Intent to Distribute","$30,000","45","3"],
+  ["2.2.2","Murder or Attempted Murder","$40,000","60","4"],
+  ["2.5.1","Kidnapping / Attempted Kidnapping","$30,000","45","3"],
+  ["2.5.3","Kidnapping a LEO","$50,000","75","5"],
+  ["2.9.4","Grand Theft Auto","$40,000","60","4"],
+  ["2.10","Armed Robbery","$40,000","60","4"],
+  ["2.17.1","Unlicensed Firearms Carry","$10,000","0","0"],
+  ["2.17.3","Possession of Illegal Firearms","$20,000","30","2"],
+  ["2.24.2","Evading Arrest","$40,000","60","4"],
+  ["3.1.1","Terrorism","$40,000","60","4"],
+  ["3.6.2","Attempted Murder of Civil Servant/LEO","$50,000","75","5"]
 ];
-const misdemeanors = [
-["10.1.1","Public Obscenity","1"],["10.1.2","Public Nudity","1"],["10.1.3","Public Nuisance","2"],["10.1.4","Public Drunkenness","2"],["10.1.5","Public Intoxication (Drug Use)","3"],["10.1.6","Public Harassment","2"],["10.1.6","Public Harassment (Repeat Offence)","1"]
-];
+
 const traffic = [
-["2.1","Absence of Valid Licence Plate","$5,000","-","-"],["3.2.1","Driving the Opposite Lane","$10,000","-","-"],["3.2.2","Driving the Opposite Lane on Highway","$15,000","30","2"],["3.3","Stopping on Road for No Reason","$5,000","-","-"],["3.5.1","Driving on Deserted Sidewalks","$3,000","-","-"],["3.5.2","Chaotic Movement Between Lanes","$5,000","-","-"],["3.5.3","Failure to Keep Distance","$3,000","-","-"],["3.5.4","Hard Braking","$5,000","-","-"],["3.5.5","Creating Obstruction for Overtaking","$5,000","-","-"],["3.6","Driving Under Influence","$20,000","30","2"],["3.7.1","Participation in a Street Race","$10,000","-","-"],["3.7.2","Organization of a Street Race","$20,000","30","2"],["5.5","Abandoning a Vehicle","$5,000","-","-"],["5.6","Unsafe Transporting of a Passenger","$10,000","-","-"]
-];
-const parking = [
-["6.2.A","Parking On Red Curb","$5,000"],["6.2.B","Blocking a Lane of Traffic (More than ½)","$5,000"],["6.2.C","Blocking the Exit of Anywhere","$5,000"],["6.2.D","Parking At or In a Crosswalk","$5,000"],["6.2.E","Blocking more than ⅔ of the Sidewalk or Bike Path","$5,000"],["6.2.F","Parking On Any Dividing Strip (Double Yellow Lines or No Parking Stripes)","$5,000"],["6.2.G","Facing the Opposing Flow of Traffic","$5,000"],["6.2.H","Stoping On Bridges or In Tunnels","$5,000"],["6.2.I","Stoping On a Highway or Freeway (Emergency Stops are Allowed)","$5,000"],["6.2.J","Parking Closer than 20 Metres (66ft) to a Building on Fire","$5,000"],["6.2.K","Blocking Bus Stops","$5,000"],["6.2.L","Parking On Railroad Tracks or within the Skidding of a Train Wagon","$5,000"],["6.2.M","Parking In Parking Spaces Marked in Yellow","$5,000"],["6.2.N","Parking In Violation of Road Surface Markings","$5,000"],["6.2.P","Parking On Lawns, in Green Spaces, or other Places not Intended for Parking","$5,000"]
-];
-const specialParking = [
-["6.4","Unauthorised Vehicle Parking in Prison","$15,000"],["7.1","Illegal parking at Capitol","$5,000"],["7.2","Illegal parking at Casino","$5,000"],["7.3","Illegal parking at realstate agency","$5,000"],["7.4","Illegal parking at Pillbox Hospital","$5,000"],["7.5","Illegal parking at Legion Square bank","$5,000"],["7.6","Illegal parking at LSPD","$5,000"],["7.7","Illegal parking at Power plant","$5,000"],["7.8","Illegal parking at SAHP","$5,000"],["7.9","Illegal parking at Quarry 1","$5,000"],["7.9","Illegal parking at Quarry 2","$5,000"],["7.9","Illegal parking at Quarry 3,4","$5,000"],["7.9","Illegal parking at Quarry 5,6,7","$5,000"],["7.9","Illegal parking at Quarry 8","$5,000"],["7.10","Illegal parking at Sawmill","$5,000"],["7.11","Illegal parking at Farm 1","$5,000"],["7.12","Illegal parking at Farm 2","$5,000"]
+  ["2.1","Absence of Valid Licence Plate","$5,000","0","0"],
+  ["3.2.1","Driving the Opposite Lane","$10,000","0","0"],
+  ["3.2.2","Opposite Lane on Highway","$15,000","30","2"],
+  ["3.5.2","Chaotic Movement Between Lanes","$5,000","0","0"],
+  ["3.6","Driving Under Influence","$20,000","30","2"],
+  ["5.5","Abandoning a Vehicle","$5,000","0","0"]
 ];
 
-// Helper functions
+const eventsData = {
+  "Ghetto Patrol": ["Heavy Weapons allowed.", "Min 8-10 Units (4 cars).", "Must be in ghetto for 15+ mins.", "Halt 5 mins in Fake Parking."],
+  "Store Robbery": ["Don't shoot outside perimeter from inside.", "Don't shoot without demands.", "Heavy Weapons NOT allowed."],
+  "FZ Raid": ["Heavy Weapons NOT allowed.", "Accessing roof NOT allowed.", "Leave base after raid."],
+  "Submarine / Prison": ["Heavy Weapons NOT allowed.", "Standard protection protocols apply."]
+};
+
+// ---------- UI RENDERING ----------
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-
-window.copyToClipboard = function(text) {
+function copyToClipboard(text) {
   navigator.clipboard.writeText(text).then(() => {
     const t = document.getElementById('toast');
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
+    setTimeout(() => t.classList.remove('show'), 2000);
   });
-};
-
-function rulesPage(key){
- if(!rules[key]) return dashboard();
- const d=rules[key]; let out=`<h1 class="section-title">${esc(d.title)}</h1><p class="section-sub">${esc(d.sub)}</p>`;
- d.groups.forEach(g=>{out+=`<div class="card"><div class="card-head"><h2>${esc(g[0])}</h2><span class="badge">${g[1].length} rules</span></div><div class="card-body">`;
- g[1].forEach(x=>out+=`<details class="rule"><summary><span>${esc(x[0])}</span><span style="font-weight:500;flex:1">${esc(x[1])}</span>${x[2]?`<span class="badge">${esc(x[2])}</span>`:""}</summary>${x[2]?`<div class="desc"><b>Penalty:</b> ${esc(x[2])}</div>`:""}</details>`);
- out+=`</div></div>`}); return out;
 }
 
-function tableWithCopy(rows, cols, copyPrefix = ""){
- return `<div class="tablewrap"><table class="table"><thead><tr>${cols.map(c=>`<th>${c}</th>`).join("")}<th>Action</th></tr></thead><tbody>
- ${rows.map(r=>{
-   const rawCode = r[0]; // e.g. "P.C. 2.1.1"
-   const copyStr = `${copyPrefix}${r[0]} - ${r[1]}`;
-   return `<tr>${r.map((v,i)=>`<td class="${i===0?'code':i===2?'money':''}">${esc(v||'-')}</td>`).join("")}
-   <td><button class="copy-btn" onclick="copyToClipboard('${esc(copyStr)}')">Copy</button></td></tr>`;
- }).join("")}</tbody></table></div>`;
+function renderDashboard(){
+  return `<div class="hero">
+    <h1>Good Evening, Officer</h1>
+    <p>Unified wiki database and operational utility console for Grand RP.</p>
+  </div>
+  <div class="card"><div class="card-head"><h2>Quick Action Tools</h2></div><div class="card-body" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:16px;">
+    <div style="padding:20px; border:1px solid var(--line); border-radius:8px; cursor:pointer;" onclick="go('arrest')">
+      <h3 style="margin:0 0 8px; color:var(--accent);">Arrest Procedure (10-15)</h3><p style="margin:0; font-size:13px; color:var(--muted);">Step-by-step commands and scripts.</p>
+    </div>
+    <div style="padding:20px; border:1px solid var(--line); border-radius:8px; cursor:pointer;" onclick="go('penal')">
+      <h3 style="margin:0 0 8px; color:var(--accent);">Penal Code</h3><p style="margin:0; font-size:13px; color:var(--muted);">Search and copy charges instantly.</p>
+    </div>
+    <div style="padding:20px; border:1px solid var(--line); border-radius:8px; cursor:pointer;" onclick="go('traffic-stop')">
+      <h3 style="margin:0 0 8px; color:var(--accent);">Traffic Stop (10-51)</h3><p style="margin:0; font-size:13px; color:var(--muted);">Standard protocol for pull-overs.</p>
+    </div>
+  </div></div>`;
 }
 
-function dashboard(){
- return `<div class="hero"><h1>Grand RP Police Wiki</h1><p>Quick-access handbook for state rules, penal code, traffic code, traffic stops, arrests, events and roleplay terminology. Built for active RP situations.</p></div>
- <div class="grid"><div class="stat"><b>100+</b><span>Penal Code entries</span></div><div class="stat"><b>30+</b><span>Traffic Code entries</span></div><div class="stat"><b>7</b><span>Arrest phases</span></div><div class="stat"><b>9</b><span>Event guides</span></div></div>
- <div class="card"><div class="card-head"><h2>Quick Access</h2></div><div class="card-body"><div class="eventgrid">
- ${[['Penal Code','Complete PC table by article','penal'],['Traffic Code','Traffic + parking violations','traffic'],['10-15 Arrest','Step-by-step DOC process','arrest'],['10-51 Traffic Stop','Radar to contact phase','traffic-stop'],['State Rules','State organization rules','state'],['Ghetto Rules','Ghetto and capture rules','ghetto']].map(x=>`<div class="eventcard" style="cursor:pointer" onclick="go('${x[2]}')"><h3>${x[0]}</h3><p style="font-size:12px;color:var(--muted);margin:0">${x[1]}</p></div>`).join("")}
- </div></div></div>`;
+function renderTable(title, sub, cols, data, prefix="") {
+  let html = `<div class="hero"><h1>${title}</h1><p>${sub}</p></div><div class="card"><div class="card-body tablewrap"><table class="table"><thead><tr>`;
+  cols.forEach(c => html += `<th>${c}</th>`);
+  html += `<th>Action</th></tr></thead><tbody>`;
+  data.forEach(r => {
+    let copyStr = `${prefix}${r[0]} - ${r[1]}`;
+    html += `<tr>`;
+    r.forEach((v, i) => html += `<td ${i===0?'style="color:var(--accent); font-weight:700;"':''}>${v}</td>`);
+    html += `<td><button class="copy-btn" onclick="copyToClipboard('${esc(copyStr)}')">COPY</button></td></tr>`;
+  });
+  html += `</tbody></table></div></div>`;
+  return html;
 }
 
-function penalPage(){
- let articles={};
- penal.forEach(r=>{let a=r[0].split('.')[0]; if(!articles[a])articles[a]=[];articles[a].push(r)});
- const names={2:'Crimes Against Society',3:'Crimes Against the State',4:'Malfeasance',5:'Traffic Statute Crimes',6:'Judicial Crimes',8:'Commercial and Taxation Crimes',9:'Correctional Crimes'};
- let out=`<h1 class="section-title">Penal Code</h1><p class="section-sub">Quickly copy charges for your PDA or arrest reports.</p>
- <div class="notice"><b>Legend:</b> Yellow = No Bailout • Blue = Sentence Varies • Red = Driver's License Revoc. • Green = Gun License Revoc. • Pink = All License Revoc. • Black = Blacklist • Gray = Dismissal.</div>`;
- Object.keys(articles).forEach(a=>{out+=`<div class="card"><div class="card-head"><h2>ARTICLE ${a}: ${names[a]||''}</h2><span class="badge">${articles[a].length} entries</span></div><div class="card-body">${tableWithCopy(articles[a].map(r=>[`${r[0]}`,r[1],r[2],r[3]||'-',r[4]||'-']),['Code','Crime','Fine','Time','Stars'], "P.C. ")}</div></div>`});
- out+=`<div class="card"><div class="card-head"><h2>Article 10 — Violations of Public Order</h2></div><div class="card-body"><div class="notice">A misdemeanour does not ordinarily carry imprisonment unless multiple misdemeanours are committed.</div>${tableWithCopy(misdemeanors.map(r=>[`${r[0]}`,r[1],r[2]]),['Code','Crime','Points'], "P.C. ")}</div></div>`;
- return out;
+function renderRules(key) {
+  if(!rules[key]) return renderDashboard();
+  let html = `<div class="hero"><h1>${rules[key].title}</h1><p>${rules[key].sub}</p></div>`;
+  rules[key].groups.forEach(g => {
+    html += `<div class="card"><div class="card-head"><h2>${g[0]}</h2><span class="badge">${g[1].length} Rules</span></div><div class="card-body">`;
+    g[1].forEach(r => {
+      html += `<details class="rule"><summary><span style="color:var(--accent); width:50px;">${r[0]}</span> <span style="flex:1;">${r[1]}</span></summary>`;
+      if(r[2]) html += `<div class="desc"><strong>Punishment:</strong> ${r[2]}</div>`;
+      html += `</details>`;
+    });
+    html += `</div></div>`;
+  });
+  return html;
 }
 
-function trafficPage(){
- return `<h1 class="section-title">Traffic Code</h1><p class="section-sub">Traffic statutes and parking violations.</p>
- <div class="card"><div class="card-head"><h2>Traffic Statute Crimes</h2></div><div class="card-body">${tableWithCopy(traffic.map(r=>[`${r[0]}`,r[1],r[2],r[3],r[4]]),['Code','Description','Fine','Time','Stars'], "T.C. ")}</div></div>
- <div class="card"><div class="card-head"><h2>Parking Violations</h2></div><div class="card-body">${tableWithCopy(parking.map(r=>[`${r[0]}`,r[1],r[2]]),['Code','Description','Fine'], "T.C. ")}</div></div>
- <div class="card"><div class="card-head"><h2>Special / Location Parking</h2></div><div class="card-body">${tableWithCopy(specialParking.map(r=>[`${r[0]}`,r[1],r[2]]),['Code','Description','Fine'], "T.C. ")}</div></div>`;
+function renderSteps(title, sub, data) {
+  let html = `<div class="hero"><h1>${title}</h1><p>${sub}</p></div><div class="card"><div class="card-body">`;
+  data.forEach((s, i) => {
+    let copyStr = s[2] ? s[2] : s[1];
+    html += `<div class="step">
+      <h3>${s[0]} <button class="copy-btn" onclick="copyToClipboard('${esc(copyStr)}')">COPY SCRIPT</button></h3>
+      <p>${s[1]}</p>
+      ${s[2] ? `<div class="quote">${s[2]}</div>` : ''}
+    </div>`;
+  });
+  html += `</div></div>`;
+  return html;
 }
 
-function procedurePage(){
- let out=`<h1 class="section-title">10-15 Arrest Procedure</h1><p class="section-sub">Standard operating procedure for detaining, transporting, and processing suspects. Copy RP lines instantly during high-stress situations.</p>
- <div class="notice warn"><b>Important:</b> Your 25-minute timer begins the moment the suspect is placed in cuffs! Always holster your weapon before doing any actions.</div>
- <div class="card procedure"><div class="card-body">`;
- procedure.forEach((s,i)=>{
-   const rpText = s[2] ? s[2] : s[1];
-   out+=`<div class="step"><div class="stepno">${i+1}</div>
-   <h3>${esc(s[0])} <button class="copy-btn" onclick="copyToClipboard('${esc(rpText)}')">Copy RP Line</button></h3>
-   <p>${esc(s[1])}</p>${s[2]?`<div class="quote"><span>💬</span> ${esc(s[2])}</div>`:""}</div>`});
- out+=`</div></div>`; return out;
+function renderEvents() {
+  let html = `<div class="hero"><h1>Event Rules</h1><p>Protocols for major server events.</p></div><div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">`;
+  Object.entries(eventsData).forEach(([k,v]) => {
+    html += `<div class="card"><div class="card-head"><h2>${k}</h2></div><div class="card-body"><ul style="margin:0; padding-left:20px; color:var(--muted); font-size:14px; line-height:1.6;">`;
+    v.forEach(li => html += `<li>${li}</li>`);
+    html += `</ul></div></div>`;
+  });
+  html += `</div>`;
+  return html;
 }
 
-function trafficStopPage(){
- let out=`<h1 class="section-title">10-51 Traffic Stop Procedure</h1><p class="section-sub">Standard operating procedure for conducting traffic stops and issuing citations.</p><div class="card procedure"><div class="card-body">`;
- trafficStop.forEach(s=>{
-   const rpText = s[3] ? s[3] : s[2];
-   out+=`<div class="step"><div class="stepno">${s[0].replace('Step ','')}</div>
-   <h3>${esc(s[1])} ${s[3] ? `<button class="copy-btn" onclick="copyToClipboard('${esc(rpText)}')">Copy RP Line</button>` : ''}</h3>
-   <p>${esc(s[2])}</p>${s[3]?`<div class="quote"><span>💬</span> ${esc(s[3])}</div>`:""}</div>`});
- out+=`</div></div>`; return out;
+function go(page) {
+  const c = document.getElementById('content');
+  if(page === 'dashboard') c.innerHTML = renderDashboard();
+  else if(page === 'penal') c.innerHTML = renderTable("Penal Code Tool", "Search and copy PC charges.", ["Code","Crime","Fine","Time","Stars"], penal, "P.C. ");
+  else if(page === 'traffic') c.innerHTML = renderTable("Traffic & Parking", "Vehicle code violations.", ["Code","Crime","Fine","Time","Stars"], traffic, "T.C. ");
+  else if(page === 'arrest') c.innerHTML = renderSteps("10-15 Arrest Procedure", "Step-by-step detention guide.", procedure);
+  else if(page === 'traffic-stop') c.innerHTML = renderSteps("10-51 Traffic Stop", "Standard vehicle pullover protocol.", trafficStop);
+  else if(page === 'events') c.innerHTML = renderEvents();
+  else c.innerHTML = renderRules(page);
+  
+  window.scrollTo(0,0);
+  document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+  document.getElementById('sidebar').classList.remove('open');
 }
 
-function eventsPage(){
- return `<h1 class="section-title">Event Rules</h1><p class="section-sub">Guidelines and protocols for major server events.</p><div class="eventgrid">${Object.entries(events).map(([k,v])=>`<div class="eventcard"><h3>${esc(k)}</h3><ol>${v.map(x=>`<li>${esc(x)}</li>`).join("")}</ol></div>`).join("")}</div>`;
-}
-
-function mapPage(){
- return `<h1 class="section-title">Territory Map</h1><p class="section-sub">Territory image supplied with the wiki materials.</p><div class="card"><div class="card-body"><img class="map" src="assets/territory-map.png" alt="Territory map"></div></div>`;
-}
-
-function termsPage(){
- return `<h1 class="section-title">Roleplay Terms</h1><p class="section-sub">Common RP terminology.</p><div class="card"><div class="card-body">${terms.map(t=>`<details class="rule" open><summary><span class="code">${esc(t[0])}</span><span style="font-weight:500;flex:1">${esc(t[1])}</span></summary></details>`).join("")}</div></div>`;
-}
-
-function render(page){
- const c=document.getElementById('content');
- let h=page==='dashboard'?dashboard():page==='penal'?penalPage():page==='traffic'?trafficPage():page==='arrest'?procedurePage():page==='traffic-stop'?trafficStopPage():page==='events'?eventsPage():page==='map'?mapPage():page==='terms'?termsPage():rulesPage(page);
- c.innerHTML=h; window.scrollTo({top:0,behavior:'smooth'});
- document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
- document.getElementById('sidebar').classList.remove('open');
- localStorage.setItem('lastWikiPage', page); // Save last visited page
-}
-function go(page){render(page)}
-
-// Init Sidebar
-document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
-document.getElementById('mobileMenu').addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('open'));
-
-// Dark Mode logic with LocalStorage
-const themeBtn = document.getElementById('themeBtn');
-const initTheme = () => {
-  const isDark = localStorage.getItem('wikiDark') === '1';
-  document.documentElement.dataset.dark = isDark ? '1' : '0';
-  themeBtn.innerHTML = isDark ? '☀' : '☾';
-}
-themeBtn.addEventListener('click',()=>{
- const dark = document.documentElement.dataset.dark === '1';
- document.documentElement.dataset.dark = dark ? '0' : '1';
- localStorage.setItem('wikiDark', dark ? '0' : '1');
- themeBtn.innerHTML = dark ? '☾' : '☀';
+// Nav Listeners
+document.querySelectorAll('.nav button').forEach(b => b.addEventListener('click', () => go(b.dataset.page)));
+document.getElementById('mobileMenu').addEventListener('click', () => document.getElementById('sidebar').classList.add('open'));
+document.addEventListener('click', (e) => {
+  const sb = document.getElementById('sidebar');
+  if(sb.classList.contains('open') && !sb.contains(e.target) && e.target.id !== 'mobileMenu') sb.classList.remove('open');
 });
-initTheme();
 
-// Search Logic
-const modal=document.getElementById('modal'), modalSearch=document.getElementById('modalSearch'), results=document.getElementById('results');
+// Search Modal Logic (CTRL+K)
+const modal = document.getElementById('modal');
+const modalInput = document.getElementById('modalSearch');
+document.getElementById('searchInput').addEventListener('click', () => { modal.style.display = 'flex'; modalInput.focus(); });
+document.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey) && e.key === 'k') { e.preventDefault(); modal.style.display = 'flex'; modalInput.focus(); } else if (e.key === 'Escape') modal.style.display = 'none'; });
+modal.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
 
-const searchIndex=[];
-Object.entries(rules).forEach(([k,v])=>v.groups.forEach(g=>g[1].forEach(x=>searchIndex.push({page:k,title:`${v.title} — ${g[0]} — ${x[0]}`,text:x[1]}))));
-penal.forEach(x=>searchIndex.push({page:'penal',title:`P.C. ${x[0]} — ${x[1]}`,text:`${x[2]} ${x[3]} ${x[4]}`}));
-traffic.forEach(x=>searchIndex.push({page:'traffic',title:`T.C. ${x[0]} — ${x[1]}`,text:`${x[2]} ${x[3]} ${x[4]}`}));
-parking.forEach(x=>searchIndex.push({page:'traffic',title:`T.C. ${x[0]} — ${x[1]}`,text:`${x[2]}`}));
-specialParking.forEach(x=>searchIndex.push({page:'traffic',title:`T.C. ${x[0]} — ${x[1]}`,text:`${x[2]}`}));
-Object.keys(events).forEach(k=>searchIndex.push({page:'events',title:k,text:events[k].join(' ')}));
-procedure.forEach((x,i)=>searchIndex.push({page:'arrest',title:`10-15 ${x[0]}`,text:x[1]+' '+x[2]}));
-trafficStop.forEach((x,i)=>searchIndex.push({page:'traffic-stop',title:`10-51 ${x[0]} — ${x[1]}`,text:x[2]+' '+x[3]}));
-
-function doSearch(q){
- q=q.trim().toLowerCase();
- if(!q){results.innerHTML='<div class="empty">Type to search the wiki.</div>';return}
- const hits=searchIndex.filter(x=>(x.title+' '+x.text).toLowerCase().includes(q)).slice(0,60);
- results.innerHTML=hits.length?hits.map(x=>`<div class="result" data-page="${x.page}"><b>${esc(x.title)}</b><span>${esc(x.text.slice(0,150))}${x.text.length>150?'…':''}</span></div>`).join(""):'<div class="empty">No results found.</div>';
- results.querySelectorAll('.result').forEach(el=>el.onclick=()=>{modal.classList.remove('show');go(el.dataset.page)});
-}
-
-document.getElementById('searchInput').addEventListener('focus',()=>{modal.classList.add('show');modalSearch.focus();});
-document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();modal.classList.add('show');modalSearch.focus()}if(e.key==='Escape')modal.classList.remove('show')});
-modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show')});
-modalSearch.addEventListener('input',e=>doSearch(e.target.value));
-document.getElementById('searchInput').addEventListener('input',e=>{if(e.target.value){modal.classList.add('show');modalSearch.value=e.target.value;doSearch(e.target.value)}});
-
-// Load last page or default to dashboard
-const lastPage = localStorage.getItem('lastWikiPage') || 'dashboard';
-render(lastPage);
+// Initial Render
+go('dashboard');
 </script>
 </body>
 </html>
