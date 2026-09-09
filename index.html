@@ -5,36 +5,28 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Grand RP Police Wiki — Unified wiki database and operational utility console.">
 <title>Grand RP Police Wiki</title>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* Default Dark Mode (Rangrove Style) */
-  --bg: #09090b; 
-  --panel: #18181b; 
-  --panel2: #27272a; 
-  --text: #f4f4f5; 
-  --muted: #a1a1aa;
-  --line: #27272a; 
-  --sidebar: #09090b; 
-  --hover-bg: #27272a;
-  --accent: #3b82f6; 
-  --accent-hover: #2563eb;
-  --radius: 12px;
-  --shadow: 0 4px 20px rgba(0,0,0,0.5);
+  --bg: #09090b; --panel: #18181b; --panel2: #27272a; --text: #f4f4f5; --muted: #a1a1aa;
+  --line: #27272a; --sidebar: #09090b; --hover-bg: #27272a;
+  --accent: #3b82f6; --accent-hover: #2563eb;
+  --danger: #ef4444; --warning: #eab308;
+  --radius: 12px; --shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; font-family: Inter, system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+body { margin: 0; font-family: Inter, system-ui, sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; padding-bottom: 80px; }
 button, input { font: inherit; }
 
 .app { display: flex; min-height: 100vh; }
 
-/* Sidebar */
-.sidebar { position: fixed; inset: 0 auto 0 0; width: 280px; background: var(--sidebar); border-right: 1px solid var(--line); padding: 24px 16px; overflow-y: auto; z-index: 20; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.sidebar { position: fixed; inset: 0 auto 0 0; width: 280px; background: var(--sidebar); border-right: 1px solid var(--line); padding: 24px 16px; overflow-y: auto; z-index: 20; transition: transform 0.3s; }
 .brand { display: flex; align-items: center; gap: 12px; padding: 0 8px 30px; }
-.logo { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); display: grid; place-items: center; font-weight: 800; color: #fff; box-shadow: 0 4px 15px rgba(59,130,246,0.3); }
+.logo { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); display: grid; place-items: center; font-weight: 800; color: #fff; }
 .brand strong { font-size: 16px; letter-spacing: -0.02em; }
 .brand small { display: block; color: var(--muted); margin-top: 2px; font-size: 12px; }
 
@@ -44,32 +36,26 @@ button, input { font: inherit; }
 .nav button.active { background: rgba(59,130,246,0.1); color: var(--accent); font-weight: 600; }
 .nav .ico { width: 20px; text-align: center; font-size: 16px; }
 
-/* Main Area & Topbar */
-.main { margin-left: 280px; width: calc(100% - 280px); display: flex; flex-direction: column; }
+.main { margin-left: 280px; width: calc(100% - 280px); display: flex; flex-direction: column; min-height: 100vh; }
 .topbar { height: 70px; background: rgba(9,9,11,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; position: sticky; top: 0; z-index: 10; }
 
 .search { position: relative; width: 300px; }
-.search input { width: 100%; padding: 10px 40px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--text); outline: none; font-size: 14px; transition: border 0.2s; }
+.search input { width: 100%; padding: 10px 40px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--text); outline: none; font-size: 14px; }
 .search input:focus { border-color: var(--accent); }
 .search span.icon { position: absolute; left: 14px; top: 10px; color: var(--muted); }
-.kbd { position: absolute; right: 10px; top: 8px; border: 1px solid var(--line); border-radius: 4px; padding: 2px 6px; color: var(--muted); font-size: 10px; background: var(--bg); }
 
-/* IC / OOC Clocks */
-.top-actions { display: flex; align-items: center; gap: 20px; }
 .clocks { display: flex; gap: 16px; }
 .clock { display: flex; flex-direction: column; align-items: flex-end; }
 .clock-label { font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; }
 .clock-time { font-size: 15px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
 
-/* Content Grid */
 .content { max-width: 1200px; margin: 0 auto; padding: 40px 32px; width: 100%; flex: 1; animation: fadeIn 0.4s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 .hero { margin-bottom: 30px; }
-.hero h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.02em; }
-.hero p { margin: 0; color: var(--muted); font-size: 15px; }
+.hero h1 { font-size: 28px; margin: 0 0 6px; }
+.hero p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
 
-/* Cards & Tables */
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 24px; box-shadow: var(--shadow); overflow: hidden; }
 .card-head { padding: 16px 24px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
 .card-head h2 { margin: 0; font-size: 16px; font-weight: 600; }
@@ -78,29 +64,43 @@ button, input { font: inherit; }
 .tablewrap { overflow-x: auto; }
 .table { width: 100%; border-collapse: collapse; text-align: left; }
 .table th { padding: 12px 16px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-.table td { padding: 14px 16px; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--text); vertical-align: middle; }
-.table tr:last-child td { border-bottom: none; }
+.table td { padding: 14px 16px; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--text); vertical-align: middle; cursor: pointer; }
+.table tr { transition: background 0.15s; }
 .table tr:hover { background: var(--hover-bg); }
+.table tr.selected { background: rgba(59,130,246,0.15); border-left: 3px solid var(--accent); }
 
-.copy-btn { padding: 6px 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s; font-weight: 600; text-transform: uppercase; display: inline-flex; justify-content: center; align-items: center; }
+.copy-btn { padding: 6px 12px; border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: 600; text-transform: uppercase; }
 .copy-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-.rule { border: 1px solid var(--line); border-radius: 8px; margin-bottom: 12px; background: var(--bg); }
-.rule summary { padding: 14px 16px; cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; list-style: none; }
-.rule summary::-webkit-details-marker { display: none; }
-.rule .desc { padding: 0 16px 16px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+/* Ticketing Tool Specific */
+.ticketing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.dropzone { border: 2px dashed var(--line); border-radius: 12px; padding: 40px 20px; text-align: center; color: var(--muted); transition: all 0.2s; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 300px; cursor: pointer; }
+.dropzone.dragover { border-color: var(--accent); background: rgba(59,130,246,0.05); }
+.btn-outline { padding: 8px 16px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--text); cursor: pointer; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 8px; justify-content: center; width: 100%; }
+.btn-outline:hover { background: var(--hover-bg); }
+.extracted-panel { border: 1px solid var(--line); border-radius: 12px; background: var(--bg); padding: 20px; min-height: 300px; display: flex; flex-direction: column; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; width: 100%; }
+.form-group label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; }
+.form-group input { padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--text); outline: none; }
 
-.badge { font-size: 11px; padding: 4px 8px; border-radius: 4px; background: rgba(59,130,246,0.15); color: var(--accent); font-weight: 700; white-space: nowrap; }
+/* Sticky Calculator Bar */
+.calc-bar { position: fixed; bottom: 0; left: 280px; right: 0; background: var(--panel); border-top: 1px solid var(--line); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -4px 20px rgba(0,0,0,0.5); z-index: 50; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.calc-bar.active { transform: translateY(0); }
+.calc-stats { display: flex; gap: 24px; }
+.calc-stat { display: flex; flex-direction: column; }
+.calc-stat span:first-child { font-size: 10px; color: var(--muted); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+.calc-stat span:last-child { font-size: 18px; color: var(--accent); font-weight: 800; font-variant-numeric: tabular-nums; }
+.calc-stat.danger span:last-child { color: var(--danger); }
+.calc-stat.warning span:last-child { color: var(--warning); }
 
 .step { border-left: 2px solid var(--accent); padding-left: 20px; margin-bottom: 24px; position: relative; }
 .step::before { content: ''; position: absolute; left: -6px; top: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--panel); }
 .step h3 { margin: 0 0 8px; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
 .step p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
-.quote { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 13px; font-family: monospace; color: var(--accent); display: flex; justify-content: space-between; align-items: center; }
+.quote { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 13px; font-family: monospace; color: var(--accent); }
 
-.toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 100; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
+.toast { position: fixed; bottom: 90px; right: 24px; background: #fff; color: #000; padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 100; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
 .toast.show { transform: translateY(0); opacity: 1; }
-
 .mobilebtn { display: none; background: transparent; border: 1px solid var(--line); color: var(--text); width: 40px; height: 40px; border-radius: 8px; font-size: 20px; cursor: pointer; }
 
 @media(max-width: 900px) {
@@ -108,8 +108,9 @@ button, input { font: inherit; }
   .sidebar.open { transform: translateX(0); box-shadow: 20px 0 50px rgba(0,0,0,0.8); }
   .main { margin-left: 0; width: 100%; }
   .mobilebtn { display: block; }
-  .top-actions { gap: 10px; }
-  .search { display: none; } /* Hide search on mobile header to save space */
+  .calc-bar { left: 0; flex-direction: column; gap: 16px; padding: 16px; }
+  .calc-stats { width: 100%; justify-content: space-between; }
+  .ticketing-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -123,18 +124,10 @@ button, input { font: inherit; }
   <div class="nav" id="nav">
     <div class="nav-title">Menu</div>
     <button data-page="dashboard" class="active"><span class="ico">⌂</span>Home</button>
+    <button data-page="ticketing"><span class="ico">🎫</span>Vehicle Ticketing Tool</button>
     <button data-page="arrest"><span class="ico">⚖️</span>Arrest Procedure Tool</button>
-    <button data-page="traffic-stop"><span class="ico">🚔</span>Traffic Stops (10-51)</button>
-    <button data-page="penal"><span class="ico">📖</span>Penal Code Tool</button>
-    <button data-page="traffic"><span class="ico">🚗</span>Traffic & Parking</button>
-    
-    <div class="nav-title">Reference</div>
-    <button data-page="general"><span class="ico">📜</span>Server Rules</button>
-    <button data-page="state"><span class="ico">🏢</span>State Rules</button>
-    <button data-page="ghetto"><span class="ico">💀</span>Ghetto & Captures</button>
-    <button data-page="green"><span class="ico">🛡️</span>Green Zones</button>
-    <button data-page="events"><span class="ico">🎯</span>Events Guide</button>
-    <button data-page="terms"><span class="ico">💬</span>RP Terminology</button>
+    <button data-page="penal"><span class="ico">📖</span>Penal Code Calculator</button>
+    <button data-page="traffic"><span class="ico">🚗</span>Traffic Code Calculator</button>
   </div>
 </aside>
 <main class="main">
@@ -144,148 +137,219 @@ button, input { font: inherit; }
     <div class="search">
       <span class="icon">⌕</span>
       <input id="searchInput" placeholder="Search guides, rules, codes..." autocomplete="off">
-      <span class="kbd">Ctrl K</span>
     </div>
   </div>
-  <div class="top-actions">
-    <div class="clocks">
-      <div class="clock">
-        <span class="clock-label">IC TIME</span>
-        <span class="clock-time" id="ic-time">00:00:00</span>
-      </div>
-      <div class="clock">
-        <span class="clock-label">OOC TIME</span>
-        <span class="clock-time" id="ooc-time">00:00:00</span>
-      </div>
-    </div>
+  <div class="clocks">
+    <div class="clock"><span class="clock-label">IC TIME</span><span class="clock-time" id="ic-time">00:00:00</span></div>
+    <div class="clock"><span class="clock-label">OOC TIME</span><span class="clock-time" id="ooc-time">00:00:00</span></div>
   </div>
 </header>
 <div class="content" id="content"></div>
 </main>
 </div>
-<div class="modal" id="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:100; padding:10vh 20px; align-items:flex-start; justify-content:center;">
-  <div style="background:var(--panel); width:100%; max-width:600px; border-radius:12px; border:1px solid var(--line); overflow:hidden;">
-    <input id="modalSearch" placeholder="Type to search..." style="width:100%; padding:20px; border:none; border-bottom:1px solid var(--line); background:var(--bg); color:var(--text); font-size:16px; outline:none;">
-    <div id="results" style="max-height:60vh; overflow-y:auto; padding:10px;"></div>
+
+<!-- Calculator Sticky Bar -->
+<div class="calc-bar" id="calcBar">
+  <div class="calc-stats">
+    <div class="calc-stat"><span>Total Fine</span><span id="calc-fine">$0</span></div>
+    <div class="calc-stat danger"><span>Jail Time</span><span id="calc-time">0 Months</span></div>
+    <div class="calc-stat warning"><span>Wanted Stars</span><span id="calc-stars">0</span></div>
+  </div>
+  <div style="display:flex; gap:10px; width: 100%; max-width: 400px;">
+    <input type="text" id="suspectName" placeholder="Suspect ID / Name" style="padding:10px; border-radius:6px; border:1px solid var(--line); background:var(--panel2); color:var(--text); outline:none; flex:1;">
+    <button class="copy-btn" style="background:var(--accent); color:#fff; border:none;" onclick="generateArrestReport()">Copy Report</button>
+    <button class="copy-btn" onclick="clearCalculator()">Clear</button>
   </div>
 </div>
+
 <div id="toast" class="toast">Copied to clipboard!</div>
 
 <script>
-// ---------- CLOCK LOGIC (IC & OOC) ----------
+// --- CLOCKS ---
 function updateClocks() {
   const now = new Date();
-  // OOC TIME = Local Time
   document.getElementById('ooc-time').textContent = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  // IC TIME = Server Time (Usually UTC)
   document.getElementById('ic-time').textContent = now.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
-setInterval(updateClocks, 1000);
-updateClocks();
+setInterval(updateClocks, 1000); updateClocks();
 
-// ---------- DATA OBJECTS ----------
-const rules = {
-  general: {
-    title: "Server Rules", sub: "Official Grand RP server rules and regulations.",
-    groups: [
-      ["Account Rules", [
-        ["1.1", "Created account is property of the creator, your account cannot be shared or traded.", "PERMANENT BAN"],
-        ["1.4", "It is forbidden to have more than 1 additional account (Twinking).", "Permanent ban to all except main (60 days)"],
-        ["1.6", "The attempt to sell/buy game property for real money is prohibited.", "PERMANENT BAN"],
-        ["1.7", "Forbidden to transfer property as a gift exceeding $5,000,000 per day.", "Ban 60 days"],
-        ["1.8", "Prohibited to interact between your main account and twink.", "PERMANENT BAN"]
-      ]],
-      ["Rules of Play", [
-        ["6.2", "Forbidden to leave RP situation (refusing first aid, leaving game, AFK, interior).", "WARN"],
-        ["6.6", "Forbidden to heal and loot in the gunfight.", "Jail 60 min"],
-        ["6.13", "Restricted to kill person who is unconscious to help him avoid RP (Mercy killing).", "Demorgan 120 min / WARN"],
-        ["6.15", "Outside GHETTO you must engage in RP before shooting (e.g. demands within 5 secs).", "WARN"]
-      ]]
-    ]
-  },
-  state: {
-    title: "State Rules", sub: "Regulations for State Organizations (LSPD, SAHP, FIB, NG, GOV).",
-    groups: [
-      ["General State", [
-        ["1.14", "You have 25 minutes to put a person in jail starting from cuffing moment.", "Demorgan 120 min"],
-        ["1.15", "Looting in a gun fight is forbidden for state employees.", "Demorgan 120 min"]
-      ]],
-      ["LSPD / SAHP / FIB", [
-        ["5.2", "Cannot stop a person, search him or ask for passport without an IC reason.", "WARN"],
-        ["5.4", "Cannot arrest a person while gunfight is not finished.", "Verbal Warning"],
-        ["5.6", "Require to have a bodycam for each arrest.", "Verbal Warning"],
-        ["5.8", "Forbidden to remove masks from critically wounded criminals.", "Demorgan 300 min"]
-      ]]
-    ]
-  },
-  ghetto: {
-    title: "Ghetto & Captures", sub: "Gang and territory rules.",
-    groups: [
-      ["Ghetto Rules", [
-        ["1.2", "On HQ of a gang, you are required to do all requirements of the gang.", "WARN"],
-        ["1.8", "Allowed to rob/kidnap people only in ghetto or outside the city.", "WARN"],
-        ["1.12", "If a person complies with given demands it's not allowed to kill them.", "Jail 120 min"]
-      ]],
-      ["Capture Rules", [
-        ["2.1", "Capture is an OOC situation. State employees cannot interrupt.", "WARN"],
-        ["2.18", "Forbidden to heal and loot in the gunfight.", "WARN"],
-        ["2.29", "Forbidden to go into the interior during capture.", "Demorgan 120 min"]
-      ]]
-    ]
+// --- DATA FROM PROVIDED PDFS ---
+const procedureData = [
+  ["Step 1", "Try to go behind the suspect and cuff him by flexing Z muscle on him.", "Sir, I'm cuffing you now"],
+  ["Step 2", "Drag the suspect to your vehicle by flexing X muscle on him.", "Sir, I will drag you by arm"],
+  ["Step 3", "Drag the suspect close to the vehicle and flex your C muscle.", "Sir I'm putting you in the car, please watch your head."],
+  ["Step 4", "Sit in your car and go to DOC. Give the radio call to dispatch.", "(Badge no) to dispatch, show me going 17 to DOC with one 10-15 + additional and + convoy"],
+  ["Step 5", "Read the Miranda rights. If no response, read 3 times then state silence as yes.", "You have the right to remain silent. Anything you say can and will be held against you in a court of law..."],
+  ["Step 6", "After reaching DOC, get out of the vehicle and put the suspect out.", "Sir, I'm putting you out of the vehicle, please watch your head."],
+  ["Step 7", "Drag the suspect into the DOC reception.", "Sir, I am dragging you by the arm."],
+  ["Step 8", "Release the suspect's arm (X muscle) and ask jumpsuit size. If no response, RP grab.", "Sir, I am gonna release your arm. Sir, what's your jumpsuit size? (Or: /me grab a free size jumpsuit)"],
+  ["Step 9", "Drag the suspect to a prison cell.", "Sir, I am dragging you by the arm"],
+  ["Step 10", "Flex T muscle and RP taking comms. Call additional officer if unsuccessful.", "/try takes out cell phone and radio"],
+  ["Step 11", "Flex G muscle on suspect and search. Take screenshot before confiscating.", "Sir I'm searching you for any illegal items."],
+  ["Step 12", "Uncuff, demand mask removal and passport. Recuff and process based on compliance.", "Sir, I am uncuffing you. You have five seconds to remove your mask and show me your passport."],
+  ["Step 13", "Open PDA, add suspect to Wanted List, and issue fines according to crimes.", ""],
+  ["Step 14", "Arrest suspect (G muscle). Take screenshot in jumpsuit.", "I will be arresting you now"],
+  ["Step 15", "Get out of DOC and radio dispatch clear.", "(Badge No) to dispatch show my last 10-15 is now 10-99. Show me going 10-19 with + additionals and + convoys."]
+];
+
+const penalData = [
+  ["P.C. 2.1.1", "Possession of Narcotics - Less than 4 or less Units", 15000, 0, 0],
+  ["P.C. 2.1.1", "Repeat Offense", 10000, 15, 1],
+  ["P.C. 2.1.2", "Possession of Narcotics - 5 to 9 Units", 20000, 30, 2],
+  ["P.C. 2.1.3", "Possession of Narcotics with Intent to Distribute", 30000, 45, 3],
+  ["P.C. 2.1.6", "Possession of Prohibited Items (Less than 3)", 20000, 30, 2],
+  ["P.C. 2.1.7", "Possession of Prohibited Items with Intent to Distribute (More than 3)", 30000, 45, 3],
+  ["P.C. 2.2.1", "Culpable Homicide / Manslaughter", 20000, 30, 2],
+  ["P.C. 2.2.2", "Murder or Attempted Murder", 40000, 60, 4],
+  ["P.C. 2.2.3", "Murder or Attempted Murder - Premediated", 50000, 75, 5],
+  ["P.C. 2.3.1", "Assault by Threat", 20000, 30, 2],
+  ["P.C. 2.4.1", "Abandonment", 10000, 15, 1],
+  ["P.C. 2.4.2", "Failure to Act / Abandonment by Civil Servant", 20000, 30, 2],
+  ["P.C. 2.5.1", "Kidnapping or Attempted Kidnapping", 30000, 45, 3],
+  ["P.C. 2.5.2", "Kidnapping or Attempted Kidnapping - Civil Servant", 40000, 60, 4],
+  ["P.C. 2.5.3", "Kidnapping or Attempted Kidnapping - LEO", 50000, 75, 5],
+  ["P.C. 2.6.1", "Taking a Hostage", 50000, 75, 5],
+  ["P.C. 2.7.1", "Sexual Harassment", 30000, 45, 3],
+  ["P.C. 2.7.2", "Sexual Assault", 40000, 60, 4],
+  ["P.C. 2.7.3", "Rape", 50000, 75, 5],
+  ["P.C. 2.8.1", "Forgery of Documents", 20000, 30, 2],
+  ["P.C. 2.8.2", "Dealing in Forged Documents", 30000, 45, 3],
+  ["P.C. 2.9.1", "Petty Larceny or Theft", 10000, 15, 1],
+  ["P.C. 2.9.1", "Repeat Offence", 20000, 30, 2],
+  ["P.C. 2.9.4", "Grand Theft Auto", 40000, 60, 4],
+  ["P.C. 2.10", "Armed Robbery", 40000, 60, 4],
+  ["P.C. 2.11", "Heist", 40000, 60, 4],
+  ["P.C. 2.12", "Extortion", 40000, 60, 4],
+  ["P.C. 2.13", "Fraud", 20000, 30, 2],
+  ["P.C. 2.14", "Creation of Criminal Community", 40000, 60, 4],
+  ["P.C. 2.15.1", "Participation in Banditry", 40000, 60, 4],
+  ["P.C. 2.15.2", "Banditry as a Leader", 50000, 75, 5],
+  ["P.C. 2.16.1", "Assault", 10000, 0, 0],
+  ["P.C. 2.16.2", "Assault with Intent to Harm", 10000, 15, 1],
+  ["P.C. 2.16.3", "Assault GBH", 20000, 30, 2],
+  ["P.C. 2.17.1", "Unlicensed Firearms Carry", 10000, 0, 0],
+  ["P.C. 2.17.2", "Excessive Firearms Carry (Overcarrying)", 40000, 60, 4],
+  ["P.C. 2.17.3", "Possession of Illegal Firearms", 20000, 30, 2],
+  ["P.C. 2.17.4", "Dealing in Illegal Firearms", 40000, 60, 4],
+  ["P.C. 2.17.5", "Possession of State Issued Items", 40000, 60, 4],
+  ["P.C. 2.17.6", "Possession of Illegal Body Armour", 20000, 30, 2],
+  ["P.C. 2.17.7", "Brandishing a Firearm", 30000, 45, 3],
+  ["P.C. 2.17.8", "Discharging of a Firearm", 10000, 0, 0],
+  ["P.C. 2.17.8", "Repeat Offense", 20000, 30, 2],
+  ["P.C. 2.17.9", "Public Carrying of a Firearm", 10000, 0, 0],
+  ["P.C. 2.17.9", "Repeat Offence", 10000, 15, 1],
+  ["P.C. 2.18.1", "Misappropriation of a Vehicle (Reckless Driving)", 20000, 30, 2],
+  ["P.C. 2.18.2", "Misappropriation of a Official or State Vehicle", 30000, 45, 3],
+  ["P.C. 2.18.3", "Misuse of a Vehicle", 10000, 15, 1],
+  ["P.C. 2.18.4", "Vehicle Used in Criminal Activity", 10000, 0, 0],
+  ["P.C. 2.19", "Pimping", 20000, 30, 2],
+  ["P.C. 2.20", "Prostitution", 10000, 0, 0],
+  ["P.C. 2.21", "Hooliganism", 40000, 60, 4],
+  ["P.C. 2.22", "Bribery or Attempted Bribery of an Official", 30000, 45, 3],
+  ["P.C. 2.23", "Failure to Pay Fines", 50000, 60, 4],
+  ["P.C. 2.24.1", "Leaving the Scene", 20000, 30, 2],
+  ["P.C. 2.24.2", "Evading Arrest", 40000, 60, 4],
+  ["P.C. 2.25", "Attempted or Actual Escape from Custody", 50000, 75, 5],
+  ["P.C. 2.26", "Insubordination / Failure to Comply", 30000, 45, 3],
+  ["P.C. 2.27", "Violation of Privacy", 20000, 30, 2],
+  ["P.C. 2.28", "Intentional Spreading of Disease", 20000, 30, 2],
+  ["P.C. 2.29", "Breaking and Entering into a Private Residence", 30000, 45, 3],
+  ["P.C. 2.30.1", "Animal Cruelty", 20000, 30, 2],
+  ["P.C. 2.30.2", "Killing on Animal or Pet", 30000, 45, 3],
+  ["P.C. 3.1.1", "Terrorism as a Participant", 40000, 60, 4],
+  ["P.C. 3.1.2", "Leading of Terrorism", 50000, 75, 5],
+  ["P.C. 3.6.1", "Murder of LEO in Line of Duty", 40000, 60, 4],
+  ["P.C. 3.6.2", "Murder/Attempted Murder of Civil Servant/LEO", 50000, 75, 5]
+];
+
+const trafficData = [
+  ["T.C. 2.1", "Absence of Valid Licence Plate", 5000, 0, 0],
+  ["T.C. 3.2.1", "Driving the Opposite Lane", 10000, 0, 0],
+  ["T.C. 3.2.2", "Driving the Opposite Lane on Highway", 15000, 30, 2],
+  ["T.C. 3.3", "Stopping on Road for No Reason", 5000, 0, 0],
+  ["T.C. 3.5.1", "Driving on Deserted Sidewalks", 3000, 0, 0],
+  ["T.C. 3.5.2", "Chaotic Movement Between Lanes", 5000, 0, 0],
+  ["T.C. 3.5.3", "Failure to Keep Distance", 3000, 0, 0],
+  ["T.C. 3.5.4", "Hard Braking", 5000, 0, 0],
+  ["T.C. 3.5.5", "Creating Obstruction for Overtaking", 5000, 0, 0],
+  ["T.C. 3.6", "Driving Under Influence", 20000, 30, 2],
+  ["T.C. 3.7.1", "Participation in a Street Race", 10000, 0, 0],
+  ["T.C. 3.7.2", "Organization of a Street Race", 20000, 30, 2],
+  ["T.C. 5.5", "Abandoning a Vehicle", 5000, 0, 0],
+  ["T.C. 5.6", "Unsafe Transporting of a Passenger", 10000, 0, 0],
+  ["T.C. 6.2.A", "Parking On Red Curb", 5000, 0, 0],
+  ["T.C. 6.2.B", "Blocking a Lane of Traffic (More than 1/2)", 5000, 0, 0],
+  ["T.C. 6.2.C", "Blocking the Exit of Anywhere", 5000, 0, 0],
+  ["T.C. 6.4", "Unauthorised Vehicle Parking in Prison", 15000, 0, 0],
+  ["T.C. 7.1", "Illegal parking at Capitol", 5000, 0, 0],
+  ["T.C. 7.2", "Illegal parking at Casino", 5000, 0, 0],
+  ["T.C. 7.3", "Illegal parking at realstate agency", 5000, 0, 0],
+  ["T.C. 7.4", "Illegal parking at Pillbox Hospital", 5000, 0, 0],
+  ["T.C. 7.5", "Illegal parking at Legion Square bank", 5000, 0, 0],
+  ["T.C. 7.6", "Illegal parking at LSPD", 5000, 0, 0],
+  ["T.C. 7.7", "Illegal parking at Power plant", 5000, 0, 0],
+  ["T.C. 7.8", "Illegal parking at SAHP", 5000, 0, 0],
+  ["T.C. 7.9", "Illegal parking at Quarry (All)", 5000, 0, 0],
+  ["T.C. 7.10", "Illegal parking at Sawmill", 5000, 0, 0],
+  ["T.C. 7.11", "Illegal parking at Farm 1", 5000, 0, 0],
+  ["T.C. 7.12", "Illegal parking at Farm 2", 5000, 0, 0]
+];
+
+// --- SMART CALCULATOR LOGIC ---
+let selectedCharges = [];
+let totalFine = 0;
+let totalTime = 0;
+let totalStars = 0;
+
+function toggleCharge(code, reason, fine, time, stars, trElement) {
+  const index = selectedCharges.findIndex(c => c.code === code && c.reason === reason);
+  if(index > -1) {
+    selectedCharges.splice(index, 1);
+    totalFine -= fine; totalTime -= time; totalStars -= stars;
+    trElement.classList.remove('selected');
+  } else {
+    selectedCharges.push({code, reason, fine, time, stars});
+    totalFine += fine; totalTime += time; totalStars += stars;
+    trElement.classList.add('selected');
   }
-};
+  updateCalcBar();
+}
 
-const procedure = [
-  ["Phase 1: Cuffing & Securing", "Always holster your weapon! Demand 3 times to stop moving. Cuff suspect and inform them.", "Sir/Ma'am I am placing you in cuffs. I am grabbing you by the arm, follow me."],
-  ["Phase 2: Placing in Vehicle", "Tell suspect to 'Watch their head'. Inform them of charges. Radio dispatch.", "(BADGE) To Dispatch, show me 10-17 to DOC with (NUMBER) of 10-15."],
-  ["Phase 3: Transport & Miranda Rights", "Drive safely. Read Miranda rights. If ignored, repeat up to 3 times.", "You have the right to remain silent. Anything you say can be used against you..."],
-  ["Phase 4: Legal Requests", "Pause 25 min timer if lawyer requested. Remove mask for ID before lawyer arrives.", "(BADGE) To Dispatch, my 10-15 requests a state lawyer at DOC."],
-  ["Phase 5: Arrival at DOC & Medical", "Give medical attention if needed. Ask for jumpsuit size.", "Sir/Mam, what size jumpsuit are you? *grabs jumpsuit*"],
-  ["Phase 6: Searching & Confiscation", "Escort to cell. Lock doors. Search and seize illegal items. Take photo for logs.", "*Reaches into pockets for passport and illegal items*"],
-  ["Phase 7: Charges & Imprisonment", "Use PDA to issue wanted level and fines. Place in cell. Update dispatch.", "(BADGE) to dispatch, my last 10-15 is 10-99 and I am 10-19."]
-];
+function updateCalcBar() {
+  const bar = document.getElementById('calcBar');
+  if(selectedCharges.length > 0) {
+    bar.classList.add('active');
+    document.getElementById('calc-fine').textContent = "$" + totalFine.toLocaleString();
+    document.getElementById('calc-time').textContent = totalTime + " Months";
+    document.getElementById('calc-stars').textContent = totalStars > 5 ? 5 : totalStars;
+  } else {
+    bar.classList.remove('active');
+  }
+}
 
-const trafficStop = [
-  ["Step 1: Activate Radar", "Flex J muscle -> Turn On Radar. Check vehicle speed."],
-  ["Step 2: Issue Stop Notification", "Send Stop Notification. Give 3 demands (5s between each). Speed Limits: City 120 km/h, Highway 180 km/h."],
-  ["Step 3: Vehicle Stop Compliance", "If stopped: Turn off engine, exit. If fleeing: Block engine. If fighting: Neutralize."],
-  ["Step 4: Initial Radio Dispatch", "Call dispatch once driver exits.", "(BADGE) show me 10-51 on a [vehicle]. Code 4 at [location]."],
-  ["Step 5: Contact Phase", "Place barricade behind patrol car. Approach driver, ask for passport.", "(BADGE) We are Code 6 now."]
-];
+function clearCalculator() {
+  selectedCharges = []; totalFine = 0; totalTime = 0; totalStars = 0;
+  document.querySelectorAll('.table tr.selected').forEach(el => el.classList.remove('selected'));
+  document.getElementById('suspectName').value = "";
+  updateCalcBar();
+}
 
-const penal = [
-  ["2.1.1","Possession of Narcotics (< 4 Units)","$15,000","0","0"],
-  ["2.1.2","Possession of Narcotics (5-9 Units)","$20,000","30","2"],
-  ["2.1.3","Narcotics Intent to Distribute","$30,000","45","3"],
-  ["2.2.2","Murder or Attempted Murder","$40,000","60","4"],
-  ["2.5.1","Kidnapping / Attempted Kidnapping","$30,000","45","3"],
-  ["2.5.3","Kidnapping a LEO","$50,000","75","5"],
-  ["2.9.4","Grand Theft Auto","$40,000","60","4"],
-  ["2.10","Armed Robbery","$40,000","60","4"],
-  ["2.17.1","Unlicensed Firearms Carry","$10,000","0","0"],
-  ["2.17.3","Possession of Illegal Firearms","$20,000","30","2"],
-  ["2.24.2","Evading Arrest","$40,000","60","4"],
-  ["3.1.1","Terrorism","$40,000","60","4"],
-  ["3.6.2","Attempted Murder of Civil Servant/LEO","$50,000","75","5"]
-];
+window.generateArrestReport = function() {
+  const suspect = document.getElementById('suspectName').value || "Unknown";
+  let report = `ARREST REPORT / PDA RECORD\nSuspect: ${suspect}\n\nCHARGES:\n`;
+  selectedCharges.forEach(c => {
+    report += `- ${c.code}: ${c.reason} ($${c.fine.toLocaleString()} | ${c.time}m | ${c.stars}*)\n`;
+  });
+  report += `\nTOTAL FINE: $${totalFine.toLocaleString()}\nTOTAL TIME: ${totalTime} Months\nWANTED LEVEL: ${totalStars > 5 ? 5 : totalStars} Stars`;
+  
+  navigator.clipboard.writeText(report).then(() => {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  });
+}
 
-const traffic = [
-  ["2.1","Absence of Valid Licence Plate","$5,000","0","0"],
-  ["3.2.1","Driving the Opposite Lane","$10,000","0","0"],
-  ["3.2.2","Opposite Lane on Highway","$15,000","30","2"],
-  ["3.5.2","Chaotic Movement Between Lanes","$5,000","0","0"],
-  ["3.6","Driving Under Influence","$20,000","30","2"],
-  ["5.5","Abandoning a Vehicle","$5,000","0","0"]
-];
-
-const eventsData = {
-  "Ghetto Patrol": ["Heavy Weapons allowed.", "Min 8-10 Units (4 cars).", "Must be in ghetto for 15+ mins.", "Halt 5 mins in Fake Parking."],
-  "Store Robbery": ["Don't shoot outside perimeter from inside.", "Don't shoot without demands.", "Heavy Weapons NOT allowed."],
-  "FZ Raid": ["Heavy Weapons NOT allowed.", "Accessing roof NOT allowed.", "Leave base after raid."],
-  "Submarine / Prison": ["Heavy Weapons NOT allowed.", "Standard protection protocols apply."]
-};
-
-// ---------- UI RENDERING ----------
+// --- RENDERING ---
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text).then(() => {
@@ -295,109 +359,141 @@ function copyToClipboard(text) {
   });
 }
 
-function renderDashboard(){
+function renderDashboard() {
   return `<div class="hero">
     <h1>Good Evening, Officer</h1>
-    <p>Unified wiki database and operational utility console for Grand RP.</p>
+    <p>Unified wiki database and operational utility console for Grand RP.<br>Extracted directly from the official <strong>Full Arrest Process</strong> and <strong>Patrolman's Guide</strong>.</p>
   </div>
   <div class="card"><div class="card-head"><h2>Quick Action Tools</h2></div><div class="card-body" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:16px;">
     <div style="padding:20px; border:1px solid var(--line); border-radius:8px; cursor:pointer;" onclick="go('arrest')">
-      <h3 style="margin:0 0 8px; color:var(--accent);">Arrest Procedure (10-15)</h3><p style="margin:0; font-size:13px; color:var(--muted);">Step-by-step commands and scripts.</p>
+      <h3 style="margin:0 0 8px; color:var(--accent);">Arrest Procedure (10-15)</h3><p style="margin:0; font-size:13px; color:var(--muted);">Full 15-step procedure with scripts.</p>
     </div>
     <div style="padding:20px; border:1px solid var(--line); border-radius:8px; cursor:pointer;" onclick="go('penal')">
-      <h3 style="margin:0 0 8px; color:var(--accent);">Penal Code</h3><p style="margin:0; font-size:13px; color:var(--muted);">Search and copy charges instantly.</p>
+      <h3 style="margin:0 0 8px; color:var(--accent);">Smart Penal Code</h3><p style="margin:0; font-size:13px; color:var(--muted);">Click charges to auto-calculate reports.</p>
     </div>
-    <div style="padding:20px; border:1px solid var(--line); border-radius:8px; cursor:pointer;" onclick="go('traffic-stop')">
-      <h3 style="margin:0 0 8px; color:var(--accent);">Traffic Stop (10-51)</h3><p style="margin:0; font-size:13px; color:var(--muted);">Standard protocol for pull-overs.</p>
+    <div style="padding:20px; border:1px solid var(--line); border-radius:8px; cursor:pointer;" onclick="go('ticketing')">
+      <h3 style="margin:0 0 8px; color:var(--accent);">Vehicle Ticketing Tool</h3><p style="margin:0; font-size:13px; color:var(--muted);">Upload images for instant plate OCR.</p>
     </div>
   </div></div>`;
 }
 
-function renderTable(title, sub, cols, data, prefix="") {
-  let html = `<div class="hero"><h1>${title}</h1><p>${sub}</p></div><div class="card"><div class="card-body tablewrap"><table class="table"><thead><tr>`;
-  cols.forEach(c => html += `<th>${c}</th>`);
-  html += `<th>Action</th></tr></thead><tbody>`;
+function renderCalcTable(title, sub, data) {
+  let html = `<div class="hero"><h1>${title}</h1><p>${sub}</p></div>
+  <div class="card"><div class="card-body tablewrap"><table class="table"><thead><tr>
+  <th>Code</th><th>Description</th><th>Fine</th><th>Time</th><th>Stars</th></tr></thead><tbody>`;
+  
   data.forEach(r => {
-    let copyStr = `${prefix}${r[0]} - ${r[1]}`;
-    html += `<tr>`;
-    r.forEach((v, i) => html += `<td ${i===0?'style="color:var(--accent); font-weight:700;"':''}>${v}</td>`);
-    html += `<td><button class="copy-btn" onclick="copyToClipboard('${esc(copyStr)}')">COPY</button></td></tr>`;
+    const isSelected = selectedCharges.some(c => c.code === r[0] && c.reason === r[1]);
+    html += `<tr class="${isSelected ? 'selected' : ''}" onclick="toggleCharge('${esc(r[0])}', '${esc(r[1])}', ${r[2]}, ${r[3]}, ${r[4]}, this)">
+      <td style="color:var(--accent); font-weight:700;">${esc(r[0])}</td>
+      <td>${esc(r[1])}</td>
+      <td style="color:#22c55e; font-weight:600;">$${r[2].toLocaleString()}</td>
+      <td>${r[3]}</td>
+      <td>${r[4]}</td>
+    </tr>`;
   });
   html += `</tbody></table></div></div>`;
   return html;
 }
 
-function renderRules(key) {
-  if(!rules[key]) return renderDashboard();
-  let html = `<div class="hero"><h1>${rules[key].title}</h1><p>${rules[key].sub}</p></div>`;
-  rules[key].groups.forEach(g => {
-    html += `<div class="card"><div class="card-head"><h2>${g[0]}</h2><span class="badge">${g[1].length} Rules</span></div><div class="card-body">`;
-    g[1].forEach(r => {
-      html += `<details class="rule"><summary><span style="color:var(--accent); width:50px;">${r[0]}</span> <span style="flex:1;">${r[1]}</span></summary>`;
-      if(r[2]) html += `<div class="desc"><strong>Punishment:</strong> ${r[2]}</div>`;
-      html += `</details>`;
-    });
-    html += `</div></div>`;
-  });
-  return html;
-}
-
 function renderSteps(title, sub, data) {
   let html = `<div class="hero"><h1>${title}</h1><p>${sub}</p></div><div class="card"><div class="card-body">`;
-  data.forEach((s, i) => {
-    let copyStr = s[2] ? s[2] : s[1];
+  data.forEach(s => {
     html += `<div class="step">
-      <h3>${s[0]} <button class="copy-btn" onclick="copyToClipboard('${esc(copyStr)}')">COPY SCRIPT</button></h3>
+      <h3>${s[0]} <button class="copy-btn" onclick="copyToClipboard('${esc(s[2])}')">COPY SCRIPT</button></h3>
       <p>${s[1]}</p>
-      ${s[2] ? `<div class="quote">${s[2]}</div>` : ''}
+      ${s[2] ? `<div class="quote">💬 ${s[2]}</div>` : ''}
     </div>`;
   });
   html += `</div></div>`;
   return html;
 }
 
-function renderEvents() {
-  let html = `<div class="hero"><h1>Event Rules</h1><p>Protocols for major server events.</p></div><div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">`;
-  Object.entries(eventsData).forEach(([k,v]) => {
-    html += `<div class="card"><div class="card-head"><h2>${k}</h2></div><div class="card-body"><ul style="margin:0; padding-left:20px; color:var(--muted); font-size:14px; line-height:1.6;">`;
-    v.forEach(li => html += `<li>${li}</li>`);
-    html += `</ul></div></div>`;
-  });
-  html += `</div>`;
-  return html;
+function renderTicketingTool() {
+  return `<div class="hero"><h1>Vehicle Ticketing Tool</h1><p>Upload or paste a screenshot of a vehicle's plate to extract information automatically.</p></div>
+  <div class="ticketing-grid">
+    <div class="card" style="margin:0;">
+      <div class="card-body">
+        <input type="file" id="fileInput" style="display:none;" accept="image/*">
+        <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+          <div style="font-size:32px; margin-bottom:10px;">📸</div>
+          <h3 style="margin:0 0 5px; color:var(--text);">Drop screenshot here, or click to upload</h3>
+          <p style="margin:0; font-size:12px;">PNG, JPG, WEBP • Drag & drop • Paste with Ctrl+V</p>
+          <div style="display:flex; gap:10px; margin-top:20px;" onclick="event.stopPropagation()">
+            <button class="btn-outline" onclick="document.getElementById('fileInput').click()">📤 Browse</button>
+            <button class="btn-outline">📋 Paste</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin:0;"><div class="card-head"><h2>Extracted details</h2></div>
+      <div class="card-body" style="padding-top:10px;">
+        <div class="extracted-panel" id="extracted-content">
+          <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; color:var(--muted); font-size:13px; text-align:center;">
+            <span style="font-size:24px; margin-bottom:10px;">🚙</span>
+            Results will appear here after you upload a screenshot.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function attachTicketingListeners() {
+  const dropzone = document.getElementById('dropzone');
+  const fileInput = document.getElementById('fileInput');
+  if(!dropzone) return;
+
+  async function handleImageUpload(file) {
+    const panel = document.getElementById('extracted-content');
+    if(!file.type.startsWith('image/')) return;
+    panel.innerHTML = `<div style="text-align:center; padding-top:40px; color:var(--muted);">Analyzing image using OCR...<br><small>Please wait</small></div>`;
+    try {
+      const result = await Tesseract.recognize(file, 'eng');
+      const text = result.data.text;
+      const plateMatch = text.match(/\b[A-Z0-9]{2,8}\b/);
+      const possiblePlate = plateMatch ? plateMatch[0] : '';
+      panel.innerHTML = `
+        <div class="form-group"><label>License Plate</label><input type="text" id="t-plate" value="${possiblePlate}"></div>
+        <div class="form-group"><label>Violation Code</label><input type="text" id="t-reason" placeholder="e.g. T.C. 6.2.A"></div>
+        <div class="form-group"><label>Fine Amount ($)</label><input type="text" id="t-fine" placeholder="e.g. 5000"></div>
+        <button class="btn-outline" style="background:var(--accent); color:#fff; border:none; margin-top:10px;" onclick="copyTicketData()">Copy Ticket Report</button>
+      `;
+    } catch (e) { panel.innerHTML = `<div style="color:var(--danger); text-align:center; padding-top:40px;">Error scanning image.</div>`; }
+  }
+
+  window.copyTicketData = function() {
+    const report = `VEHICLE TICKET\nPlate: ${document.getElementById('t-plate').value}\nCode: ${document.getElementById('t-reason').value}\nFine: $${document.getElementById('t-fine').value}`;
+    copyToClipboard(report);
+  }
+
+  dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+  dropzone.addEventListener('drop', (e) => { e.preventDefault(); dropzone.classList.remove('dragover'); if(e.dataTransfer.files.length) handleImageUpload(e.dataTransfer.files[0]); });
+  fileInput.addEventListener('change', (e) => { if(e.target.files.length) handleImageUpload(e.target.files[0]); });
+  document.addEventListener('paste', (e) => { if (document.getElementById('dropzone')) { const items = (e.clipboardData || e.originalEvent.clipboardData).items; for (let index in items) { if (items[index].kind === 'file') handleImageUpload(items[index].getAsFile()); } } });
 }
 
 function go(page) {
   const c = document.getElementById('content');
+  const calcBar = document.getElementById('calcBar');
+  
+  if(page === 'penal' || page === 'traffic') calcBar.style.display = 'flex';
+  else calcBar.style.display = 'none';
+
   if(page === 'dashboard') c.innerHTML = renderDashboard();
-  else if(page === 'penal') c.innerHTML = renderTable("Penal Code Tool", "Search and copy PC charges.", ["Code","Crime","Fine","Time","Stars"], penal, "P.C. ");
-  else if(page === 'traffic') c.innerHTML = renderTable("Traffic & Parking", "Vehicle code violations.", ["Code","Crime","Fine","Time","Stars"], traffic, "T.C. ");
-  else if(page === 'arrest') c.innerHTML = renderSteps("10-15 Arrest Procedure", "Step-by-step detention guide.", procedure);
-  else if(page === 'traffic-stop') c.innerHTML = renderSteps("10-51 Traffic Stop", "Standard vehicle pullover protocol.", trafficStop);
-  else if(page === 'events') c.innerHTML = renderEvents();
-  else c.innerHTML = renderRules(page);
+  else if(page === 'arrest') c.innerHTML = renderSteps("10-15 Arrest Procedure", "Complete 15-step procedure extracted from the Full Arrest Process protocol.", procedureData);
+  else if(page === 'penal') c.innerHTML = renderCalcTable("Penal Code Calculator", "Click rows to build an arrest report automatically.", penalData);
+  else if(page === 'traffic') c.innerHTML = renderCalcTable("Traffic Code Calculator", "Click rows to build a traffic citation report.", trafficData);
+  else if(page === 'ticketing') { c.innerHTML = renderTicketingTool(); setTimeout(attachTicketingListeners, 100); }
   
   window.scrollTo(0,0);
   document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b.dataset.page === page));
   document.getElementById('sidebar').classList.remove('open');
 }
 
-// Nav Listeners
 document.querySelectorAll('.nav button').forEach(b => b.addEventListener('click', () => go(b.dataset.page)));
 document.getElementById('mobileMenu').addEventListener('click', () => document.getElementById('sidebar').classList.add('open'));
-document.addEventListener('click', (e) => {
-  const sb = document.getElementById('sidebar');
-  if(sb.classList.contains('open') && !sb.contains(e.target) && e.target.id !== 'mobileMenu') sb.classList.remove('open');
-});
-
-// Search Modal Logic (CTRL+K)
-const modal = document.getElementById('modal');
-const modalInput = document.getElementById('modalSearch');
-document.getElementById('searchInput').addEventListener('click', () => { modal.style.display = 'flex'; modalInput.focus(); });
-document.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey) && e.key === 'k') { e.preventDefault(); modal.style.display = 'flex'; modalInput.focus(); } else if (e.key === 'Escape') modal.style.display = 'none'; });
-modal.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
-
-// Initial Render
 go('dashboard');
 </script>
 </body>
