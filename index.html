@@ -1452,33 +1452,33 @@ function bodycamPage(){
 
 /* ---------- Department Radio (Exact Video Commands) ---------- */
 const deptRadioCmds = [
-    {trigger: "Good Copy Reply", to:"LAST", tpl: "{FROM} to LAST: Good Copy! Please proceed."},
-    {trigger: "Bad Copy Reply", to:"LAST", tpl: "{FROM} to LAST: Negative Copy!"},
-    {trigger: "Asking Bad Copy Reason", to:"LAST", tpl: "{FROM} to LAST: Inquiring on the reason for the negative copy?"},
-    {trigger: "Asking How Copy", to:"LAST", tpl: "{FROM} to LAST: How copy?"},
-    {trigger: "10-15 Requesting State Lawyer", to:"LAST", tpl: "{FROM} to LAST: We have a 10-15 at DOC requesting state legal representation. Please check availability."},
-    {trigger: "10-15 Requesting Private Lawyer", to:"LAST", tpl: "{FROM} to LAST: Could you verify if Mr. Lawyer's Name is Bar certified?"},
-    {trigger: "Global Finished", to:"LAST", tpl: "{FROM} to LAST: Situation is now 10-99. Thank you for your assistance."},
-    {trigger: "Global at 10-10", to:"LAST", tpl: "{FROM} to LAST: Confirming a 10-10 situation at the global location. Requesting backup."},
-    {trigger: "Legal Org Employee in Custody", to:"LAST", tpl: "{FROM} to LAST: We have one of your agents in custody. Please 10-17 for Capitol for investigation."},
-    {trigger: "State Employee in Custody", to:"LAST", tpl: "{FROM} to LAST: State employee in custody. Requesting formal holdings process."},
-    {trigger: "Meeting Request", to:"LAST", tpl: "{FROM} to LAST: Requesting a briefing with your team at your HQ."},
-    {trigger: "Standby", to:"LAST", tpl: "{FROM} to LAST: Standby for a possible hostage situation."},
-    {trigger: "Officer Getting Robbed", to:"LAST", tpl: "{FROM} to LAST: Officer under duress at [Location] - all available units respond immediately!"},
-    {trigger: "Hostage Situation", to:"ALL", tpl: "{FROM} to ALL: Active global at hostage situation. Requesting maximum 12-15 units from all orgs."},
-    {trigger: "Gun Store Robbery", to:"ALL", tpl: "{FROM} to ALL: Suspect demands at the Gun Store robbery. Armed suspects reported - maximum 10-12 units respond."},
-    {trigger: "Events", to:"ALL", tpl: "{FROM} to ALL: Suspect demands at the store robbery have been received. Hostages confirmed on scene."},
-    {trigger: "Hacker Attack / Data Breach", to:"ALL", tpl: "{FROM} to ALL: Global activated for cyberattack response. Secure the facility and establish an outer perimeter."},
-    {trigger: "Transport Protection", to:"ALL", tpl: "{FROM} to ALL: 10-17 in progress. Maintain convoy security and clear the designated route."},
-    {trigger: "Submarine Protection", to:"ALL", tpl: "{FROM} to ALL: Global assigned to submarine security. Hold the perimeter until the operation concludes."},
-    {trigger: "Protecting the Informer", to:"ALL", tpl: "{FROM} to ALL: Suspect convoy in progress. Ensure the informer reaches the destination safely."},
-    {trigger: "Aircraft Carrier Protection", to:"ALL", tpl: "{FROM} to ALL: Global activated for carrier security. Secure all access points and maintain defensive positions."},
-    {trigger: "Bank Protection", to:"ALL", tpl: "{FROM} to ALL: Global assigned to bank security. Establish a defensive perimeter and prevent hostile access."},
-    {trigger: "State Lawyer Unavailable", to:"LAST", tpl: "GOV to LAST: A state lawyer is available and enroute to your location."},
-    {trigger: "State Lawyer Available", to:"LAST", tpl: "GOV to LAST: No state lawyer is currently available. You may proceed as per SOP."},
-    {trigger: "Private Lawyer Certification Confirmed", to:"LAST", tpl: "GOV to LAST: Confirmed. Mr. Lawyer's Name is Bar certified."},
-    {trigger: "Candies Supply Depleted", to:"LSPD", tpl: "NG to LSPD: 10-4. However, if this is related to candies, we are currently at zero supply."},
-    {trigger: "Vehicle Theft - Exfiltration Assistance", to:"LSPD", tpl: "NG to LSPD: Some of our trucks have been stolen. Requesting assistance with exfiltration."}
+    {trigger: "Good Copy Reply", tpl: "{FROM} to {TO}: Good Copy! Please proceed."},
+    {trigger: "Bad Copy Reply", tpl: "{FROM} to {TO}: Negative Copy!"},
+    {trigger: "Asking Bad Copy Reason", tpl: "{FROM} to {TO}: Inquiring on the reason for the negative copy?"},
+    {trigger: "Asking How Copy", tpl: "{FROM} to {TO}: How copy?"},
+    {trigger: "10-15 Requesting State Lawyer", tpl: "{FROM} to {TO}: We have a 10-15 at DOC requesting state legal representation. Please check availability."},
+    {trigger: "10-15 Requesting Private Lawyer", tpl: "{FROM} to {TO}: Could you verify if Mr. Lawyer's Name is Bar certified?"},
+    {trigger: "Global Finished", tpl: "{FROM} to {TO}: Situation is now 10-99. Thank you for your assistance."},
+    {trigger: "Global at 10-10", tpl: "{FROM} to {TO}: Confirming a 10-10 situation at the global location. Requesting backup."},
+    {trigger: "Legal Org Employee in Custody", tpl: "{FROM} to {TO}: We have one of your agents in custody. Please 10-17 for Capitol for investigation."},
+    {trigger: "State Employee in Custody", tpl: "{FROM} to {TO}: State employee in custody. Requesting formal holdings process."},
+    {trigger: "Meeting Request", tpl: "{FROM} to {TO}: Requesting a briefing with your team at your HQ."},
+    {trigger: "Standby", tpl: "{FROM} to {TO}: Standby for a possible hostage situation."},
+    {trigger: "Officer Getting Robbed", tpl: "{FROM} to {TO}: Officer under duress at [Location] - all available units respond immediately!"},
+    {trigger: "Hostage Situation", tpl: "{FROM} to ALL: Active global at hostage situation. Requesting maximum 12-15 units from all orgs."},
+    {trigger: "Gun Store Robbery", tpl: "{FROM} to ALL: Suspect demands at the Gun Store robbery. Armed suspects reported - maximum 10-12 units respond."},
+    {trigger: "Events", tpl: "{FROM} to ALL: Suspect demands at the store robbery have been received. Hostages confirmed on scene."},
+    {trigger: "Hacker Attack / Data Breach", tpl: "{FROM} to ALL: Global activated for cyberattack response. Secure the facility and establish an outer perimeter."},
+    {trigger: "Transport Protection", tpl: "{FROM} to ALL: 10-17 in progress. Maintain convoy security and clear the designated route."},
+    {trigger: "Submarine Protection", tpl: "{FROM} to ALL: Global assigned to submarine security. Hold the perimeter until the operation concludes."},
+    {trigger: "Protecting the Informer", tpl: "{FROM} to ALL: Suspect convoy in progress. Ensure the informer reaches the destination safely."},
+    {trigger: "Aircraft Carrier Protection", tpl: "{FROM} to ALL: Global activated for carrier security. Secure all access points and maintain defensive positions."},
+    {trigger: "Bank Protection", tpl: "{FROM} to ALL: Global assigned to bank security. Establish a defensive perimeter and prevent hostile access."},
+    {trigger: "State Lawyer Unavailable", tpl: "GOV to {TO}: A state lawyer is available and enroute to your location."},
+    {trigger: "State Lawyer Available", tpl: "GOV to {TO}: No state lawyer is currently available. You may proceed as per SOP."},
+    {trigger: "Private Lawyer Certification Confirmed", tpl: "GOV to {TO}: Confirmed. Mr. Lawyer's Name is Bar certified."},
+    {trigger: "Candies Supply Depleted", tpl: "NG to {TO}: 10-4. However, if this is related to candies, we are currently at zero supply."},
+    {trigger: "Vehicle Theft - Exfiltration Assistance", tpl: "NG to {TO}: Some of our trucks have been stolen. Requesting assistance with exfiltration."}
 ];
 
 let globalRadioTo = localStorage.getItem('grwiki_radio_to') || 'LAST';
@@ -1492,15 +1492,9 @@ function updateRadioTo(val) {
 function updateDynamicRadioNodes() {
     document.querySelectorAll('.dyn-radio').forEach(el => {
         let tpl = el.dataset.tpl;
-        let toTarget = el.dataset.toTarget;
         
         tpl = tpl.replace(/\{FROM\}/g, globalOrg);
-        
-        if(tpl.includes('{TO}')) {
-             let replaceTo = globalRadioTo;
-             if(toTarget === "ALL") replaceTo = "ALL";
-             tpl = tpl.replace(/\{TO\}/g, replaceTo);
-        }
+        tpl = tpl.replace(/\{TO\}/g, globalRadioTo);
 
         el.textContent = tpl;
     });
@@ -1536,7 +1530,7 @@ function deptRadioPage() {
     ${deptRadioCmds.map(c => `
       <div class="cmdline" style="border-radius:0;border-left:0;border-right:0;border-top:0">
         <div style="width:250px;font-weight:700;color:var(--text)">${esc(c.trigger)}</div>
-        <span class="cmdtxt dyn-radio" data-tpl="${esc(c.tpl)}" data-to-target="${esc(c.to)}" style="color:var(--accent)">${esc(c.tpl)}</span>
+        <span class="cmdtxt dyn-radio" data-tpl="${esc(c.tpl)}" style="color:var(--accent)">${esc(c.tpl)}</span>
         <button class="copybtn" title="Copy line" onclick="copyRadioDynamic(this)">⧉</button>
       </div>
     `).join('')}
@@ -1912,23 +1906,24 @@ function doSearch(q){
 document.getElementById('searchInput').addEventListener('focus',()=>{modal.classList.add('show');modalSearch.focus();doSearch(modalSearch.value);});
 
 /* ---------- Stealth Mode Toggle Logic ---------- */
-document.addEventListener('keydown',e=>{
- const typing=['INPUT','TEXTAREA'].includes(document.activeElement.tagName);
- 
+window.addEventListener('keydown', function(e) {
  // Stealth Hide Mode (Ctrl/Cmd + B)
- if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='b'){
+ if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'B')) {
     e.preventDefault();
     const stealth = document.getElementById('stealthOverlay');
-    if (stealth.style.display === 'flex') {
-        stealth.style.display = 'none';
-        if (audioCtx.state === 'suspended') audioCtx.resume(); // just in case
-    } else {
-        stealth.style.display = 'flex';
-        // Make sure no inputs have focus
-        document.activeElement.blur();
+    if (stealth) {
+        if (stealth.style.display === 'flex') {
+            stealth.style.display = 'none';
+        } else {
+            stealth.style.display = 'flex';
+            if (document.activeElement) document.activeElement.blur();
+        }
     }
-    return;
  }
+});
+
+document.addEventListener('keydown',e=>{
+ const typing=['INPUT','TEXTAREA'].includes(document.activeElement.tagName);
  
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();modal.classList.add('show');modalSearch.focus()}
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='j'){e.preventDefault();applyDark(document.documentElement.dataset.dark!=='1')}
