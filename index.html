@@ -91,6 +91,11 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .auth-switch span{color:var(--accent);cursor:pointer;font-weight:600;}
 .auth-switch span:hover{text-decoration:underline;}
 
+/* --- Stealth Mode (Hacker Hide) --- */
+#stealthOverlay { display:none; position:fixed; inset:0; background:#ffffff; z-index:10000; align-items:center; justify-content:center; flex-direction:column; font-family:Arial, sans-serif; }
+.stealth-logo { font-size:80px; font-weight:bold; color:#4285F4; margin-bottom:20px; letter-spacing:-3px; }
+.stealth-input { width:500px; max-width:90vw; padding:15px 20px; border:1px solid #dfe1e5; border-radius:24px; font-size:16px; outline:none; box-shadow:0 1px 6px rgba(32,33,36,.28); }
+
 /* --- Officer tools / advanced features --- */
 .navcount{margin-left:auto;background:var(--accent);color:#1a1200;font-size:10px;font-weight:800;border-radius:999px;padding:2px 7px;min-width:8px;text-align:center}
 .nav button{position:relative}
@@ -262,6 +267,12 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 </head>
 <body>
 
+<!-- STEALTH OVERLAY (Ctrl+B) -->
+<div id="stealthOverlay">
+    <div class="stealth-logo">Google<span style="color:#EA4335">e</span><span style="color:#FBBC05">g</span><span style="color:#4285F4">l</span><span style="color:#34A853">e</span></div>
+    <input type="text" class="stealth-input" placeholder="Search Google or type a URL">
+</div>
+
 <!-- AUTHENTICATION OVERLAY -->
 <div id="authOverlay">
   <div class="auth-box">
@@ -383,6 +394,7 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
   <div class="helprow"><span>Show this help</span><span class="kbd2">Shift + /</span></div>
   <div class="helprow"><span>Toggle dark mode</span><span class="kbd2">Ctrl / ⌘ J</span></div>
   <div class="helprow"><span>Start / end duty</span><span class="kbd2">Ctrl / ⌘ D</span></div>
+  <div class="helprow"><span>Stealth Hide Mode</span><span class="kbd2">Ctrl / ⌘ B</span></div>
   <div class="helprow"><span>Command palette</span><span class="kbd2">Type &gt; in search</span></div>
   <div class="helprow"><span>Print current page</span><span class="kbd2">Ctrl / ⌘ P</span></div>
 </div></div>
@@ -405,6 +417,42 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 </div>
 
 <script>
+/* ---------- Audio Engine (Web Audio API) ---------- */
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playBeep(freq = 800, dur = 0.1, vol = 0.1, type = 'sine') {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + dur);
+}
+
+function playStatic(dur = 0.5, vol = 0.05) {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const bufferSize = audioCtx.sampleRate * dur;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+    }
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+    noise.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    noise.start();
+}
+
+
 /* ---------- Auth System ---------- */
 let dbUsers = JSON.parse(localStorage.getItem('grwiki_users') || '[]');
 let activeUser = localStorage.getItem('grwiki_active_user');
@@ -443,18 +491,17 @@ function doSignup() {
   dbUsers.push({ name, id, pass, date: new Date().toLocaleString() });
   localStorage.setItem('grwiki_users', JSON.stringify(dbUsers));
   
-  // Auto login
   activeUser = id;
   localStorage.setItem('grwiki_active_user', activeUser);
   document.getElementById('authOverlay').style.display = 'none';
   
-  // Also save to profile
   let profile = loadProfile();
   profile.name = name;
   profile.badge = id;
   localStorage.setItem('grwiki_profile', JSON.stringify(profile));
   
   toast("Registered & Logged in successfully");
+  playStatic(0.6, 0.08); setTimeout(() => playBeep(1200, 0.2, 0.1), 600);
 }
 
 function doLogin() {
@@ -469,6 +516,7 @@ function doLogin() {
     localStorage.setItem('grwiki_active_user', activeUser);
     document.getElementById('authOverlay').style.display = 'none';
     toast("Welcome back, Officer " + user.name);
+    playStatic(0.6, 0.08); setTimeout(() => playBeep(1200, 0.2, 0.1), 600);
   } else {
     alert("Invalid ID or Password");
   }
@@ -1278,7 +1326,7 @@ function notepadPage(){
       <button class="btn ghost" onclick="if(confirm('Clear notepad?')){document.getElementById('npText').value='';saveNotepad()}">Clear All</button>
       <button class="btn ghost" onclick="copyText(document.getElementById('npText').value, 'Notes copied')">Copy</button>
      </div>
-     <textarea id="npText" style="width:100%;height:400px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px;color:var(--text);font-family:ui-monospace,monospace;font-size:13px;resize:vertical" placeholder="Start typing notes here..." oninput="saveNotepad()">${esc(notepadContent)}</textarea>
+     <textarea id="npText" style="width:100%;height:400px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px;color:var(--text);font-family:ui-monospace,monospace;font-size:13px;resize:vertical" placeholder="Start typing notes here..." oninput="saveNotepad(); playBeep(1500, 0.03, 0.02, 'square')">${esc(notepadContent)}</textarea>
     </div></div>`;
 }
 function saveNotepad(){
@@ -1357,6 +1405,7 @@ function toggleDuty(){
  }
  renderDutyBtn(); clearDutyInterval(); if(dutyState&&dutyState.on)startDutyInterval();
  if(document.getElementById('dutyWidget'))render('bodycam');
+ playBeep(800, 0.2, 0.1, 'sine'); setTimeout(() => playBeep(1200, 0.3, 0.1, 'sine'), 200);
 }
 function renderDutyBtn(){
  const btn=document.getElementById('dutyBtn'), label=document.getElementById('dutyLabel');
@@ -1447,10 +1496,8 @@ function updateDynamicRadioNodes() {
         
         tpl = tpl.replace(/\{FROM\}/g, globalOrg);
         
-        // If template has {TO}, replace it with the selected target OR the forced target from array
         if(tpl.includes('{TO}')) {
              let replaceTo = globalRadioTo;
-             // Some commands strictly use LAST or ALL
              if(toTarget === "ALL") replaceTo = "ALL";
              tpl = tpl.replace(/\{TO\}/g, replaceTo);
         }
@@ -1771,7 +1818,7 @@ const tips=[
  "The Fine Calculator totals fine, time and stars as you tick charges.",
  "Vehicle Ticket Log can post the plate photo straight to Discord.",
  "Ctrl/Cmd+D starts or ends duty and logs the shift automatically.",
- "Grand RP's in-game clock follows real-world London (UK) time."
+ "Press Ctrl/Cmd+B at any time to instantly hide the MDT."
 ];
 let tipIndex=0,tipTimer=null;
 function cycleTip(){
@@ -1863,8 +1910,26 @@ function doSearch(q){
  results.querySelectorAll('.result').forEach(el=>el.onclick=()=>{pushHistory(q);modal.classList.remove('show');go(el.dataset.page)});
 }
 document.getElementById('searchInput').addEventListener('focus',()=>{modal.classList.add('show');modalSearch.focus();doSearch(modalSearch.value);});
+
+/* ---------- Stealth Mode Toggle Logic ---------- */
 document.addEventListener('keydown',e=>{
  const typing=['INPUT','TEXTAREA'].includes(document.activeElement.tagName);
+ 
+ // Stealth Hide Mode (Ctrl/Cmd + B)
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='b'){
+    e.preventDefault();
+    const stealth = document.getElementById('stealthOverlay');
+    if (stealth.style.display === 'flex') {
+        stealth.style.display = 'none';
+        if (audioCtx.state === 'suspended') audioCtx.resume(); // just in case
+    } else {
+        stealth.style.display = 'flex';
+        // Make sure no inputs have focus
+        document.activeElement.blur();
+    }
+    return;
+ }
+ 
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();modal.classList.add('show');modalSearch.focus()}
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='j'){e.preventDefault();applyDark(document.documentElement.dataset.dark!=='1')}
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='d'){e.preventDefault();toggleDuty()}
