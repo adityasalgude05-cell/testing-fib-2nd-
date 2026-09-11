@@ -204,7 +204,7 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .bootsplash .bootlogo{font-size:15px;letter-spacing:.35em;margin-bottom:20px;opacity:.9;font-weight:700}
 .bootsplash .bootline{font-size:12.5px;margin:3px 0;opacity:.85;color:#c7cede}
 .bootsplash .bootbar{width:260px;height:3px;background:#1a2033;border-radius:2px;margin-top:20px;overflow:hidden}
-.bootsplash .bootbar i{display:block;height:100%;background:linear-gradient(90deg,#f2b705,#fff3b0);width:0%;animation:bootfill 1.4s ease forwards}
+.bootsplash .bootbar i{display:block;height:100%;background:linear-gradient(90deg,#f2b705,#fff3b0);width:0%;animation:bootfill 2.2s ease forwards}
 @keyframes bootfill{to{width:100%}}
 .bootsplash .bootskip{margin-top:18px;font-size:10px;color:var(--sidebarMuted);cursor:pointer;text-decoration:underline}
 
@@ -228,6 +228,28 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 @keyframes autoglow{0%{box-shadow:0 0 0 3px var(--successSoft)}100%{box-shadow:0 0 0 0 transparent}}
 .ocr-chip{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:var(--successSoft);color:var(--success);padding:2px 7px;border-radius:999px;margin-left:6px}
 @media print{.ocrbar{display:none!important}}
+
+/* --- v7: BOLO board, RP scripts, profile modal --- */
+.bolo-form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+.bolo-form input,.bolo-form select,.bolo-form textarea{padding:11px 13px;border:1px solid var(--line);border-radius:11px;background:var(--panel2);width:100%;font:inherit;color:var(--text)}
+.bolo-form textarea{grid-column:1/-1;resize:vertical;min-height:56px}
+.bolocard{border:1px solid var(--line);border-left-width:4px;border-radius:12px;padding:14px 16px;margin:10px 0;background:var(--panel);position:relative}
+.bolocard.lvl-low{border-left-color:var(--success)}
+.bolocard.lvl-medium{border-left-color:var(--warn)}
+.bolocard.lvl-high{border-left-color:#f97316}
+.bolocard.lvl-armed{border-left-color:var(--danger);background:rgba(239,68,68,.06)}
+.bolocard h3{margin:0 0 4px;font-size:15px;color:var(--text);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.bolocard .bolo-meta{font-size:11px;color:var(--muted);margin-bottom:8px}
+.bolocard p{margin:0;font-size:12.5px;color:var(--textSoft);line-height:1.6}
+.bolocard .bolo-actions{margin-top:10px;display:flex;gap:6px}
+.lvltag{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:999px}
+.lvltag.lvl-low{background:var(--successSoft);color:var(--success)}
+.lvltag.lvl-medium{background:var(--warnSoft);color:var(--warn)}
+.lvltag.lvl-high{background:rgba(249,115,22,.14);color:#f97316}
+.lvltag.lvl-armed{background:rgba(239,68,68,.14);color:var(--danger)}
+.bolo-alert{border:1px solid var(--danger);background:rgba(239,68,68,.09);border-radius:14px;padding:14px 16px;margin-bottom:16px;color:var(--danger);font-size:13px;display:flex;gap:10px;align-items:flex-start}
+.bolo-alert .ba-ico{font-size:20px;flex-shrink:0}
+@media(max-width:650px){.bolo-form{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -250,7 +272,9 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
     <button data-page="map"><span class="ico">⌖</span>Territory Map</button>
     <div class="nav-title">Officer Tools</div>
     <button data-page="bodycam"><span class="ico">●</span>Bodycam Commands</button>
-    <button data-page="vehicle"><span class="ico">🚗</span>Vehicle Ticket Log<span class="navtag">NEW</span></button>
+    <button data-page="vehicle"><span class="ico">🚗</span>Vehicle Ticket Log</button>
+    <button data-page="bolo"><span class="ico">⚠</span>BOLO Board<span class="navcount" id="boloCount"></span><span class="navtag">NEW</span></button>
+    <button data-page="scripts"><span class="ico">✎</span>RP Script Library<span class="navtag">NEW</span></button>
     <button data-page="calculator"><span class="ico">＋</span>Fine Calculator</button>
     <button data-page="codes"><span class="ico">10</span>10-Codes &amp; Phonetics</button>
     <button data-page="bookmarks"><span class="ico">★</span>Bookmarks<span class="navcount" id="favCount"></span></button>
@@ -269,13 +293,34 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
   </div>
   <div class="top-actions">
    <button class="dutybtn" id="dutyBtn" title="Toggle duty status"><span class="dutydot"></span><span id="dutyLabel">Off Duty</span></button>
-   <button class="iconbtn" id="printBtn" title="Print this page">⎙</button><button class="iconbtn" id="helpBtn" title="Keyboard shortcuts">⌨</button><button class="iconbtn" id="themeBtn" title="Toggle theme">☾</button></div>
+   <button class="iconbtn" id="printBtn" title="Print this page">⎙</button><button class="iconbtn" id="profileBtn" title="Officer profile &amp; backup">👤</button><button class="iconbtn" id="helpBtn" title="Keyboard shortcuts">⌨</button><button class="iconbtn" id="themeBtn" title="Toggle theme">☾</button></div>
 </header>
 <div class="content" id="content"></div>
-<div class="footer">Grand RP Wiki • Content reproduced from the supplied server-rule text and Patrolman's Guide PDFs. No source content was silently changed.</div>
+<div class="footer">Grand RP Wiki • Content reproduced from the supplied server-rule text and Patrolman's Guide PDFs. No source content was silently changed.<br><span style="font-size:9px;opacity:.6">Developed by Cinderella Queen</span></div>
 </main>
 </div>
 <div class="modal" id="modal"><div class="modalbox"><input id="modalSearch" placeholder="Search the wiki..."><div class="results" id="results"></div></div></div>
+<div class="modal" id="profileModal"><div class="modalbox helpbox">
+  <div class="helphead">Officer Profile &amp; Backup</div>
+  <p style="font-size:12px;color:var(--muted);margin:-4px 0 14px">Saved only in this browser. Your badge, name and department auto-fill into the Fine Calculator and Vehicle Ticket Log.</p>
+  <div class="veh-grid" style="margin-bottom:14px">
+   <input id="pfName" placeholder="Officer name">
+   <input id="pfBadge" placeholder="Badge #">
+   <input id="pfDept" placeholder="Department (LSPD, SAHP, FIB...)">
+   <input id="pfCallsign" placeholder="Callsign / unit #">
+  </div>
+  <div class="calc-actions" style="margin-bottom:16px">
+   <button class="btn" onclick="saveProfile()">Save Profile</button>
+   <button class="btn ghost" onclick="clearProfile()">Clear Profile</button>
+  </div>
+  <div class="helphead" style="font-size:13px">Backup &amp; Restore</div>
+  <p style="font-size:12px;color:var(--muted);margin:-4px 0 12px">Export everything (profile, bookmarks, vehicle logs, shift log, BOLOs) to a file, or restore it on another device/browser.</p>
+  <div class="calc-actions">
+   <button class="btn secondary" onclick="exportBackup()">Export Backup (.json)</button>
+   <button class="btn ghost" onclick="document.getElementById('importInput').click()">Import Backup</button>
+  </div>
+  <input type="file" id="importInput" accept="application/json" style="display:none">
+</div></div>
 <div class="modal" id="helpModal"><div class="modalbox helpbox">
   <div class="helphead">Keyboard Shortcuts</div>
   <div class="helprow"><span>Open search</span><span class="kbd2">Ctrl / ⌘ K</span></div>
@@ -296,9 +341,10 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
  <div class="fabitem"><span id="fabDutyLabel">Start Duty</span><button onclick="toggleDuty();closeFab()">🕐</button></div>
 </div>
 <div class="bootsplash" id="bootSplash">
- <div class="bootlogo">GRAND RP // MDT</div>
- <div class="bootline" id="bootLine1">Initializing officer terminal…</div>
- <div class="bootline" id="bootLine2" style="opacity:0">Syncing London clock &amp; cloud database…</div>
+ <div class="bootlogo">GRAND RP</div>
+ <div class="bootline" id="bootLine1">/me logs into the department dispatch terminal</div>
+ <div class="bootline" id="bootLine2" style="opacity:0">/do it connects to the FIB cloud server and syncs the London clock</div>
+ <div class="bootline" id="bootLine3" style="opacity:0">/me flashes their badge to the dispatch scanner</div>
  <div class="bootbar"><i></i></div>
  <div class="bootskip" id="bootSkip">Skip</div>
 </div>
@@ -660,8 +706,10 @@ function table(rows,cols,opts){
  return `<div class="tablewrap"><table class="table"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
 }
 function dashboard(){
- const pageLabels={general:'General Rules',state:'State Rules',green:'Green Zone',ghetto:'Ghetto Rules','traffic-stop':'10-51 Traffic Stop',arrest:'10-15 Arrest',penal:'Penal Code',traffic:'Traffic Code',events:'Event Rules',map:'Territory Map',terms:'RP Terms',calculator:'Fine Calculator',codes:'10-Codes',bookmarks:'Bookmarks',bodycam:'Bodycam Commands',vehicle:'Vehicle Ticket Log'};
- return `<div class="hero"><h1>Grand RP Police Wiki</h1><p>Quick-access handbook for state rules, penal code, traffic code, traffic stops, arrests, events, bodycam procedure and roleplay terminology. Built from the materials supplied for this wiki.</p><div class="tip-ticker" id="tipTicker"></div></div>
+ const pageLabels={general:'General Rules',state:'State Rules',green:'Green Zone',ghetto:'Ghetto Rules','traffic-stop':'10-51 Traffic Stop',arrest:'10-15 Arrest',penal:'Penal Code',traffic:'Traffic Code',events:'Event Rules',map:'Territory Map',terms:'RP Terms',calculator:'Fine Calculator',codes:'10-Codes',bookmarks:'Bookmarks',bodycam:'Bodycam Commands',vehicle:'Vehicle Ticket Log',bolo:'BOLO Board',scripts:'RP Script Library'};
+ const armedCount=bolos.filter(b=>b.threat==='armed').length;
+ const totalFines=citationLogs.reduce((a,c)=>a+(c.fine||0),0)+vehicleLogs.reduce((a,v)=>{const m=(v.text||'').match(/TOTAL FINE:\s*\$([\d,]+)/); return a+(m?parseInt(m[1].replace(/,/g,''),10):0)},0);
+ return `<div class="hero"><h1>${profile.name?`Welcome back, Officer ${esc(profile.name)}`:'Grand RP Police Wiki'}</h1><p>${profile.badge?`Badge #${esc(profile.badge)}${profile.dept?' • '+esc(profile.dept):''} — `:''}Quick-access handbook for state rules, penal code, traffic code, traffic stops, arrests, events, bodycam procedure and roleplay terminology.</p><div class="tip-ticker" id="tipTicker"></div></div>
  <div class="clockcard">
   <div class="cc-item"><h4>🇬🇧 In-Game Time — London</h4><b id="dashClockLondon">--:--:--</b><small id="dashDateLondon">—</small></div>
   <div class="cc-divider"></div>
@@ -669,10 +717,11 @@ function dashboard(){
   <div class="cc-divider"></div>
   <div class="cc-item"><h4>Server Cycle</h4><b id="dashCycle">—</b><small>Grand RP runs on real-world London (UK) time</small></div>
  </div>
- <div class="grid"><div class="stat"><b>${penal.length}</b><span>Penal Code entries</span></div><div class="stat"><b>${traffic.length}</b><span>Traffic Code entries</span></div><div class="stat"><b>${todayDutyMinutes()}</b><span>Minutes on duty today</span></div><div class="stat"><b>${favs.length}</b><span>Your bookmarks</span></div></div>
+ ${armedCount?`<div class="bolo-alert"><span class="ba-ico">⚠</span><div><b>${armedCount} Armed &amp; Dangerous BOLO${armedCount===1?'':'s'} active.</b> <button onclick="go('bolo')" style="background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font:inherit">Open BOLO Board</button></div></div>`:''}
+ <div class="grid"><div class="stat"><b>${penal.length}</b><span>Penal Code entries</span></div><div class="stat"><b>${todayDutyMinutes()}</b><span>Minutes on duty today</span></div><div class="stat"><b>${fmtMoney(totalFines)}</b><span>Fines logged (citations + stops)</span></div><div class="stat"><b>${bolos.length}</b><span>Active BOLOs</span></div></div>
  ${recentPages.length?`<div class="card"><div class="card-head"><h2>Recently Viewed</h2></div><div class="card-body"><div class="chips">${recentPages.map(p=>`<button class="chip" onclick="go('${p}')">${esc(pageLabels[p]||p)}</button>`).join("")}</div></div></div>`:''}
  <div class="card"><div class="card-head"><h2>Quick Access</h2></div><div class="card-body"><div class="eventgrid">
- ${[['Bodycam Commands','On/off-duty, drone, PDA & evidence scripts','bodycam'],['Vehicle Ticket Log','Upload plate photo, log fines, send to Discord','vehicle'],['Fine Calculator','Build a citation in seconds','calculator'],['Penal Code','Complete PC table by article','penal'],['Traffic Code','Traffic + parking violations','traffic'],['10-15 Arrest','Step-by-step DOC process','arrest'],['10-51 Traffic Stop','Radar to contact phase','traffic-stop'],['10-Codes','Radio codes + phonetics','codes']].map(x=>`<div class="eventcard" style="cursor:pointer" onclick="go('${x[2]}')"><h3>${x[0]}</h3><p style="font-size:12px;color:var(--muted);margin:0">${x[1]}</p></div>`).join("")}
+ ${[['BOLO Board','Post and track wanted suspects & vehicles','bolo'],['RP Script Library','Cuffing, Miranda, search & radio scripts','scripts'],['Bodycam Commands','On/off-duty, drone, PDA & evidence scripts','bodycam'],['Vehicle Ticket Log','Upload plate photo, log fines, send to Discord','vehicle'],['Fine Calculator','Build a citation in seconds','calculator'],['Penal Code','Complete PC table by article','penal'],['10-15 Arrest','Step-by-step DOC process','arrest'],['10-Codes','Radio codes + phonetics','codes']].map(x=>`<div class="eventcard" style="cursor:pointer" onclick="go('${x[2]}')"><h3>${x[0]}</h3><p style="font-size:12px;color:var(--muted);margin:0">${x[1]}</p></div>`).join("")}
  </div></div></div>
  <div class="notice"><b>Source note:</b> Penal and Traffic Code entries below follow the supplied Patrolman's Guide PDF. The PDF's own article headings, codes, fines, times and stars are preserved as provided.</div>`;
 }
@@ -727,7 +776,7 @@ function calculatorPage(){
   </div>
   <div class="calc-fields">
    <input id="fSuspect" placeholder="Suspect name" oninput="renderCitationPreview()">
-   <input id="fBadge" placeholder="Officer badge #" oninput="renderCitationPreview()">
+   <input id="fBadge" placeholder="Officer badge #" value="${esc(profile.badge||'')}" oninput="renderCitationPreview()">
    <input id="fLocation" placeholder="Location" oninput="renderCitationPreview()">
    <input id="fCase" placeholder="Case / report #" oninput="renderCitationPreview()">
   </div>
@@ -747,7 +796,11 @@ function calculatorPage(){
    <div class="ci-meta">${it.fine?fmtMoney(it.fine)+' fine':'No fine'}${it.time?' • '+it.time+' min':''}${it.stars?' • '+it.stars+'★':''}${it.points?' • '+it.points+' pt':''}</div></div>
   </label>`).join("")}
  </div></div>`).join("")}
- </div>`;
+ </div>
+ <div class="card"><div class="card-head"><h2>Citation History</h2><span class="badge">${citationLogs.length}</span></div><div class="card-body loglist">
+  ${citationLogs.length?citationLogs.slice(0,15).map((l,i)=>`<div class="logitem"><div class="logitem-head"><b>${esc(l.suspect||'Unknown suspect')} — ${fmtMoney(l.fine||0)}</b><span>${esc(l.time)}</span></div><pre>${esc(l.text.slice(0,220))}${l.text.length>220?'…':''}</pre><div class="logitem-actions"><button class="btn ghost" onclick="copyText(citationLogs[${i}].text,'Citation copied')">Copy</button><button class="btn ghost" onclick="deleteCitationLog(${i})">Delete</button></div></div>`).join(""):'<div class="empty">No saved citations yet — every citation you copy is kept here automatically.</div>'}
+  ${citationLogs.length?`<div style="margin-top:8px"><button class="btn ghost" onclick="if(confirm('Clear all citation history?')){citationLogs=[];saveCitationLogs();render('calculator')}">Clear All History</button></div>`:''}
+ </div></div>`;
  return out;
 }
 function toggleCalc(id,checked){
@@ -782,7 +835,21 @@ TOTAL FINE: ${fmtMoney(fine)}
 TOTAL SENTENCE: ${time} min
 TOTAL STARS: ${stars}`;
 }
-function copyCitation(){renderCitationPreview();const t=document.getElementById('citationPreview').textContent;copyText(t,'Citation copied')}
+function loadCitationLogs(){try{return JSON.parse(localStorage.getItem('grwiki_citationlogs')||'[]')}catch(e){return []}}
+let citationLogs=loadCitationLogs();
+function saveCitationLogs(){localStorage.setItem('grwiki_citationlogs',JSON.stringify(citationLogs))}
+function copyCitation(){
+ renderCitationPreview();
+ const t=document.getElementById('citationPreview').textContent;
+ copyText(t,'Citation copied');
+ const items=calcAllItems().filter(it=>calcSelected.has(it.id));
+ let fine=0; items.forEach(it=>fine+=it.fine);
+ const suspect=document.getElementById('fSuspect').value.trim();
+ citationLogs.unshift({suspect,fine,time:new Date().toLocaleString(),text:t});
+ citationLogs=citationLogs.slice(0,25); saveCitationLogs();
+ if(document.getElementById('calcList'))render('calculator');
+}
+function deleteCitationLog(i){citationLogs.splice(i,1); saveCitationLogs(); render('calculator')}
 function clearCalc(){calcSelected.clear();document.querySelectorAll('#calcList input[type=checkbox]').forEach(c=>{c.checked=false});document.querySelectorAll('.calc-item').forEach(c=>c.classList.remove('checked'));['fSuspect','fBadge','fLocation','fCase'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});updateCalcTotals()}
 function filterCalc(q){
  q=q.trim().toLowerCase();
@@ -812,7 +879,7 @@ function vehiclePage(){
 
  <div class="card"><div class="card-head"><h2>1. Vehicle Photo</h2></div><div class="card-body">
   <div class="uploadbox" id="uploadBox" onclick="document.getElementById('photoInput').click()">
-   <span class="up-ico">📷</span><b>Click to upload, or drag a photo here</b><small>Plate / vehicle screenshot — we'll try to auto-read the plate &amp; owner name. Stays in your browser unless you send it via webhook below.</small>
+   <span class="up-ico">📷</span><b>Click to upload, or drag a photo here</b><small>Plate / vehicle screenshot — we'll try to auto-read the plate, owner name &amp; vehicle model. Stays in your browser unless you send it via webhook below.</small>
   </div>
   <input type="file" id="photoInput" accept="image/*" style="display:none">
   <div id="photoPreviewHost"></div>
@@ -825,13 +892,13 @@ function vehiclePage(){
    <input id="vModel" placeholder="Vehicle model">
    <input id="vColor" placeholder="Vehicle color">
    <input id="vOwner" placeholder="Owner / suspect name">
-   <input id="vBadge" placeholder="Officer badge #">
+   <input id="vBadge" placeholder="Officer badge #" value="${esc(profile.badge||'')}">
    <input id="vLocation" placeholder="Location">
    <input id="vCase" placeholder="Case / report #">
-   <input id="vDept" placeholder="Department (LSPD, SAHP, FIB...)">
+   <input id="vDept" placeholder="Department (LSPD, SAHP, FIB...)" value="${esc(profile.dept||'')}">
    <textarea id="vNotes" placeholder="Notes / additional context (optional)"></textarea>
   </div>
-  <p id="ocrHint" style="font-size:11px;color:var(--muted);margin:0">Upload a plate/registration screenshot above and Plate + Owner will try to auto-fill — always double-check before sending.</p>
+  <p id="ocrHint" style="font-size:11px;color:var(--muted);margin:0">Upload a plate/registration screenshot above — Plate, Owner and Vehicle will try to auto-fill — always double-check before sending.</p>
  </div></div>
 
  <div class="card"><div class="card-head"><h2>3. Charges</h2><span class="badge" id="vehTotalBadge">$0</span></div><div class="card-body">
@@ -878,7 +945,7 @@ function handlePhotoFile(file){
  reader.onload=e=>{vehiclePhoto={dataUrl:e.target.result,file:file,name:file.name}; renderPhotoPreview(); renderVehiclePreview(); toast('Photo attached'); scanVehiclePhoto()};
  reader.readAsDataURL(file);
 }
-/* ---------- OCR auto-detect (plate + owner) ---------- */
+/* ---------- OCR auto-detect (plate + owner + vehicle) ---------- */
 let tesseractLoading=null;
 function ensureTesseract(){
  if(window.Tesseract)return Promise.resolve();
@@ -891,15 +958,38 @@ function ensureTesseract(){
  });
  return tesseractLoading;
 }
+const ocrLoadingPhrases=[
+ "/me radios the plate number through to dispatch…",
+ "/do MDT pulls up the vehicle registration file…",
+ "/me cross-references the plate against DMV records…",
+ "/do dispatch confirms the registered owner's name…",
+ "/me zooms the camera in for a clearer read on the plate…",
+ "/do MDT matches the chassis to a registered model…"
+];
+let ocrPhraseTimer=null,ocrPhraseIdx=0;
+function startOcrPhrases(){
+ stopOcrPhrases();
+ ocrPhraseIdx=Math.floor(Math.random()*ocrLoadingPhrases.length);
+ setOcrStatusText(ocrLoadingPhrases[ocrPhraseIdx]);
+ ocrPhraseTimer=setInterval(()=>{
+  ocrPhraseIdx=(ocrPhraseIdx+1)%ocrLoadingPhrases.length;
+  setOcrStatusText(ocrLoadingPhrases[ocrPhraseIdx]);
+ },1150);
+}
+function stopOcrPhrases(){if(ocrPhraseTimer){clearInterval(ocrPhraseTimer); ocrPhraseTimer=null}}
+function setOcrStatusText(msg){const el=document.getElementById('ocrStatusText'); if(el)el.textContent=msg}
 function renderOcrBar(state,msg){
  const host=document.getElementById('ocrHost'); if(!host)return;
- if(state==='idle'){host.innerHTML=''; return}
+ if(state==='idle'){stopOcrPhrases(); host.innerHTML=''; return}
  if(state==='scanning'){
-  host.innerHTML=`<div class="ocrbar"><span class="ocr-spinner"></span><span class="ocr-status">${esc(msg||'Reading plate & owner from the photo…')}</span></div>`;
+  stopOcrPhrases();
+  host.innerHTML=`<div class="ocrbar"><span class="ocr-spinner"></span><span class="ocr-status" id="ocrStatusText">${esc(msg||'/do MDT terminal is booting up…')}</span></div>`;
  }else if(state==='done'){
+  stopOcrPhrases();
   host.innerHTML=`<div class="ocrbar"><span class="ocr-status">${msg}</span><button class="btn ghost" onclick="scanVehiclePhoto()">Re-scan Photo</button></div>`;
  }else if(state==='error'){
-  host.innerHTML=`<div class="ocrbar"><span class="ocr-status">⚠ ${esc(msg||'Could not read the photo automatically — fill Plate/Owner in manually.')}</span><button class="btn ghost" onclick="scanVehiclePhoto()">Try Again</button></div>`;
+  stopOcrPhrases();
+  host.innerHTML=`<div class="ocrbar"><span class="ocr-status">⚠ ${esc(msg||"/do MDT couldn't get a clean read — enter the details manually.")}</span><button class="btn ghost" onclick="scanVehiclePhoto()">Try Again</button></div>`;
  }
 }
 function flashAutoFilled(id){
@@ -907,12 +997,14 @@ function flashAutoFilled(id){
  el.classList.remove('auto-filled'); void el.offsetWidth; el.classList.add('auto-filled');
  setTimeout(()=>el.classList.remove('auto-filled'),1900);
 }
-function guessPlateAndOwner(raw){
+function guessVehicleFields(raw){
  const lines=raw.split('\n').map(l=>l.replace(/\s+/g,' ').trim()).filter(Boolean);
- let plate=null,owner=null;
+ let plate=null,owner=null,model=null,color=null;
  lines.forEach(line=>{
-  if(!plate){const m=line.match(/\b(plate|registration|reg|licen[cs]e)\b\s*[:\-#]?\s*([A-Z0-9]{4,10})\b/i); if(m)plate=m[2].toUpperCase()}
-  if(!owner){const m=line.match(/\b(owner|registered\s*to|name)\b\s*[:\-]?\s*([A-Za-z][A-Za-z .'\-]{2,40})/i); if(m)owner=m[2].trim()}
+  if(!plate){const m=line.match(/\b(plate|registration|reg|licen[cs]e)\b\s*[:\-#]\s*([A-Z0-9]{4,10})\b/i); if(m)plate=m[2].toUpperCase()}
+  if(!owner){const m=line.match(/\b(owner|registered\s*to|name)\b\s*[:\-]\s*([A-Za-z][A-Za-z .'\-]{2,40})/i); if(m)owner=m[2].trim()}
+  if(!model){const m=line.match(/\b(model|vehicle|car\s*type|make(?:\s*\/\s*model)?)\b\s*[:\-]\s*([A-Za-z0-9][A-Za-z0-9 .'\-]{2,30})/i); if(m)model=m[2].trim()}
+  if(!color){const m=line.match(/\b(colou?r)\b\s*[:\-]\s*([A-Za-z][A-Za-z \-]{2,20})/i); if(m)color=m[2].trim()}
  });
  if(!plate){
   for(const line of lines){
@@ -923,34 +1015,48 @@ function guessPlateAndOwner(raw){
    if(plate)break;
   }
  }
+ const usedLines=new Set();
  if(!owner){
   for(const line of lines){
-   const m=line.match(/^([A-Z][a-zA-Z'\-]+(?:\s+[A-Z][a-zA-Z'\-]+){1,2})$/);
-   if(m&&m[1].toUpperCase().replace(/\s+/g,'')!==plate){owner=m[1]; break}
+   const m=line.match(/^([A-Z][a-z'\-]+(?:\s+[A-Z][a-z'\-]+){1,2})$/);
+   if(m&&m[1].toUpperCase().replace(/\s+/g,'')!==plate){owner=m[1]; usedLines.add(line); break}
   }
  }
- return {plate,owner};
+ if(!model){
+  for(const line of lines){
+   if(usedLines.has(line))continue;
+   if(plate&&line.toUpperCase().includes(plate))continue;
+   const m=line.match(/^([A-Z][a-z]+(?:\s+[A-Za-z0-9]{1,8}){0,1})$/);
+   if(m&&m[1].length>=3&&m[1].length<=28&&m[1]!==owner){model=m[1]; break}
+  }
+ }
+ return {plate,owner,model,color};
 }
 async function scanVehiclePhoto(){
  if(!vehiclePhoto.dataUrl){toast('Upload a photo first'); return}
- renderOcrBar('scanning','Loading text-recognition engine…');
+ renderOcrBar('scanning','/do MDT terminal is booting up…');
  try{
   await ensureTesseract();
-  renderOcrBar('scanning','Reading plate & owner from the photo…');
+  renderOcrBar('scanning');
+  startOcrPhrases();
   const {data:{text}}=await Tesseract.recognize(vehiclePhoto.dataUrl,'eng',{logger:()=>{}});
-  const {plate,owner}=guessPlateAndOwner(text||'');
+  stopOcrPhrases();
+  const {plate,owner,model,color}=guessVehicleFields(text||'');
   const found=[];
   if(plate){const el=document.getElementById('vPlate'); if(el){el.value=plate; flashAutoFilled('vPlate'); found.push('plate')}}
   if(owner){const el=document.getElementById('vOwner'); if(el){el.value=owner; flashAutoFilled('vOwner'); found.push('owner')}}
+  if(model){const el=document.getElementById('vModel'); if(el){el.value=model; flashAutoFilled('vModel'); found.push('vehicle')}}
+  if(color){const el=document.getElementById('vColor'); if(el&&!el.value){el.value=color; flashAutoFilled('vColor'); found.push('color')}}
   renderVehiclePreview();
   if(found.length){
-   renderOcrBar('done',`✓ Auto-filled ${found.join(' & ')} from the photo <span class="ocr-chip">verify before sending</span>`);
-   toast('Auto-detected '+found.join(' & ')+' — please double-check');
+   renderOcrBar('done',`✓ /do MDT pulled the vehicle file — ${found.join(', ')} auto-filled <span class="ocr-chip">verify before citing</span>`);
+   toast('MDT pulled the '+found.join(', ')+' — verify before citing');
   }else{
-   renderOcrBar('error','Read the image but could not confidently identify a plate or name — please fill them in manually.');
+   renderOcrBar('error',"/do MDT got a read but couldn't confidently match a plate, owner or vehicle — please fill them in manually.");
   }
  }catch(e){
-  renderOcrBar('error','Text recognition failed to load (offline or blocked) — please fill Plate/Owner in manually.');
+  stopOcrPhrases();
+  renderOcrBar('error',"/do MDT lost connection to dispatch — enter Plate/Owner/Vehicle manually.");
  }
 }
 function toggleVehicle(id,checked){
@@ -1036,7 +1142,7 @@ function initVehiclePage(){
  ['dragleave','drop'].forEach(ev=>box.addEventListener(ev,e=>{e.preventDefault();box.classList.remove('drag')}));
  box.addEventListener('drop',e=>{if(e.dataTransfer.files[0])handlePhotoFile(e.dataTransfer.files[0])});
  renderPhotoPreview();
- renderOcrBar(vehiclePhoto.dataUrl?'done':'idle', vehiclePhoto.dataUrl?'Photo attached — tap Re-scan if Plate/Owner need another pass.':'');
+ renderOcrBar(vehiclePhoto.dataUrl?'done':'idle', vehiclePhoto.dataUrl?'Photo attached — tap Re-scan if Plate/Owner/Vehicle need another pass.':'');
  ['vPlate','vModel','vColor','vOwner','vBadge','vLocation','vCase','vDept','vNotes','vCustomCharge'].forEach(id=>{
   const e=document.getElementById(id); if(e)e.addEventListener('input',renderVehiclePreview);
  });
@@ -1113,6 +1219,88 @@ function codesPage(){
  <div class="card"><div class="card-head"><h2>Radio Codes</h2><span class="badge">${tenCodes.length}</span></div><div class="card-body">${table(tenCodes,['Code','Meaning'])}</div></div>
  <div class="card"><div class="card-head"><h2>Phonetic Alphabet</h2></div><div class="card-body"><div class="codeschart">${phonetic.map(p=>`<div>${p[0]}<span>${p[1]}</span></div>`).join("")}</div></div></div>`;
 }
+/* ---------- BOLO Board ---------- */
+function loadBolos(){try{return JSON.parse(localStorage.getItem('grwiki_bolos')||'[]')}catch(e){return []}}
+let bolos=loadBolos();
+function saveBolos(){localStorage.setItem('grwiki_bolos',JSON.stringify(bolos)); updateBoloCount()}
+function updateBoloCount(){const el=document.getElementById('boloCount'); if(el)el.textContent=bolos.length?bolos.length:''}
+const threatLabels={low:'Low',medium:'Medium',high:'High',armed:'Armed & Dangerous'};
+function boloPage(){
+ const armedCount=bolos.filter(b=>b.threat==='armed').length;
+ let out=`<h1 class="section-title">BOLO Board</h1><p class="section-sub">Be-On-The-Lookout board for wanted suspects and vehicles. Saved in your browser and easy to copy straight into Discord dispatch.</p>`;
+ if(armedCount)out+=`<div class="bolo-alert"><span class="ba-ico">⚠</span><div><b>${armedCount} Armed &amp; Dangerous BOLO${armedCount===1?'':'s'} active.</b> Brief incoming units before engaging.</div></div>`;
+ out+=`<div class="card"><div class="card-head"><h2>Post a BOLO</h2></div><div class="card-body">
+  <div class="bolo-form">
+   <input id="bSubject" placeholder="Subject name or vehicle (e.g. 'Red Sultan RS — ABC123')">
+   <select id="bThreat"><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option><option value="armed">Armed &amp; Dangerous</option></select>
+   <input id="bLastSeen" placeholder="Last seen location">
+   <input id="bOfficer" placeholder="Reporting officer" value="${esc(profile.name||profile.badge||'')}">
+   <textarea id="bDesc" placeholder="Description / details"></textarea>
+  </div>
+  <div class="calc-actions"><button class="btn" onclick="addBolo()">Post BOLO</button></div>
+ </div></div>
+ <div class="calc-search"><input id="boloFilter" placeholder="Filter BOLOs..." oninput="filterBolo(this.value)"></div>
+ <div id="boloList">
+ ${bolos.length?bolos.map((b,i)=>`<div class="bolocard lvl-${b.threat}" data-search="${esc((b.subject+' '+b.description+' '+b.lastSeen).toLowerCase())}">
+  <h3>${esc(b.subject)}<span class="lvltag lvl-${b.threat}">${threatLabels[b.threat]||b.threat}</span></h3>
+  <div class="bolo-meta">Last seen: ${esc(b.lastSeen||'Unknown')} • Reported by ${esc(b.officer||'Unknown')} • ${esc(b.time)}</div>
+  <p>${esc(b.description||'No further details.')}</p>
+  <div class="bolo-actions"><button class="btn ghost" onclick="copyBolo(${i})">Copy for Discord</button><button class="btn ghost" onclick="deleteBolo(${i})">Resolved / Delete</button></div>
+ </div>`).join(""):'<div class="card"><div class="empty">No active BOLOs. Post one above to alert other units.</div></div>'}
+ </div>`;
+ return out;
+}
+function buildBoloText(b){
+ const tag=b.threat==='armed'?'🔴 ARMED & DANGEROUS':b.threat==='high'?'🟠 HIGH THREAT':b.threat==='medium'?'🟡 MEDIUM':'🟢 LOW';
+ return `🚨 **BOLO — ${tag}**
+**Subject/Vehicle:** ${b.subject}
+**Last Seen:** ${b.lastSeen||'Unknown'}
+**Description:** ${b.description||'—'}
+**Reported by:** ${b.officer||'Unknown'}
+**Time:** ${b.time}`;
+}
+function addBolo(){
+ const subject=document.getElementById('bSubject').value.trim();
+ if(!subject){toast('Enter a subject or vehicle first'); return}
+ const b={subject,threat:document.getElementById('bThreat').value,lastSeen:document.getElementById('bLastSeen').value.trim(),officer:document.getElementById('bOfficer').value.trim(),description:document.getElementById('bDesc').value.trim(),time:new Date().toLocaleString()};
+ bolos.unshift(b); saveBolos(); toast('BOLO posted'); render('bolo');
+}
+function copyBolo(i){copyText(buildBoloText(bolos[i]),'BOLO copied')}
+function deleteBolo(i){bolos.splice(i,1); saveBolos(); render('bolo')}
+function filterBolo(q){
+ q=q.trim().toLowerCase();
+ document.querySelectorAll('#boloList .bolocard').forEach(el=>{el.style.display=(!q||el.dataset.search.includes(q))?'':'none'});
+}
+
+/* ---------- RP Script Library ---------- */
+const rpScripts=[
+ {title:"Cuffing a Suspect",tag:"Arrest",lines:["/me pulls out handcuffs","/me orders the suspect to place their hands behind their back","/me cuffs the suspect's wrists together","/do the suspect is now restrained and cannot resist"]},
+ {title:"Reading Miranda Rights",tag:"Arrest",lines:["/me clears their throat and reads from a card","/me states: \"You have the right to remain silent. Anything you say can be used against you in a court of law.\"","/me states: \"You have the right to an attorney. If you cannot afford one, one will be provided for you.\"","/me asks if the suspect understands their rights"]},
+ {title:"Searching a Suspect",tag:"Search",lines:["/me pats down the suspect's outer clothing for weapons","/me checks the suspect's pockets for illegal items","/do lists anything found on the suspect"]},
+ {title:"Searching a Vehicle",tag:"Search",lines:["/me asks the driver to step out of the vehicle","/me opens the vehicle door and begins searching the interior","/me checks the glovebox and center console","/me checks the trunk of the vehicle","/do lists anything found in the vehicle"]},
+ {title:"Requesting Backup",tag:"Radio",lines:["/me keys their radio","/me requests backup at their current location, Code 2","/do waits for a response from dispatch or nearby units"]},
+ {title:"Requesting EMS",tag:"Radio",lines:["/me keys their radio","/me requests EMS to their location for an injured party","/do describes the nature of the injury to dispatch"]},
+ {title:"Weapon Check / Draw",tag:"Tactical",lines:["/me unholsters their sidearm and points it at the suspect","/me orders the suspect to show their hands","/do waits to see if the suspect complies"]},
+ {title:"Vehicle Felony Stop",tag:"Traffic",lines:["/me draws their sidearm and takes cover behind the vehicle door","/me orders the driver to turn off the engine and throw the keys out the window","/me orders all occupants to exit the vehicle one at a time with hands visible"]},
+ {title:"Interrogation Opening",tag:"Investigation",lines:["/me sits across the table from the suspect","/me places a folder of evidence on the table","/me asks the suspect if they would like to explain what happened"]},
+ {title:"Releasing a Suspect",tag:"Arrest",lines:["/me removes the handcuffs from the suspect's wrists","/me returns the suspect's personal belongings","/do informs the suspect they are free to go"]}
+];
+function scriptsPage(){
+ return `<h1 class="section-title">RP Script Library</h1><p class="section-sub">Common /me and /do scripts for arrests, searches, radio calls and tactical situations — beyond the bodycam-specific commands. Tap ⧉ to copy a line or copy the full sequence for a scenario.</p>
+ <div class="calc-search"><input id="scriptFilter" placeholder="Filter scripts by title or tag..." oninput="filterScripts(this.value)"></div>
+ <div id="scriptList">
+ ${rpScripts.map((g,gi)=>`<div class="cmdgroup" data-search="${esc((g.title+' '+g.tag).toLowerCase())}"><div class="cmdgroup-head"><h3>${esc(g.title)}</h3><span class="badge">${esc(g.tag)}</span></div>
+  ${g.lines.map(l=>`<div class="cmdline"><span class="cmdtxt">${esc(l)}</span><button class="copybtn" title="Copy line" onclick="cmdCopy('${l.replace(/'/g,"\\'")}')">⧉</button></div>`).join("")}
+  <div class="cmdgroup-foot"><button class="btn secondary" onclick="cmdCopy('${g.lines.join('\\n').replace(/'/g,"\\'")}')">Copy full sequence (${g.lines.length} line${g.lines.length===1?'':'s'})</button></div>
+ </div>`).join("")}
+ </div>
+ <div class="notice"><b>Note:</b> These are common-practice community scripts, not reproduced from the supplied PDFs — adapt wording to match your department's own SOP.</div>`;
+}
+function filterScripts(q){
+ q=q.trim().toLowerCase();
+ document.querySelectorAll('#scriptList .cmdgroup').forEach(el=>{el.style.display=(!q||el.dataset.search.includes(q))?'':'none'});
+}
+
 function bookmarksPage(){
  if(!favs.length){
   return `<h1 class="section-title">Bookmarks</h1><p class="section-sub">Save rules and codes you reference often by tapping the ☆ next to them.</p>
@@ -1123,9 +1311,10 @@ function bookmarksPage(){
   return `<details class="rule" open><summary><span style="font-weight:500;flex:1">${esc(f.label)}</span><span class="rowflex"><button class="copybtn" title="Copy" onclick="event.preventDefault();event.stopPropagation();copyText('${f.label.replace(/'/g,"\\'")}','Copied')">⧉</button>${starBtn(f.id,f.label)}</span></summary></details>`;
  }).join("")}</div></div>`;
 }
-const pageFns={dashboard,penal:penalPage,traffic:trafficPage,arrest:procedurePage,'traffic-stop':trafficStopPage,events:eventsPage,map:mapPage,terms:termsPage,calculator:calculatorPage,codes:codesPage,bookmarks:bookmarksPage,bodycam:bodycamPage,vehicle:vehiclePage};
+const pageFns={dashboard,penal:penalPage,traffic:trafficPage,arrest:procedurePage,'traffic-stop':trafficStopPage,events:eventsPage,map:mapPage,terms:termsPage,calculator:calculatorPage,codes:codesPage,bookmarks:bookmarksPage,bodycam:bodycamPage,vehicle:vehiclePage,bolo:boloPage,scripts:scriptsPage};
 function render(page){
  clearDutyInterval();
+ stopOcrPhrases();
  const c=document.getElementById('content');
  const fn=pageFns[page];
  let h=fn?fn():(rules[page]?rulesPage(page):dashboard());
@@ -1164,6 +1353,71 @@ document.getElementById('printBtn').addEventListener('click',()=>window.print())
 const helpModal=document.getElementById('helpModal');
 document.getElementById('helpBtn').addEventListener('click',()=>helpModal.classList.add('show'));
 helpModal.addEventListener('click',e=>{if(e.target===helpModal)helpModal.classList.remove('show')});
+
+/* ---------- Officer Profile & Backup/Restore ---------- */
+function loadProfile(){try{return JSON.parse(localStorage.getItem('grwiki_profile')||'{}')}catch(e){return {}}}
+let profile=loadProfile();
+function fillProfileModal(){
+ document.getElementById('pfName').value=profile.name||'';
+ document.getElementById('pfBadge').value=profile.badge||'';
+ document.getElementById('pfDept').value=profile.dept||'';
+ document.getElementById('pfCallsign').value=profile.callsign||'';
+}
+function saveProfile(){
+ profile={name:document.getElementById('pfName').value.trim(),badge:document.getElementById('pfBadge').value.trim(),dept:document.getElementById('pfDept').value.trim(),callsign:document.getElementById('pfCallsign').value.trim()};
+ localStorage.setItem('grwiki_profile',JSON.stringify(profile));
+ toast('Profile saved'); profileModal.classList.remove('show');
+ const active=document.querySelector('.nav button.active'); if(active)render(active.dataset.page);
+}
+function clearProfile(){profile={}; localStorage.removeItem('grwiki_profile'); fillProfileModal(); toast('Profile cleared')}
+const profileModal=document.getElementById('profileModal');
+document.getElementById('profileBtn').addEventListener('click',()=>{fillProfileModal();profileModal.classList.add('show')});
+profileModal.addEventListener('click',e=>{if(e.target===profileModal)profileModal.classList.remove('show')});
+
+function exportBackup(){
+ const data={
+  exportedAt:new Date().toISOString(),
+  profile:loadProfile(),
+  favorites:loadFav(),
+  shiftLog:loadShiftLog(),
+  dutyState:loadDuty(),
+  vehicleLogs:loadVehicleLogs(),
+  citationLogs:loadCitationLogs(),
+  bolos:loadBolos(),
+  webhook:loadWebhook(),
+  theme:localStorage.getItem('grwiki_dark')||'1'
+ };
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement('a'); a.href=url; a.download='grand-rp-wiki-backup.json'; document.body.appendChild(a); a.click(); a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),2000);
+ toast('Backup exported');
+}
+document.getElementById('importInput').addEventListener('change',e=>{
+ const file=e.target.files[0]; if(!file)return;
+ const reader=new FileReader();
+ reader.onload=ev=>{
+  try{
+   const data=JSON.parse(ev.target.result);
+   if(data.profile){localStorage.setItem('grwiki_profile',JSON.stringify(data.profile)); profile=data.profile}
+   if(data.favorites){favs=data.favorites; saveFav()}
+   if(data.shiftLog){shiftLog=data.shiftLog; saveShiftLog()}
+   if(data.dutyState!==undefined){dutyState=data.dutyState; saveDuty()}
+   if(data.vehicleLogs){vehicleLogs=data.vehicleLogs; saveVehicleLogs()}
+   if(data.citationLogs){citationLogs=data.citationLogs; saveCitationLogs()}
+   if(data.bolos){bolos=data.bolos; saveBolos()}
+   if(data.webhook!==undefined)localStorage.setItem('grwiki_webhook',data.webhook);
+   if(data.theme)localStorage.setItem('grwiki_dark',data.theme);
+   toast('Backup restored');
+   profileModal.classList.remove('show');
+   applyDark(localStorage.getItem('grwiki_dark')!=='0');
+   renderDutyBtn(); clearDutyInterval(); if(dutyState&&dutyState.on)startDutyInterval();
+   const active=document.querySelector('.nav button.active'); render(active?active.dataset.page:'dashboard');
+  }catch(err){toast('That file is not a valid backup')}
+ };
+ reader.readAsText(file);
+ e.target.value='';
+});
 
 /* ---------- Back to top ---------- */
 const toTopBtn=document.getElementById('toTop');
@@ -1207,14 +1461,15 @@ function cycleTip(){
 }
 function startTicker(){clearInterval(tipTimer); cycleTip(); tipTimer=setInterval(cycleTip,4800)}
 
-/* ---------- Boot splash (MDT terminal intro) ---------- */
+/* ---------- Boot splash (Grand RP intro) ---------- */
 (function boot(){
  const splash=document.getElementById('bootSplash'); if(!splash)return;
  let skipped=false;
  const hide=()=>{if(skipped)return; skipped=true; splash.classList.add('hide'); setTimeout(()=>splash.remove(),650)};
- const l2=document.getElementById('bootLine2');
- setTimeout(()=>{if(l2)l2.style.opacity=1},450);
- setTimeout(hide,1900);
+ const l2=document.getElementById('bootLine2'), l3=document.getElementById('bootLine3');
+ setTimeout(()=>{if(l2)l2.style.transition='opacity .4s';if(l2)l2.style.opacity=1},500);
+ setTimeout(()=>{if(l3)l3.style.transition='opacity .4s';if(l3)l3.style.opacity=1},1000);
+ setTimeout(hide,2300);
  const skip=document.getElementById('bootSkip'); if(skip)skip.addEventListener('click',hide);
  try{if(sessionStorage.getItem('grwiki_booted')==='1'){hide()}else{sessionStorage.setItem('grwiki_booted','1')}}catch(e){}
 })();
@@ -1243,6 +1498,8 @@ tenCodes.forEach(x=>searchIndex.push({page:'codes',title:x[0],text:x[1]}));
 searchIndex.push({page:'calculator',title:'Fine Calculator',text:'Build a citation and total fines, time and stars'});
 bodycam.forEach(g=>searchIndex.push({page:'bodycam',title:'Bodycam — '+g.title,text:g.lines.join(' ')}));
 searchIndex.push({page:'vehicle',title:'Vehicle Ticket Log',text:'Upload vehicle photo, log plate, charges and fine, copy or send to Discord webhook'});
+bolos.forEach((b,i)=>searchIndex.push({page:'bolo',title:'BOLO — '+b.subject,text:b.description+' '+b.lastSeen}));
+rpScripts.forEach(g=>searchIndex.push({page:'scripts',title:'RP Script — '+g.title,text:g.lines.join(' ')}));
 
 /* ---------- Command palette actions (triggered with "> ") ---------- */
 const paletteActions=[
@@ -1252,6 +1509,9 @@ const paletteActions=[
  {icon:'＋',label:'Go to Fine Calculator',run:()=>go('calculator')},
  {icon:'●',label:'Go to Bodycam Commands',run:()=>go('bodycam')},
  {icon:'🚗',label:'Go to Vehicle Ticket Log',run:()=>go('vehicle')},
+ {icon:'⚠',label:'Go to BOLO Board',run:()=>go('bolo')},
+ {icon:'✎',label:'Go to RP Script Library',run:()=>go('scripts')},
+ {icon:'👤',label:'Open Officer Profile & Backup',run:()=>{fillProfileModal();profileModal.classList.add('show')}},
  {icon:'10',label:'Go to 10-Codes & Phonetics',run:()=>go('codes')},
  {icon:'★',label:'Go to Bookmarks',run:()=>go('bookmarks')},
  {icon:'⌂',label:'Go to Dashboard',run:()=>go('dashboard')},
@@ -1295,6 +1555,7 @@ modalSearch.addEventListener('input',e=>doSearch(e.target.value));
 document.getElementById('searchInput').addEventListener('input',e=>{if(e.target.value){modal.classList.add('show');modalSearch.value=e.target.value;doSearch(e.target.value)}});
 
 updateFavCount();
+updateBoloCount();
 let startPage='dashboard';
 try{const lp=localStorage.getItem('grwiki_lastpage'); if(lp&&(pageFns[lp]||rules[lp]))startPage=lp}catch(e){}
 render(startPage);
