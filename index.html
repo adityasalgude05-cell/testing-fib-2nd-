@@ -5,10 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Grand RP Police Wiki — rules, penal code, traffic code, arrest procedures and event guides.">
 <title>Grand RP Police Wiki</title>
-<!-- FIREBASE SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
 :root{
@@ -280,32 +276,6 @@ button,input,textarea,select{font:inherit}.app{display:flex;min-height:100vh}
 </head>
 <body>
 
-<script>
-// =====================================================================
-// ADD YOUR FIREBASE DETAILS HERE
-// 1. Go to console.firebase.google.com -> Create Project
-// 2. Add a Web App (</>) and copy the config below
-// 3. Go to Realtime Database -> Create Database
-// 4. In Database Rules, set read: true and write: true
-// =====================================================================
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-
-// Initialize Firebase only if the config is filled out
-let isFirebaseEnabled = false;
-if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
-    firebase.initializeApp(firebaseConfig);
-    isFirebaseEnabled = true;
-}
-</script>
-
 <!-- STEALTH OVERLAY (Ctrl+B) -->
 <div id="stealthOverlay">
     <div class="stealth-logo">Google<span style="color:#EA4335">e</span><span style="color:#FBBC05">g</span><span style="color:#4285F4">l</span><span style="color:#34A853">e</span></div>
@@ -525,30 +495,22 @@ function doSignup() {
   const pass = document.getElementById('signupPass').value.trim();
 
   if(!name || !id || !pass) { alert("Please fill all fields"); return; }
+  if(dbUsers.find(u => u.id === id)) { alert("ID already registered. Please login."); return; }
 
-  // ONLINE DB LOGIC
-  if (isFirebaseEnabled) {
-      firebase.database().ref('users/' + id).once('value').then((snapshot) => {
-          if (snapshot.exists()) {
-              alert("ID already registered online. Please login.");
-          } else {
-              firebase.database().ref('users/' + id).set({
-                  name: name,
-                  id: id,
-                  pass: pass,
-                  date: new Date().toLocaleString()
-              }).then(() => {
-                  completeLoginProcess(id, name);
-              });
-          }
-      });
-  } else {
-      // OFFLINE DB LOGIC
-      if(dbUsers.find(u => u.id === id)) { alert("ID already registered locally. Please login."); return; }
-      dbUsers.push({ name, id, pass, date: new Date().toLocaleString() });
-      localStorage.setItem('grwiki_users', JSON.stringify(dbUsers));
-      completeLoginProcess(id, name);
-  }
+  dbUsers.push({ name, id, pass, date: new Date().toLocaleString() });
+  localStorage.setItem('grwiki_users', JSON.stringify(dbUsers));
+
+  activeUser = id;
+  localStorage.setItem('grwiki_active_user', activeUser);
+  document.getElementById('authOverlay').style.display = 'none';
+
+  let profile = loadProfile();
+  profile.name = name;
+  profile.badge = id;
+  localStorage.setItem('grwiki_profile', JSON.stringify(profile));
+
+  toast("Registered & Logged in successfully");
+  playStatic(0.6, 0.08); setTimeout(() => playBeep(1200, 0.2, 0.1), 600);
 }
 
 function doLogin() {
@@ -557,43 +519,16 @@ function doLogin() {
 
   if(!id || !pass) { alert("Please enter ID and Password"); return; }
 
-  // ONLINE DB LOGIC
-  if (isFirebaseEnabled) {
-      firebase.database().ref('users/' + id).once('value').then((snapshot) => {
-          if (snapshot.exists()) {
-              const userData = snapshot.val();
-              if (userData.pass === pass) {
-                  completeLoginProcess(id, userData.name);
-              } else {
-                  alert("Invalid Password");
-              }
-          } else {
-              alert("Invalid ID");
-          }
-      });
-  } else {
-      // OFFLINE DB LOGIC
-      const user = dbUsers.find(u => u.id === id && u.pass === pass);
-      if(user) {
-        completeLoginProcess(id, user.name);
-      } else {
-        alert("Invalid ID or Password locally");
-      }
-  }
-}
-
-function completeLoginProcess(id, name) {
+  const user = dbUsers.find(u => u.id === id && u.pass === pass);
+  if(user) {
     activeUser = id;
     localStorage.setItem('grwiki_active_user', activeUser);
     document.getElementById('authOverlay').style.display = 'none';
-
-    let profile = loadProfile();
-    profile.name = name;
-    profile.badge = id;
-    localStorage.setItem('grwiki_profile', JSON.stringify(profile));
-
-    toast("Welcome back, Officer " + name);
+    toast("Welcome back, Officer " + user.name);
     playStatic(0.6, 0.08); setTimeout(() => playBeep(1200, 0.2, 0.1), 600);
+  } else {
+    alert("Invalid ID or Password");
+  }
 }
 
 function doLogout() {
@@ -606,32 +541,16 @@ function doLogout() {
 }
 
 function showAdminUsers() {
-  if (isFirebaseEnabled) {
-      firebase.database().ref('users').once('value').then((snapshot) => {
-          if (!snapshot.exists()) {
-              alert("No registered users online yet.");
-              return;
-          }
-          const data = snapshot.val();
-          let txt = "Registered Officers (Online DB View):\n\n";
-          Object.keys(data).forEach(userId => {
-              const u = data[userId];
-              txt += `• Name: ${u.name} | ID: ${u.id} | Date: ${u.date}\n`;
-          });
-          alert(txt);
-      });
-  } else {
-      const adminUsers = JSON.parse(localStorage.getItem('grwiki_users') || '[]');
-      if(adminUsers.length === 0) {
-        alert("No registered users locally yet.");
-        return;
-      }
-      let txt = "Registered Officers (Local Admin View):\n\n";
-      adminUsers.forEach(u => {
-        txt += `• Name: ${u.name} | ID: ${u.id} | Date: ${u.date}\n`;
-      });
-      alert(txt);
+  const adminUsers = JSON.parse(localStorage.getItem('grwiki_users') || '[]');
+  if(adminUsers.length === 0) {
+    alert("No registered users yet.");
+    return;
   }
+  let txt = "Registered Officers (Admin View):\n\n";
+  adminUsers.forEach(u => {
+    txt += `• Name: ${u.name} | ID: ${u.id} | Date: ${u.date}\n`;
+  });
+  alert(txt);
 }
 
 
@@ -1529,8 +1448,7 @@ function guessVehicleFields(raw){
      let genericMatches = [...text.matchAll(/\b([A-Z0-9]{5,8})\b/gi)];
      for (let m of genericMatches) {
          let val = m[1].toUpperCase();
-         // Enforce mix of numbers and letters, avoid pure text words
-         if (!blacklist.includes(val) && !/^[A-Z]+$/.test(val)) {
+         if (!blacklist.includes(val)) {
              plateMatch = m;
              break;
          }
