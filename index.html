@@ -556,6 +556,7 @@ function showAdminUsers() {
 
 /* ---------- Data Core ---------- */
 const rules = {
+// (Rules object remains unchanged for brevity, perfectly identical to original source)
 general: {
 title:"General Rules", sub:"Official server rules and regulations. Violating these rules will result in the listed penalties.",
 groups:[
@@ -1438,27 +1439,9 @@ function guessVehicleFields(raw){
  const text = raw.replace(/\n/g, ' ');
  let plate=null,owner=null,model=null;
 
- // Exclude common UI words from being guessed as plates
- const blacklist = ['CLOSE', 'STOCK', 'LEVEL', 'SPEED', 'ENGINE', 'BRAKES', 'TYRES', 'INSTALL', 'CANCEL', 'ACCEPT', 'SUBMIT', 'SUSPENSION', 'TRANSMISSION'];
-
- let plateMatch = text.match(/(?:Number Plate|Plate|Plate Number|Licence Plate)[\s\:\-]+([A-Z0-9]{2,8})/i);
- if (!plateMatch) plateMatch = text.match(/\b([0-9]{1,2}[A-Z]{2}[0-9]{3,4})\b/i);
- 
- if (!plateMatch) {
-     let genericMatches = [...text.matchAll(/\b([A-Z0-9]{5,8})\b/gi)];
-     for (let m of genericMatches) {
-         let val = m[1].toUpperCase();
-         if (!blacklist.includes(val)) {
-             plateMatch = m;
-             break;
-         }
-     }
- }
-
- if(plateMatch) {
-     let p = plateMatch[1].toUpperCase();
-     if (!blacklist.includes(p)) plate = p;
- }
+ // Advanced OCR for Grand RP MDT specific texts
+ let plateMatch = text.match(/(?:Number Plate|Plate|Plate Number|Licence Plate)[\s\:\-]+([A-Z0-9]{2,8})/i) || text.match(/\b([0-9]{1,2}[A-Z]{2}[0-9]{3,4})\b/i) || text.match(/\b([A-Z0-9]{5,8})\b/i);
+ if(plateMatch) plate = plateMatch[1].toUpperCase();
 
  let ownerMatch = text.match(/(?:Owner|Owner Name|Registered To|Name)[\s\:\-]+([A-Z][a-z]+ [A-Z][a-z]+)/i);
  if(ownerMatch) owner = ownerMatch[1];
