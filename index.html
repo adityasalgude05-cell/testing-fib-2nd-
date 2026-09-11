@@ -106,39 +106,63 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .rowflex{display:flex;align-items:center;gap:8px}
 .table td.actioncol{width:30px;text-align:center}
 .table th.actioncol{width:30px}
-.calc-item{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:11px;margin:7px 0;background:var(--panel);cursor:pointer;transition:.12s}
-.calc-item:hover{border-color:var(--accent)}
-.calc-item.checked{background:var(--accentSoft);border-color:var(--accent)}
-.calc-item input{margin-top:3px;width:16px;height:16px;flex-shrink:0;accent-color:var(--accent)}
-.calc-item .ci-body{flex:1;min-width:0}
-.calc-item .ci-title{font-weight:700;font-size:13px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--text)}
-.calc-item .ci-meta{font-size:11px;color:var(--muted);margin-top:3px}
-.calc-summary{position:sticky;top:88px;background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px;margin-bottom:18px}
-.calc-summary h3{margin:0 0 12px;font-size:15px;color:var(--text)}
-.calc-totals{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.calc-totals div{background:var(--panel2);border-radius:11px;padding:11px;text-align:center}
-.calc-totals b{display:block;font-size:19px;color:var(--accent)}
-.calc-totals span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-.calc-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.calc-fields input, .calc-fields select{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);width:100%;color:var(--text)}
-.calc-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+/* Advanced Fine Calculator Rules */
+.calc-dash-wrapper { border: 1px solid var(--accent); border-radius: 16px; padding: 20px; margin-bottom: 20px; background: var(--bg); position: relative; }
+.calc-dash-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 20px; }
+.calc-dash-title { color: #fff; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+.calc-dash-title span { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 10px; }
+.calc-dash-actions { display: flex; gap: 8px; }
+.calc-dash-btn { background: var(--panel2); color: #fff; border: 1px solid var(--line); padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; display:flex; align-items:center; gap:6px; }
+.calc-dash-btn:hover { border-color: var(--accent); color: var(--accent); }
+.calc-dash-btn.primary { background: linear-gradient(135deg, #f6cb2f, #c98f00); color: #1a1200; border: none; }
+.calc-dash-btn.danger { color: #ef4444; border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.1); }
+.calc-dash-btn.danger:hover { background: #ef4444; color: #fff; }
+
+.calc-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+.calc-stat-box { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; text-align: center; }
+.calc-stat-box span { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.calc-stat-box b { display: block; font-size: 26px; color: #fff; font-family: 'JetBrains Mono', monospace; }
+.calc-stat-box p { margin: 8px 0 0 0; font-size: 11px; color: var(--textSoft); }
+
+.calc-filter-bar { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+.calc-filter-bar select { background: var(--bg); color: var(--text); border: 1px solid var(--line); padding: 8px 12px; border-radius: 8px; outline: none; cursor:pointer; }
+.calc-star-filters { display: flex; gap: 6px; align-items: center; }
+.calc-star-btn { background: transparent; border: 1px solid var(--line); color: var(--textSoft); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.calc-star-btn:hover { border-color: var(--accent); color: var(--accent); }
+.calc-star-btn.active { background: var(--accent); color: #1a1200; border-color: var(--accent); }
+.calc-legend { display: flex; gap: 12px; align-items: center; font-size: 11px; font-family: monospace; color: var(--muted); margin-left: auto; }
+
+.dot-y { display:inline-block; width:8px; height:8px; border-radius:50%; background:#facc15; box-shadow:0 0 6px rgba(250,204,21,0.6); }
+.dot-r { display:inline-block; width:8px; height:8px; border-radius:50%; background:#ef4444; box-shadow:0 0 6px rgba(239,68,68,0.6); }
+.dot-g { display:inline-block; width:8px; height:8px; border-radius:50%; background:#22c55e; box-shadow:0 0 6px rgba(34,197,94,0.6); }
+.dot-p { display:inline-block; width:8px; height:8px; border-radius:50%; background:#ec4899; box-shadow:0 0 6px rgba(236,72,153,0.6); }
+.dot-b { display:inline-block; width:8px; height:8px; border-radius:50%; background:#94a3b8; box-shadow:0 0 6px rgba(148,163,184,0.6); }
+
+.tag-txt { font-size: 10px; color: var(--muted); margin-left: 4px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; }
+
+.calc-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; background: var(--panel); cursor: pointer; transition: .15s; }
+.calc-item:hover { border-color: var(--accent); }
+.calc-item.checked { background: var(--accentSoft); border-color: var(--accent); }
+.calc-item input { margin-top: 4px; width: 16px; height: 16px; accent-color: var(--accent); cursor:pointer; }
+.calc-item .ci-body { flex: 1; }
+.calc-item .ci-title { font-weight: 700; font-size: 14px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; color: var(--text); }
+.calc-item .ci-meta { font-size: 12px; color: var(--textSoft); margin-top: 6px; display: flex; align-items: center; gap: 10px; }
+.calc-item .ci-tags { display: flex; gap: 8px; align-items: center; margin-top: 8px; flex-wrap: wrap; }
+
 .btn{border:0;border-radius:10px;padding:10px 16px;font-weight:800;font-size:12.5px;cursor:pointer;background:linear-gradient(135deg,#f6cb2f,#c98f00);color:#1a1200}
 .btn:hover{filter:brightness(1.08)}
 .btn.secondary{background:var(--accentSoft);color:var(--accent2)}
 [data-dark="1"] .btn.secondary{color:var(--accent)}
 .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-.citation-preview{white-space:pre-wrap;font-family:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;font-size:12px;background:var(--terminalBg);color:var(--terminalText);border-radius:12px;padding:16px;line-height:1.7;margin-top:12px;border:1px solid rgba(242,183,5,.15)}
-.calc-search{margin-bottom:14px}
-.calc-search input{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:11px;background:var(--panel2);color:var(--text)}
-.codeschart{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
-.codeschart div{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 6px;text-align:center;font-weight:800;font-size:15px;color:var(--accent)}
-.codeschart div span{display:block;font-weight:500;font-size:10px;color:var(--muted);margin-top:3px}
+
 .toasthost{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:99;display:flex;flex-direction:column;gap:8px;align-items:center}
 .toast{background:#0e1320;color:#fff;padding:11px 18px;border-radius:11px;font-size:12.5px;box-shadow:0 12px 30px rgba(0,0,0,.5);opacity:0;transform:translateY(8px);transition:.25s;border-left:3px solid var(--accent)}
 .toast.show{opacity:1;transform:translateY(0)}
 .totop{position:fixed;right:24px;bottom:24px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--panel);box-shadow:var(--shadow);cursor:pointer;font-size:17px;opacity:0;pointer-events:none;transition:.2s;z-index:40;color:var(--text)}
 .totop.show{opacity:1;pointer-events:auto}
+
 .helpbox{padding:20px}
 .helphead{font-weight:800;font-size:15px;margin-bottom:12px;color:var(--text)}
 .helprow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;color:var(--text)}
@@ -148,20 +172,21 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .emptybookmarks{padding:50px 20px;text-align:center;color:var(--muted)}
 .emptybookmarks .big{font-size:34px;display:block;margin-bottom:10px}
 
-/* Custom Timezone Dropdown */
+/* Custom Timezone Dropdown (Dark exact replica) */
 .tz-dropdown-container { position:relative; cursor:pointer; user-select:none; }
 .tz-dropdown-container:hover { border-color: var(--accent); background: var(--accentSoft); }
 .tz-dropdown-container .cz span { color: var(--accent); font-weight:700; }
-.tz-menu { position:absolute; top:calc(100% + 8px); right:0; background:var(--panel); border:1px solid var(--line); border-radius:12px; box-shadow:0 12px 30px rgba(0,0,0,0.6); min-width:220px; z-index:100; display:none; flex-direction:column; overflow:hidden; }
+.tz-menu { position:absolute; top:calc(100% + 8px); right:0; background:#111214; border:1px solid #2d2f36; border-radius:12px; box-shadow:0 12px 30px rgba(0,0,0,0.8); min-width:280px; z-index:100; display:none; flex-direction:column; overflow:hidden; }
 .tz-menu.show { display:flex; animation: fadein 0.15s ease; }
-.tz-item { padding:12px 16px; font-size:12px; color:var(--text); cursor:pointer; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
-.tz-item:last-child { border-bottom:0; }
-.tz-item:hover { background:var(--hoverBg); color:var(--accent); }
-.tz-item-time { font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--textSoft); }
-.tz-item:hover .tz-item-time { color:var(--accent); }
+.tz-menu-header { font-size: 10px; color: #8993ab; padding: 12px 16px 8px; font-weight: 800; letter-spacing: 0.1em; display: flex; align-items: center; gap: 6px; text-transform: uppercase; }
+.tz-item { padding:12px 16px; font-size:13px; color:#d1d5db; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition: background 0.1s; }
+.tz-item:hover { background:rgba(255,255,255,0.05); }
+.tz-item.active { background:rgba(255,255,255,0.05); }
+.tz-item.active .tz-item-time { color: #3b82f6; }
+.tz-item-time { font-family:'JetBrains Mono', monospace; font-weight:500; color:#8993ab; }
 
-@media print{.sidebar,.topbar,.totop,.toasthost,.mobilebtn,.footer,.calc-fields,.calc-actions,.calc-search,.starbtn,.copybtn,.fabmain,.fabstack,.bootsplash{display:none!important}.main{margin-left:0!important;width:100%!important}.content{padding:0!important;max-width:100%!important}.card{box-shadow:none;border:1px solid #999}.calc-summary{position:static;box-shadow:none}body{background:#fff!important;color:#111!important}}
-@media(max-width:650px){.calc-totals{grid-template-columns:1fr 1fr}.calc-fields{grid-template-columns:1fr}.calc-summary{position:static}}
+@media print{.sidebar,.topbar,.totop,.toasthost,.mobilebtn,.footer,.calc-filter-bar,.calc-dash-actions,.starbtn,.copybtn,.fabmain,.fabstack,.bootsplash{display:none!important}.main{margin-left:0!important;width:100%!important}.content{padding:0!important;max-width:100%!important}.card{box-shadow:none;border:1px solid #999}body{background:#fff!important;color:#111!important}}
+@media(max-width:650px){.calc-stats-grid{grid-template-columns:1fr 1fr}}
 
 /* --- bodycam, duty clock, command palette --- */
 .navtag{margin-left:auto;background:linear-gradient(135deg,#f2b705,#ef4444);color:#1a1200;font-size:9px;font-weight:800;border-radius:999px;padding:2px 6px;letter-spacing:.04em}
@@ -188,13 +213,6 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .duty-widget .dw-status span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 .shiftlog{margin-top:10px}
 .shiftlog table{font-size:12px}
-.palette-action{display:flex;align-items:center;gap:10px}
-.palette-action .pa-ico{width:22px;height:22px;border-radius:6px;background:var(--accentSoft);color:var(--accent);display:grid;place-items:center;font-size:12px;flex-shrink:0}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:999px;padding:7px 13px;font-size:12px;cursor:pointer;font-weight:600}
-.chip:hover{border-color:var(--accent);color:var(--accent)}
-@media print{.dutybtn,.duty-widget,.cmdline .copybtn,.cmdgroup-foot{display:none!important}.cmdline{background:#fff!important;color:#111!important;border-bottom:1px solid #ccc!important}}
-@media(max-width:650px){.dutybtn span:not(.dutydot){display:none}.dutybtn{padding:8px}}
 
 /* --- vehicle ticket log --- */
 .uploadbox{border:2px dashed var(--line);border-radius:16px;padding:26px;text-align:center;cursor:pointer;background:var(--panel2);transition:.15s;color:var(--text)}
@@ -207,7 +225,6 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .veh-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .veh-grid input,.veh-grid textarea{padding:11px 13px;border:1px solid var(--line);border-radius:11px;background:var(--panel2);width:100%;font:inherit;color:var(--text)}
 .veh-grid textarea{grid-column:1/-1;resize:vertical;min-height:60px}
-.veh-full{grid-column:1/-1}
 .webhookrow{display:flex;gap:8px;align-items:center;margin:12px 0}
 .webhookrow input{flex:1;padding:10px 13px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--text)}
 .loglist .logitem{border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin:9px 0;background:var(--panel)}
@@ -217,52 +234,6 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .loglist pre{white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;color:var(--textSoft);margin:0;max-height:120px;overflow:auto}
 .loglist .logitem-actions{display:flex;gap:6px;margin-top:8px}
 @media(max-width:650px){.veh-grid{grid-template-columns:1fr}}
-
-/* --- v5: dual clock, boot splash, FAB, ultra-premium touches --- */
-.clockbox{display:flex;gap:0;align-items:center;padding:6px 4px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
-.clockbox .cz{display:flex;flex-direction:column;line-height:1.15;padding:4px 12px}
-.clockbox .cz b{font-size:13px;font-family:'JetBrains Mono',ui-monospace,monospace;color:var(--accent);letter-spacing:.02em}
-.clockbox .cz span{color:var(--muted);font-size:8.5px;text-transform:uppercase;letter-spacing:.06em}
-.clockbox .csep{width:1px;height:26px;background:var(--line)}
-.clockcard{background:linear-gradient(135deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:18px;padding:22px 24px;display:flex;gap:20px;flex-wrap:wrap;align-items:center;margin-bottom:20px;position:relative;overflow:hidden}
-.clockcard::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 10% 20%,rgba(242,183,5,.08),transparent 50%);pointer-events:none}
-.clockcard .cc-item{flex:1;min-width:170px;position:relative}
-.clockcard .cc-item h4{margin:0 0 4px;font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);display:flex;align-items:center;gap:6px}
-.clockcard .cc-item b{font-size:28px;font-family:'JetBrains Mono',ui-monospace,monospace;display:block;color:var(--text);letter-spacing:.01em}
-.clockcard .cc-item small{color:var(--muted);font-size:11px}
-.clockcard .cc-divider{width:1px;align-self:stretch;background:var(--line)}
-@media(max-width:750px){.clockcard{flex-direction:column;align-items:stretch}.clockcard .cc-divider{display:none}}
-@media(max-width:1000px){.clockbox{display:none}}
-
-.bootsplash{position:fixed;inset:0;background:#03040a;color:var(--accent);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',ui-monospace,monospace;transition:opacity .5s ease,visibility .5s ease}
-.bootsplash.hide{opacity:0;visibility:hidden;pointer-events:none}
-.bootsplash .bootlogo{font-size:15px;letter-spacing:.35em;margin-bottom:20px;opacity:.9;font-weight:700}
-.bootsplash .bootline{font-size:12.5px;margin:3px 0;opacity:.85;color:#c7cede}
-.bootsplash .bootbar{width:260px;height:3px;background:#1a2033;border-radius:2px;margin-top:20px;overflow:hidden}
-.bootsplash .bootbar i{display:block;height:100%;background:linear-gradient(90deg,#f2b705,#fff3b0);width:0%;animation:bootfill 2.2s ease forwards}
-@keyframes bootfill{to{width:100%}}
-.bootsplash .bootskip{margin-top:18px;font-size:10px;color:var(--sidebarMuted);cursor:pointer;text-decoration:underline}
-
-.fabmain{position:fixed;right:24px;bottom:24px;width:52px;height:52px;border-radius:50%;border:0;background:linear-gradient(135deg,#f6cb2f,#c98f00);color:#1a1200;font-size:22px;cursor:pointer;box-shadow:0 10px 26px rgba(242,183,5,.4);z-index:42;transition:transform .2s}
-.fabmain.spin{transform:rotate(45deg)}
-.fabstack{position:fixed;right:26px;bottom:86px;display:flex;flex-direction:column;gap:10px;align-items:flex-end;z-index:41}
-.fabstack .fabitem{display:flex;align-items:center;gap:8px;opacity:0;transform:translateY(8px) scale(.92);pointer-events:none;transition:.16s}
-.fabstack.open .fabitem{opacity:1;transform:none;pointer-events:auto}
-.fabstack .fabitem span{background:#0e1320;color:#fff;font-size:11px;padding:5px 10px;border-radius:8px;white-space:nowrap;box-shadow:var(--shadow);border:1px solid var(--line)}
-.fabstack .fabitem button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--text);box-shadow:var(--shadow);cursor:pointer;font-size:16px}
-.fabstack .fabitem button:hover{border-color:var(--accent);color:var(--accent)}
-@media print{.fabmain,.fabstack,.clockbox{display:none!important}}
-
-/* --- v6: OCR auto-detect --- */
-.ocrbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
-.ocrbar .ocr-status{flex:1;min-width:160px;font-size:12px;color:var(--muted)}
-.ocrbar .ocr-status b{color:var(--text)}
-.ocr-spinner{width:14px;height:14px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--accent);animation:ocrspin .7s linear infinite;display:inline-block;vertical-align:-2px;margin-right:6px}
-@keyframes ocrspin{to{transform:rotate(360deg)}}
-.veh-grid input.auto-filled{border-color:var(--success);background:var(--successSoft);animation:autoglow 1.8s ease}
-@keyframes autoglow{0%{box-shadow:0 0 0 3px var(--successSoft)}100%{box-shadow:0 0 0 0 transparent}}
-.ocr-chip{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:var(--successSoft);color:var(--success);padding:2px 7px;border-radius:999px;margin-left:6px}
-@media print{.ocrbar{display:none!important}}
 </style>
 </head>
 <body>
@@ -274,7 +245,7 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 </div>
 
 <!-- AUTHENTICATION OVERLAY -->
-<div id="authOverlay">
+<div id="authOverlay" style="display:none;">
   <div class="auth-box">
     <div class="auth-logo">GR</div>
     <h2 id="authTitle">Officer Login</h2>
@@ -317,11 +288,11 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
     <button data-page="map"><span class="ico">⌖</span>Territory Map</button>
     
     <div class="nav-title">Officer Tools</div>
+    <button data-page="calculator"><span class="ico">＋</span>Arrest Calculator</button>
     <button data-page="bodycam"><span class="ico">●</span>Bodycam Commands</button>
     <button data-page="deptradio"><span class="ico">📻</span>Department Radio</button>
     <button data-page="vehicle"><span class="ico">🚗</span>Vehicle Ticket Log</button>
     <button data-page="notepad"><span class="ico">📝</span>Dispatch Notepad</button>
-    <button data-page="calculator"><span class="ico">＋</span>Fine Calculator</button>
     <button data-page="codes"><span class="ico">10</span>Radio Codes &amp; Phonetics</button>
     <button data-page="bookmarks"><span class="ico">★</span>Bookmarks<span class="navcount" id="favCount"></span></button>
     
@@ -342,17 +313,18 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
      <b id="clockLocal">--:--:--</b>
      <span id="tzLabel">🇮🇳 India (IST) ▾</span>
      <div class="tz-menu" id="tzMenu">
-       <div class="tz-item" onclick="setTz('Asia/Kabul', '🇦🇫 Kabul (AFT)')"><span>UTC+04:30 — Kabul</span><span class="tz-item-time" id="tz_AFT">--:--</span></div>
-       <div class="tz-item" onclick="setTz('Asia/Karachi', '🇵🇰 Karachi (PKT)')"><span>UTC+05:00 — Karachi / PKT</span><span class="tz-item-time" id="tz_PKT">--:--</span></div>
-       <div class="tz-item" onclick="setTz('Asia/Kolkata', '🇮🇳 India (IST)')"><span>UTC+05:30 — India (IST)</span><span class="tz-item-time" id="tz_IST">--:--</span></div>
-       <div class="tz-item" onclick="setTz('Asia/Kathmandu', '🇳🇵 Nepal (NPT)')"><span>UTC+05:45 — Nepal</span><span class="tz-item-time" id="tz_NPT">--:--</span></div>
-       <div class="tz-item" onclick="setTz('Asia/Dhaka', '🇧🇩 Dhaka (BST)')"><span>UTC+06:00 — Dhaka / BST</span><span class="tz-item-time" id="tz_BST">--:--</span></div>
-       <div class="tz-item" onclick="setTz('Asia/Yangon', '🇲🇲 Myanmar (MMT)')"><span>UTC+06:30 — Myanmar</span><span class="tz-item-time" id="tz_MMT">--:--</span></div>
-       <div class="tz-item" onclick="setTz('Asia/Bangkok', '🇹🇭 Bangkok (ICT)')"><span>UTC+07:00 — Bangkok / ICT</span><span class="tz-item-time" id="tz_ICT">--:--</span></div>
-       <div class="tz-item" onclick="setTz('Asia/Singapore', '🇸🇬 Singapore (SGT)')"><span>UTC+08:00 — Singapore / SGT</span><span class="tz-item-time" id="tz_SGT">--:--</span></div>
-       <div class="tz-item" onclick="setTz('Asia/Tokyo', '🇯🇵 Tokyo (JST)')"><span>UTC+09:00 — Tokyo / JST</span><span class="tz-item-time" id="tz_JST">--:--</span></div>
-       <div class="tz-item" onclick="setTz('Australia/Sydney', '🇦🇺 Sydney (AEST)')"><span>UTC+10:00 — Sydney / AEST</span><span class="tz-item-time" id="tz_AEST">--:--</span></div>
-       <div class="tz-item" onclick="setTz('Pacific/Auckland', '🇳🇿 Auckland (NZST)')"><span>UTC+12:00 — Auckland / NZST</span><span class="tz-item-time" id="tz_NZST">--:--</span></div>
+       <div class="tz-menu-header">🌐 Select Your Timezone</div>
+       <div class="tz-item" id="tzli_AFT" onclick="setTz('Asia/Kabul', '🇦🇫 Kabul')"><span>UTC+04:30 — Kabul</span><span class="tz-item-time" id="tz_AFT">--:--</span></div>
+       <div class="tz-item" id="tzli_PKT" onclick="setTz('Asia/Karachi', '🇵🇰 Karachi / PKT')"><span>UTC+05:00 — Karachi / PKT</span><span class="tz-item-time" id="tz_PKT">--:--</span></div>
+       <div class="tz-item" id="tzli_IST" onclick="setTz('Asia/Kolkata', '🇮🇳 India (IST)')"><span>UTC+05:30 — India (IST)</span><span class="tz-item-time" id="tz_IST">--:--</span></div>
+       <div class="tz-item" id="tzli_NPT" onclick="setTz('Asia/Kathmandu', '🇳🇵 Nepal')"><span>UTC+05:45 — Nepal</span><span class="tz-item-time" id="tz_NPT">--:--</span></div>
+       <div class="tz-item" id="tzli_BST" onclick="setTz('Asia/Dhaka', '🇧🇩 Dhaka / BST')"><span>UTC+06:00 — Dhaka / BST</span><span class="tz-item-time" id="tz_BST">--:--</span></div>
+       <div class="tz-item" id="tzli_MMT" onclick="setTz('Asia/Yangon', '🇲🇲 Myanmar')"><span>UTC+06:30 — Myanmar</span><span class="tz-item-time" id="tz_MMT">--:--</span></div>
+       <div class="tz-item" id="tzli_ICT" onclick="setTz('Asia/Bangkok', '🇹🇭 Bangkok / ICT')"><span>UTC+07:00 — Bangkok / ICT</span><span class="tz-item-time" id="tz_ICT">--:--</span></div>
+       <div class="tz-item" id="tzli_SGT" onclick="setTz('Asia/Singapore', '🇸🇬 Singapore / HKT')"><span>UTC+08:00 — Singapore / HKT</span><span class="tz-item-time" id="tz_SGT">--:--</span></div>
+       <div class="tz-item" id="tzli_JST" onclick="setTz('Asia/Tokyo', '🇯🇵 Tokyo / JST')"><span>UTC+09:00 — Tokyo / JST</span><span class="tz-item-time" id="tz_JST">--:--</span></div>
+       <div class="tz-item" id="tzli_AEST" onclick="setTz('Australia/Sydney', '🇦🇺 Sydney / AEST')"><span>UTC+10:00 — Sydney / AEST</span><span class="tz-item-time" id="tz_AEST">--:--</span></div>
+       <div class="tz-item" id="tzli_NZST" onclick="setTz('Pacific/Auckland', '🇳🇿 Auckland / NZST')"><span>UTC+12:00 — Auckland / NZST</span><span class="tz-item-time" id="tz_NZST">--:--</span></div>
      </div>
    </div>
   </div>
@@ -368,7 +340,7 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 <div class="modal" id="modal"><div class="modalbox"><input id="modalSearch" placeholder="Search the wiki..."><div class="results" id="results"></div></div></div>
 <div class="modal" id="profileModal"><div class="modalbox helpbox">
   <div class="helphead">Officer Profile &amp; Backup</div>
-  <p style="font-size:12px;color:var(--muted);margin:-4px 0 14px">Saved only in this browser. Your badge, name and department auto-fill into the Fine Calculator.</p>
+  <p style="font-size:12px;color:var(--muted);margin:-4px 0 14px">Saved only in this browser.</p>
   <div class="veh-grid" style="margin-bottom:14px">
    <input id="pfName" placeholder="Officer name">
    <input id="pfBadge" placeholder="Badge #">
@@ -404,7 +376,7 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 <div class="fabstack" id="fabStack">
  <div class="fabitem"><span>Vehicle Ticket Log</span><button onclick="go('vehicle');closeFab()">🚗</button></div>
  <div class="fabitem"><span>Bodycam Commands</span><button onclick="go('bodycam');closeFab()">●</button></div>
- <div class="fabitem"><span>Fine Calculator</span><button onclick="go('calculator');closeFab()">＋</button></div>
+ <div class="fabitem"><span>Arrest Calculator</span><button onclick="go('calculator');closeFab()">＋</button></div>
  <div class="fabitem"><span id="fabDutyLabel">Start Duty</span><button onclick="toggleDuty();closeFab()">🕐</button></div>
 </div>
 <div class="bootsplash" id="bootSplash">
@@ -417,41 +389,39 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 </div>
 
 <script>
-/* ---------- Audio Engine (Web Audio API) ---------- */
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+/* ---------- Audio Engine (Web Audio API - Clicks Only) ---------- */
+let audioCtx = null;
 
-function playBeep(freq = 800, dur = 0.1, vol = 0.1, type = 'sine') {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const osc = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
-    osc.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + dur);
+function initAudio() {
+    if(audioCtx) return;
+    try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch(e) {}
 }
 
-function playStatic(dur = 0.5, vol = 0.05) {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const bufferSize = audioCtx.sampleRate * dur;
-    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-        data[i] = Math.random() * 2 - 1;
-    }
-    const noise = audioCtx.createBufferSource();
-    noise.buffer = buffer;
-    const gainNode = audioCtx.createGain();
-    gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
-    noise.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    noise.start();
+function playTapSound() {
+    if(!audioCtx) return;
+    try {
+        if (audioCtx.state === 'suspended') audioCtx.resume().catch(()=>{});
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+    } catch(e) {}
 }
 
+document.addEventListener('click', (e) => {
+    initAudio();
+    const clickable = e.target.closest('button, .calc-item, select, input[type="checkbox"], .nav button, .tz-item, .chip, .eventcard, summary, .auth-btn, .calc-star-btn');
+    if(clickable) playTapSound();
+});
 
 /* ---------- Auth System ---------- */
 let dbUsers = JSON.parse(localStorage.getItem('grwiki_users') || '[]');
@@ -501,7 +471,6 @@ function doSignup() {
   localStorage.setItem('grwiki_profile', JSON.stringify(profile));
   
   toast("Registered & Logged in successfully");
-  playStatic(0.6, 0.08); setTimeout(() => playBeep(1200, 0.2, 0.1), 600);
 }
 
 function doLogin() {
@@ -516,7 +485,6 @@ function doLogin() {
     localStorage.setItem('grwiki_active_user', activeUser);
     document.getElementById('authOverlay').style.display = 'none';
     toast("Welcome back, Officer " + user.name);
-    playStatic(0.6, 0.08); setTimeout(() => playBeep(1200, 0.2, 0.1), 600);
   } else {
     alert("Invalid ID or Password");
   }
@@ -815,37 +783,178 @@ const events = {
 };
 
 const penal = [
-["2.1.1","Possession of Narcotics - Less than 4 or less Units","$15,000","-","-"],["2.1.1","Repeat Offense","$10,000","15","1"],["2.1.2","Possession of Narcotics – 5 to 9 Units","$20,000","30","2"],["2.1.3","Possession of Narcotics with Intent to Distribute","$30,000","45","3"],["2.1.6","Possession of Prohibited Items (Less than 3)","$20,000","30","2"],["2.1.7","Possession of Prohibited Items with Intent to Distribute (More than 3)","$30,000","45","3"],
-["2.2.1","Culpable Homicide / Manslaughter","$20,000","30","2"],["2.2.2","Murder or Attempted Murder","$40,000","60","4"],["2.2.3","Murder or Attempted Murder - Premediated","$50,000","75","5"],["2.3.1","Assault by Threat","$20,000","30","2"],
-["2.4.1","Abandonment","$10,000","15","1"],["2.4.2","Failure to Act / Abandonment by Civil Servant","$20,000","30","2"],
-["2.5.1","Kidnapping or Attempted Kidnapping","$30,000","45","3"],["2.5.2","Kidnapping or Attempted Kidnapping - Civil Servant","$40,000","60","4"],["2.5.3","Kidnapping or Attempted Kidnapping - LEO","$50,000","75","5"],["2.6.1","Taking a Hostage","$50,000","75","5"],
-["2.7.1","Sexual Harassment","$30,000","45","3"],["2.7.2","Sexual Assault","$40,000","60","4"],["2.7.3","Rape","$50,000","75","5"],
-["2.8.1","Forgery of Documents","$20,000","30","2"],["2.8.2","Dealing in Forged Documents","$30,000","45","3"],
-["2.9.1","Petty Larceny or Theft","$10,000","15","1"],["2.9.1","Repeat Offence","$20,000","30","2"],["2.9.4","Grand Theft Auto","$40,000","60","4"],
-["2.10","Armed Robbery","$40,000","60","4"],["2.11","Heist","$40,000","60","4"],["2.12","Extortion","$40,000","60","4"],["2.13","Fraud","$20,000","30","2"],["2.14","Creation of Criminal Community","$40,000","60","4"],
-["2.15.1","Participation in Banditry","$40,000","60","4"],["2.15.2","Banditry as a Leader","$50,000","75","5"],
-["2.16.1","Assault","$10,000","-","-"],["2.16.2","Assault with Intent to Harm","$10,000","15","1"],["2.16.3","Assault GBH","$20,000","30","2"],
-["2.17.1","Unlicensed Firearms Carry","$10,000","-","-"],["2.17.2","Excessive Firearms Carry (Overcarrying)","$40,000","60","4"],["2.17.3","Possession of Illegal Firearms","$20,000","30","2"],["2.17.4","Dealing in Illegal Firearms","$40,000","60","4"],["2.17.5","Possession of State Issued Items","$40,000","60","4"],["2.17.6","Possession of Illegal Body Armour","$20,000","30","2"],["2.17.7","Brandishing a Firearm","$30,000","45","3"],["2.17.8","Discharging of a Firearm","$10,000","-","-"],["2.17.8","Repeat Offense","$20,000","30","2"],["2.17.9","Public Carrying of a Firearm","$10,000","-","-"],["2.17.9","Repeat Offence","$10,000","15","1"],
-["2.18.1","Misappropriation of a Vehicle (Reckless Driving)","$20,000","30","2"],["2.18.2","Misappropriation of a Official or State Vehicle","$30,000","45","3"],["2.18.3","Misuse of a Vehicle","$10,000","15","1"],["2.18.4","Vehicle Used in Criminal Activity","$10,000","-","-"],["2.19","Pimping","$20,000","30","2"],["2.2","Prostitution","$10,000","-","-"],["2.2","Repeat Offense","$10,000","15","1"],["2.21","Hooliganism","$40,000","60","4"],["2.22","Bribery or Attempted Bribery of an Official","$30,000","45","3"],["2.23","Failure to Pay Fines","$50,000","60","4"],["2.24.1","Leaving the Scene","$20,000","30","2"],["2.24.2","Evading Arrest","$40,000","60","4"],["2.25","Attempted or Actual Escape from Custody","$50,000","75","5"],["2.26","Insubordination / Failure to Comply","$30,000","45","3"],["2.27","Violation of Privacy","$20,000","30","2"],["2.28","Intentional Spreading of Disease","$20,000","30","2"],["2.29","Breaking and Entering into a Private Residence","$30,000","45","3"],["2.30.1","Animal Cruelty","$20,000","30","2"],["2.30.2","Killing on Animal or Pet","$30,000","45","3"],
-["3.1.1","Terrorism as a Participant","$40,000","60","4"],["3.1.2","Leading of Terrorism","$50,000","75","5"],["3.2.1","Participating in a Riot","$20,000","30","2"],["3.2.2","Leading of a Riot","$30,000","45","3"],["3.3.1","Sedition as a Participant","$30,000","45","3"],["3.3.2","Leading of Sedition","$40,000","60","4"],["3.4.1","Treason as a Participant","$50,000","75","5"],["3.4.2","Leading of Treason (High Treason)","$50,000","75","5"],["3.5.1","Obstruction of an Investigation","$20,000","30","2"],["3.5.2","Obstruction of an Officer or Civil Servant","$30,000","45","3"],["3.5.3","Obstruction of an Arrest or Detention","$40,000","60","4"],["3.6.1","Murder, or Attempted Murder of LEO in the Line of Duty (NG Raid or Store Robbery)","$40,000","60","4"],["3.6.2","Murder, or Attempted Murder of a Civil Servant or LEO","$50,000","75","5"],["3.7","False Reporting","$40,000","60","4"],["3.8.1","Trespassing","$20,000","30","2"],["3.8.2","Trespassing on Secure Facility","$30,000","45","3"],["3.9.1","Collusion with criminal elements","$30,000","45","3"],["3.11.1","Failure to Submit documents","$10,000","15","1"],["3.11.2","Failure to identify","$20,000","30","2"],["3.12.1","Disclosure of Information","$40,000","60","4"],["3.12.2","Disclosure of Classified Information","$50,000","75","5"],["3.13.1","Posing as a Civil Servant","$30,000","45","3"],["3.13.2","Posing as a Law Enforcement Officer","$40,000","60","4"],["3.14.1","Corruption by a State Employee","$40,000","60","4"],
-["4.1.1","Disobeying an Order of a Superior","$40,000","60","4"],["4.1.2","Disobeying an Order of a State Leader","$40,000","60","4"],["4.1.3","Disobeying an Order of a Judicial Authority","$40,000","60","4"],["4.2.1","Negligence by a Civil Servant","$40,000","60","4"],["4.2.2","Negligence by a Law Enforcement Officer","$30,000","45","3"],["4.3","Sabotage","$75,000","75","5"],["4.4.1","Disclosure of Police Information","$30,000","45","3"],["4.4.1","Disclosure of Federal Information","$40,000","60","4"],["4.4.2","Disclosure of State Information","$50,000","75","5"],["4.5","Arbitrariness","$20,000","30","2"],["4.6","Receiving a Bribe","$40,000","60","4"],["4.7.1","Conduct Unbecoming","$20,000","30","2"],["4.7.2","Gross Ethics Violations","$30,000","45","3"],
-["5.1.1","Speeding up to 30km/h over the limit","$5,000","-","-"],["5.1.2","Speeding up to 60 km/h over the limit","$10,000","-","-"],["5.1.3","Speeding up to 90 km/h over the limit","$15,000","-","-"],["5.1.4","Speeding in Excess of 90km/h over the limit","$20,000","30","2"],
-["5.5","Abandoning a Vehicle (Impound)","$5,000","-","-"],["5.6","Unsafe Transporting of a Passenger","$10,000","-","-"],
-["6.1.1","Contempt of Court","$30,000","45","3"],["6.1.1","Contempt of Court by a State Employee","$40,000","60","4"],["6.2.1","Disruption of the Trial","$30,000","45","3"],["6.2.2","Disruption of the Trial by a State Employee","$40,000","60","4"],["6.3","Threats to Litigants","$40,000","60","4"],["6.4","Falsification of Evidence","$40,000","60","4"],["6.5","Perjury","$40,000","60","4"],
-["8.1.1","Selling of Prohibited Items (Less than 5)","$20,000","15","1"],["8.1.2","Distribution of Prohibited Items (5 - 10)","$20,000","30","2"],["8.1.3","Dealing in Prohibited Items (10 or more)","$30,000","45","3"],["8.2.1","False Advertising","$15,000","-","-"],["8.3.1","Tax Evasion","$30,000","",""],["8.3.2","Felony Tax Evasion","$40,000","60","4"],
-["9.2.1","Smuggling of Contraband","$30,000","45","3"],["9.2.2","Smuggling of Contraband by a State Employee","$40,000","60","4"],["9.3.1","Aiding an Escape","$50,000","75","5"],["9.3.2","Aiding an Escape by a State Employee","$30,000","45","3"],["9.4.1","Aiding a Mass Escape","$50,000","75","5"],["9.4.1","Aiding a Mass Escape by a State Employee","$50,000","75","5"],["9.5.1","Sexual Acts with Inmates by a Civilian","$20,000","30","2"],["9.5.2","Sexual Acts with Inmates by a State Employee","$20,000","30","2"]
+["2.1.1","Possession of Narcotics - Less than 4 or less Units",15000,0,0,[]],
+["2.1.1","Repeat Offense",10000,15,1,[]],
+["2.1.2","Possession of Narcotics – 5 to 9 Units",20000,30,2,[]],
+["2.1.3","Possession of Narcotics with Intent to Distribute",30000,45,3,[]],
+["2.1.6","Possession of Prohibited Items (Less than 3)",20000,30,2,[]],
+["2.1.7","Possession of Prohibited Items with Intent to Distribute (More than 3)",30000,45,3,[]],
+["2.2.1","Culpable Homicide / Manslaughter",20000,30,2,[]],
+["2.2.2","Murder or Attempted Murder",40000,60,4,[]],
+["2.2.3","Murder or Attempted Murder - Premediated",50000,75,5,["y"]],
+["2.3.1","Assault by Threat",20000,30,2,[]],
+["2.4.1","Abandonment",10000,15,1,[]],
+["2.4.2","Failure to Act / Abandonment by Civil Servant",20000,30,2,[]],
+["2.5.1","Kidnapping or Attempted Kidnapping",30000,45,3,[]],
+["2.5.2","Kidnapping or Attempted Kidnapping - Civil Servant",40000,60,4,[]],
+["2.5.3","Kidnapping or Attempted Kidnapping - LEO",50000,75,5,["y"]],
+["2.6.1","Taking a Hostage",50000,75,5,["y"]],
+["2.7.1","Sexual Harassment",30000,45,3,[]],
+["2.7.2","Sexual Assault",40000,60,4,[]],
+["2.7.3","Rape",50000,75,5,["y"]],
+["2.8.1","Forgery of Documents",20000,30,2,[]],
+["2.8.2","Dealing in Forged Documents",30000,45,3,[]],
+["2.9.1","Petty Larceny or Theft",10000,15,1,[]],
+["2.9.1","Repeat Offence",20000,30,2,[]],
+["2.9.4","Grand Theft Auto",40000,60,4,[]],
+["2.10","Armed Robbery",40000,60,4,["y"]],
+["2.11","Heist",40000,60,4,[]],
+["2.12","Extortion",40000,60,4,[]],
+["2.13","Fraud",20000,30,2,[]],
+["2.14","Creation of Criminal Community",40000,60,4,[]],
+["2.15.1","Participation in Banditry",40000,60,4,[]],
+["2.15.2","Banditry as a Leader",50000,75,5,["y"]],
+["2.16.1","Assault",10000,0,0,[]],
+["2.16.2","Assault with Intent to Harm",10000,15,1,[]],
+["2.16.3","Assault GBH",20000,30,2,[]],
+["2.17.1","Unlicensed Firearms Carry",10000,0,0,[]],
+["2.17.2","Excessive Firearms Carry (Overcarrying)",40000,60,4,["g"]],
+["2.17.3","Possession of Illegal Firearms",20000,30,2,["g"]],
+["2.17.4","Dealing in Illegal Firearms",40000,60,4,["g"]],
+["2.17.5","Possession of State Issued Items",40000,60,4,["g"]],
+["2.17.6","Possession of Illegal Body Armour",20000,30,2,[]],
+["2.17.7","Brandishing a Firearm",30000,45,3,["g"]],
+["2.17.8","Discharging of a Firearm",10000,0,0,[]],
+["2.17.8","Repeat Offense",20000,30,2,["g"]],
+["2.17.9","Public Carrying of a Firearm",10000,0,0,[]],
+["2.17.9","Repeat Offence",10000,15,1,["g"]],
+["2.18.1","Misappropriation of a Vehicle (Reckless Driving)",20000,30,2,["r"]],
+["2.18.2","Misappropriation of a Official or State Vehicle",30000,45,3,["r","y"]],
+["2.18.3","Misuse of a Vehicle",10000,15,1,["r"]],
+["2.18.4","Vehicle Used in Criminal Activity",10000,0,0,["r"]],
+["2.19","Pimping",20000,30,2,[]],
+["2.2","Prostitution",10000,0,0,[]],
+["2.2","Repeat Offense",10000,15,1,[]],
+["2.21","Hooliganism",40000,60,4,[]],
+["2.22","Bribery or Attempted Bribery of an Official",30000,45,3,[]],
+["2.23","Failure to Pay Fines",50000,60,4,["y","r","g","p"]],
+["2.24.1","Leaving the Scene",20000,30,2,[]],
+["2.24.2","Evading Arrest",40000,60,4,[]],
+["2.25","Attempted or Actual Escape from Custody",50000,75,5,["y"]],
+["2.26","Insubordination / Failure to Comply",30000,45,3,[]],
+["2.27","Violation of Privacy",20000,30,2,[]],
+["2.28","Intentional Spreading of Disease",20000,30,2,[]],
+["2.29","Breaking and Entering into a Private Residence",30000,45,3,[]],
+["2.30.1","Animal Cruelty",20000,30,2,[]],
+["2.30.2","Killing on Animal or Pet",30000,45,3,[]],
+["3.1.1","Terrorism as a Participant",40000,60,4,["y","g"]],
+["3.1.2","Leading of Terrorism",50000,75,5,["y","g"]],
+["3.2.1","Participating in a Riot",20000,30,2,[]],
+["3.2.2","Leading of a Riot",30000,45,3,[]],
+["3.3.1","Sedition as a Participant",30000,45,3,[]],
+["3.3.2","Leading of Sedition",40000,60,4,[]],
+["3.4.1","Treason as a Participant",50000,75,5,["y"]],
+["3.4.2","Leading of Treason (High Treason)",50000,75,5,["y","b"]],
+["3.5.1","Obstruction of an Investigation",20000,30,2,[]],
+["3.5.2","Obstruction of an Officer or Civil Servant",30000,45,3,[]],
+["3.5.3","Obstruction of an Arrest or Detention",40000,60,4,[]],
+["3.6.1","Murder, or Attempted Murder of LEO in the Line of Duty",40000,60,4,["g"]],
+["3.6.2","Murder, or Attempted Murder of a Civil Servant or LEO",50000,75,5,["y","g"]],
+["3.7","False Reporting",40000,60,4,[]],
+["3.8.1","Trespassing",20000,30,2,[]],
+["3.8.2","Trespassing on Secure Facility",30000,45,3,[]],
+["3.9.1","Collusion with criminal elements",30000,45,3,["b"]],
+["3.11.1","Failure to Submit documents",10000,15,1,[]],
+["3.11.2","Failure to identify",20000,30,2,[]],
+["3.12.1","Disclosure of Information",40000,60,4,["b"]],
+["3.12.2","Disclosure of Classified Information",50000,75,5,["b"]],
+["3.13.1","Posing as a Civil Servant",30000,45,3,[]],
+["3.13.2","Posing as a Law Enforcement Officer",40000,60,4,[]],
+["3.14.1","Corruption by a State Employee",40000,60,4,["b"]],
+["4.1.1","Disobeying an Order of a Superior",40000,60,4,["b"]],
+["4.1.2","Disobeying an Order of a State Leader",40000,60,4,["b"]],
+["4.1.3","Disobeying an Order of a Judicial Authority",40000,60,4,["b"]],
+["4.2.1","Negligence by a Civil Servant",40000,60,4,[]],
+["4.2.2","Negligence by a Law Enforcement Officer",30000,45,3,[]],
+["4.3","Sabotage",75000,75,5,[]],
+["4.4.1","Disclosure of Police Information",30000,45,3,["b"]],
+["4.4.1","Disclosure of Federal Information",40000,60,4,["b"]],
+["4.4.2","Disclosure of State Information",50000,75,5,["b"]],
+["4.5","Arbitrariness",20000,30,2,[]],
+["4.6","Receiving a Bribe",40000,60,4,["b"]],
+["4.7.1","Conduct Unbecoming",20000,30,2,[]],
+["4.7.2","Gross Ethics Violations",30000,45,3,["b"]],
+["6.1.1","Contempt of Court",30000,45,3,["b"]],
+["6.1.1","Contempt of Court by a State Employee",40000,60,4,["b"]],
+["6.2.1","Disruption of the Trial",30000,45,3,[]],
+["6.2.2","Disruption of the Trial by a State Employee",40000,60,4,["b"]],
+["6.3","Threats to Litigants",40000,60,4,["y"]],
+["6.4","Falsification of Evidence",40000,60,4,[]],
+["6.5","Perjury",40000,60,4,[]],
+["8.1.1","Selling of Prohibited Items (Less than 5)",20000,15,1,[]],
+["8.1.2","Distribution of Prohibited Items (5 - 10)",20000,30,2,[]],
+["8.1.3","Dealing in Prohibited Items (10 or more)",30000,45,3,[]],
+["8.2.1","False Advertising",15000,0,0,[]],
+["8.3.1","Tax Evasion",30000,0,0,[]],
+["8.3.2","Felony Tax Evasion",40000,60,4,[]],
+["9.2.1","Smuggling of Contraband",30000,45,3,[]],
+["9.2.2","Smuggling of Contraband by a State Employee",40000,60,4,["b"]],
+["9.3.1","Aiding an Escape",50000,75,5,["y"]],
+["9.3.2","Aiding an Escape by a State Employee",30000,45,3,["y","b"]],
+["9.4.1","Aiding a Mass Escape",50000,75,5,["y"]],
+["9.4.1","Aiding a Mass Escape by a State Employee",50000,75,5,["y","b"]],
+["9.5.1","Sexual Acts with Inmates by a Civilian",20000,30,2,[]],
+["9.5.2","Sexual Acts with Inmates by a State Employee",20000,30,2,["b"]]
 ];
+
 const misdemeanors = [
-["10.1.1","Public Obscenity","1"],["10.1.2","Public Nudity","1"],["10.1.3","Public Nuisance","2"],["10.1.4","Public Drunkenness","2"],["10.1.5","Public Intoxication (Drug Use)","3"],["10.1.6","Public Harassment","2"],["10.1.6","Public Harassment (Repeat Offence)","1"]
+["10.1.1","Public Obscenity",0,0,0,[],"1 pt"],
+["10.1.2","Public Nudity",0,0,0,[],"1 pt"],
+["10.1.3","Public Nuisance",0,0,0,[],"2 pt"],
+["10.1.4","Public Drunkenness",0,0,0,[],"2 pt"],
+["10.1.5","Public Intoxication (Drug Use)",0,0,0,[],"3 pt"],
+["10.1.6","Public Harassment",0,0,0,[],"2 pt"],
+["10.1.6","Public Harassment (Repeat Offence)",10000,15,1,[]]
 ];
+
 const traffic = [
-["2.1","Absence of Valid Licence Plate","$5,000","-","-"],["3.2.1","Driving the Opposite Lane","$10,000","-","-"],["3.2.2","Driving the Opposite Lane on Highway","$15,000","30","2"],["3.3","Stopping on Road for No Reason","$5,000","-","-"],["3.5.1","Driving on Deserted Sidewalks","$3,000","-","-"],["3.5.2","Chaotic Movement Between Lanes","$5,000","-","-"],["3.5.3","Failure to Keep Distance","$3,000","-","-"],["3.5.4","Hard Braking","$5,000","-","-"],["3.5.5","Creating Obstruction for Overtaking","$5,000","-","-"],["3.6","Driving Under Influence","$20,000","30","2"],["3.7.1","Participation in a Street Race","$10,000","-","-"],["3.7.2","Organization of a Street Race","$20,000","30","2"],["5.5","Abandoning a Vehicle","$5,000","-","-"],["5.6","Unsafe Transporting of a Passenger","$10,000","-","-"]
+["5.1.1","Speeding up to 30km/h over the limit",5000,0,0,[]],
+["5.1.2","Speeding up to 60 km/h over the limit",10000,0,0,[]],
+["5.1.3","Speeding up to 90 km/h over the limit",15000,0,0,[]],
+["5.1.4","Speeding in Excess of 90km/h over the limit",20000,30,2,["r"]],
+["5.5","Abandoning a Vehicle (Impound)",5000,0,0,[]],
+["5.6","Unsafe Transporting of a Passenger",10000,0,0,[]],
+["2.1","Absence of Valid Licence Plate",5000,0,0,[]],
+["3.2.1","Driving the Opposite Lane",10000,0,0,[]],
+["3.2.2","Driving the Opposite Lane on Highway",15000,30,2,[]],
+["3.3","Stopping on Road for No Reason",5000,0,0,[]],
+["3.5.1","Driving on Deserted Sidewalks",3000,0,0,[]],
+["3.5.2","Chaotic Movement Between Lanes",5000,0,0,[]],
+["3.5.3","Failure to Keep Distance",3000,0,0,[]],
+["3.5.4","Hard Braking",5000,0,0,[]],
+["3.5.5","Creating Obstruction for Overtaking",5000,0,0,[]],
+["3.6","Driving Under Influence",20000,30,2,[]],
+["3.7.1","Participation in a Street Race",10000,0,0,[]],
+["3.7.2","Organization of a Street Race",20000,30,2,[]]
 ];
+
 const parking = [
-["6.2.A","Parking On Red Curb","$5,000"],["6.2.B","Blocking a Lane of Traffic (More than ½)","$5,000"],["6.2.C","Blocking the Exit of Anywhere","$5,000"],["6.2.D","Parking At or In a Crosswalk","$5,000"],["6.2.E","Blocking more than ⅔ of the Sidewalk or Bike Path","$5,000"],["6.2.F","Parking On Any Dividing Strip (Double Yellow Lines or No Parking Stripes)","$5,000"],["6.2.G","Facing the Opposing Flow of Traffic","$5,000"],["6.2.H","Stoping On Bridges or In Tunnels","$5,000"],["6.2.I","Stoping On a Highway or Freeway (Emergency Stops are Allowed)","$5,000"],["6.2.J","Parking Closer than 20 Metres (66ft) to a Building on Fire","$5,000"],["6.2.K","Blocking Bus Stops","$5,000"],["6.2.L","Parking On Railroad Tracks or within the Skidding of a Train Wagon","$5,000"],["6.2.M","Parking In Parking Spaces Marked in Yellow","$5,000"],["6.2.N","Parking In Violation of Road Surface Markings","$5,000"],["6.2.P","Parking On Lawns, in Green Spaces, or other Places not Intended for Parking","$5,000"]
-];
-const specialParking = [
-["6.4","Unauthorised Vehicle Parking in Prison","$15,000"],["7.1","Illegal parking at Capitol","$5,000"],["7.2","Illegal parking at Casino","$5,000"],["7.3","Illegal parking at realstate agency","$5,000"],["7.4","Illegal parking at Pillbox Hospital","$5,000"],["7.5","Illegal parking at Legion Square bank","$5,000"],["7.6","Illegal parking at LSPD","$5,000"],["7.7","Illegal parking at Power plant","$5,000"],["7.8","Illegal parking at SAHP","$5,000"],["7.9","Illegal parking at Quarry 1","$5,000"],["7.9","Illegal parking at Quarry 2","$5,000"],["7.9","Illegal parking at Quarry 3,4","$5,000"],["7.9","Illegal parking at Quarry 5,6,7","$5,000"],["7.9","Illegal parking at Quarry 8","$5,000"],["7.10","Illegal parking at Sawmill","$5,000"],["7.11","Illegal parking at Farm 1","$5,000"],["7.12","Illegal parking at Farm 2","$5,000"]
+["6.2.A","Parking On Red Curb",5000,0,0,[]],
+["6.2.B","Blocking a Lane of Traffic",5000,0,0,[]],
+["6.2.C","Blocking the Exit",5000,0,0,[]],
+["6.2.D","Parking At or In a Crosswalk",5000,0,0,[]],
+["6.2.E","Blocking Sidewalk",5000,0,0,[]],
+["6.2.F","Parking On Dividing Strip",5000,0,0,[]],
+["6.2.G","Facing Opposing Traffic",5000,0,0,[]],
+["6.2.H","Stoping On Bridges or Tunnels",5000,0,0,[]],
+["6.2.I","Stoping On Highway",5000,0,0,[]],
+["6.2.J","Parking near Building on Fire",5000,0,0,[]],
+["6.2.K","Blocking Bus Stops",5000,0,0,[]],
+["6.2.L","Parking On Railroad Tracks",5000,0,0,[]],
+["6.2.M","Parking In Yellow Spaces",5000,0,0,[]],
+["6.2.N","Parking In Violation of Markings",5000,0,0,[]],
+["6.2.P","Parking On Lawns",5000,0,0,[]],
+["6.4","Unauthorised Parking in Prison",15000,0,0,[]]
 ];
 
 const terms = [
@@ -891,14 +1000,12 @@ const trafficStop = [
 
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 
-/* ---------- Toasts ---------- */
 function toast(msg){
  const host=document.getElementById('toastHost');
  const t=document.createElement('div'); t.className='toast'; t.textContent=msg;
  host.appendChild(t); requestAnimationFrame(()=>t.classList.add('show'));
  setTimeout(()=>{t.classList.remove('show'); setTimeout(()=>t.remove(),250)},1800);
 }
-/* ---------- Clipboard ---------- */
 function copyText(text,label){
  const done=()=>toast((label||'Copied')+' ✓');
  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done))}
@@ -910,9 +1017,8 @@ function fallbackCopy(text,cb){
  try{document.execCommand('copy')}catch(e){}
  ta.remove(); cb&&cb();
 }
-/* ---------- Favorites (persisted) ---------- */
 function loadFav(){try{return JSON.parse(localStorage.getItem('grwiki_favs_v2')||'[]')}catch(e){return []}}
-let favs=loadFav(); // array of {id,label}
+let favs=loadFav(); 
 let recentPages=[]; try{recentPages=JSON.parse(localStorage.getItem('grwiki_recentpages')||'[]')}catch(e){recentPages=[]}
 function saveFav(){localStorage.setItem('grwiki_favs_v2',JSON.stringify(favs)); updateFavCount()}
 function isFav(id){return favs.some(f=>f.id===id)}
@@ -926,75 +1032,207 @@ function cssEsc(s){return String(s).replace(/["\\]/g,'\\$&')}
 function updateFavCount(){const el=document.getElementById('favCount'); if(el)el.textContent=favs.length?favs.length:''}
 function starBtn(id,label){return `<button class="starbtn ${isFav(id)?'on':''}" data-id="${esc(id)}" title="Bookmark" onclick="event.preventDefault();event.stopPropagation();toggleFav('${id.replace(/'/g,"\\'")}','${(label||'').replace(/'/g,"\\'")}')">${isFav(id)?'★':'☆'}</button>`;
 }
+
 /* ---------- Fine calculator state ---------- */
 const calcSelected=new Set();
+let calcActiveSection = 'ALL';
+let calcActiveStar = 'ALL';
+
 function calcAllItems(){
  const items=[];
- penal.forEach((r,i)=>items.push({id:'p'+i,code:'P.C. '+r[0],name:r[1],fine:parseMoney(r[2]),time:parseInt(r[3])||0,stars:parseInt(r[4])||0,group:'Penal Code'}));
- misdemeanors.forEach((r,i)=>items.push({id:'m'+i,code:'P.C. '+r[0],name:r[1],fine:0,time:0,stars:0,points:parseInt(r[2])||0,group:'Misdemeanours'}));
- traffic.forEach((r,i)=>items.push({id:'t'+i,code:'T.C. '+r[0],name:r[1],fine:parseMoney(r[2]),time:parseInt(r[3])||0,stars:parseInt(r[4])||0,group:'Traffic Statute'}));
- parking.forEach((r,i)=>items.push({id:'pk'+i,code:'T.C. '+r[0],name:r[1],fine:parseMoney(r[2]),time:0,stars:0,group:'Parking'}));
- specialParking.forEach((r,i)=>items.push({id:'sp'+i,code:'T.C. '+r[0],name:r[1],fine:parseMoney(r[2]),time:0,stars:0,group:'Location Parking'}));
+ penal.forEach((r,i)=>items.push({id:'p'+i,code:'P.C. '+r[0],name:r[1],fine:r[2]||0,time:r[3]||0,stars:r[4]||0,tags:r[5]||[],group:'Penal Code',sec:r[0].split('.')[0]}));
+ traffic.forEach((r,i)=>items.push({id:'t'+i,code:'T.C. '+r[0],name:r[1],fine:r[2]||0,time:r[3]||0,stars:r[4]||0,tags:r[5]||[],group:'Traffic Statute',sec:r[0].split('.')[0]}));
+ parking.forEach((r,i)=>items.push({id:'pk'+i,code:'T.C. '+r[0],name:r[1],fine:r[2]||0,time:0,stars:0,tags:r[5]||[],group:'Parking',sec:r[0].split('.')[0]}));
  return items;
 }
-function parseMoney(s){if(!s)return 0; const n=parseFloat(String(s).replace(/[^0-9.]/g,'')); return isNaN(n)?0:n}
 function fmtMoney(n){return '$'+n.toLocaleString('en-US')}
-function rulesPage(key){
- const d=rules[key]; let out=`<h1 class="section-title">${esc(d.title)}</h1><p class="section-sub">${esc(d.sub)}</p>`;
- d.groups.forEach(g=>{out+=`<div class="card"><div class="card-head"><h2>${esc(g[0])}</h2><span class="badge">${g[1].length} rules</span></div><div class="card-body">`;
- g[1].forEach(x=>{const id=`rule-${key}-${x[0]}`; const plain=`${x[0]} — ${x[1]}${x[2]?' — Penalty: '+x[2]:''}`;
- out+=`<details class="rule"><summary><span>${esc(x[0])}</span><span style="font-weight:500;flex:1">${esc(x[1])}</span>${x[2]?`<span class="badge">${esc(x[2])}</span>`:""}<span class="rowflex"><button class="copybtn" title="Copy" onclick="event.preventDefault();event.stopPropagation();copyText('${plain.replace(/'/g,"\\'")}','Rule copied')">⧉</button>${starBtn(id,plain)}</span></summary>${x[2]?`<div class="desc"><b>Penalty:</b> ${esc(x[2])}</div>`:""}</details>`});
- out+=`</div></div>`}); return out;
+
+function renderTags(tags) {
+    if(!tags || !tags.length) return '';
+    return tags.map(t => {
+        if(t==='y') return `<span class="dot-y" title="No Bailout"></span> <span class="tag-txt">No Bailout</span>`;
+        if(t==='r') return `<span class="dot-r" title="Revoke Driver"></span> <span class="tag-txt">Revoke Driver</span>`;
+        if(t==='g') return `<span class="dot-g" title="Revoke Gun"></span> <span class="tag-txt">Revoke Gun</span>`;
+        if(t==='p') return `<span class="dot-p" title="Revoke All"></span> <span class="tag-txt">Revoke All</span>`;
+        if(t==='b') return `<span class="dot-b" title="Blacklist"></span> <span class="tag-txt">Blacklist</span>`;
+        return '';
+    }).join(' &nbsp; ');
 }
+
+function calculatorPage(){
+ let out=`<div class="calc-dash-wrapper">
+  <div class="calc-dash-header">
+   <div class="calc-dash-title"><span class="dot-y" style="width:10px;height:10px;display:inline-block"></span> ARREST &amp; CITATION CHARGE CALCULATOR <span>EN2 RULES APPLIED</span></div>
+   <div class="calc-dash-actions">
+    <button class="calc-dash-btn primary" onclick="copyCitation()">📄 COPY CITATION</button>
+    <button class="calc-dash-btn" onclick="copyCodesOnly()">📄 COPY CODES</button>
+    <button class="calc-dash-btn danger" onclick="clearCalc()">✕ CLEAR</button>
+   </div>
+  </div>
+  <div class="calc-stats-grid">
+   <div class="calc-stat-box"><span>SELECTED CHARGES</span><b id="totCharges">0</b><p>Check boxes below to calculate</p></div>
+   <div class="calc-stat-box"><span>TOTAL FINE</span><b id="totFine" style="color:var(--accent)">$0</b><p>Max fine limit: $50,000</p></div>
+   <div class="calc-stat-box"><span>WANTED STARS</span><b id="totStars" style="color:#38bdf8">0 Stars</b><p>Max stars limit: 5 Stars</p></div>
+   <div class="calc-stat-box"><span>PRISON SENTENCE</span><b id="totTime">0 Mins</b><p>DOC holding time</p></div>
+  </div>
+ </div>
+
+ <div class="calc-filter-bar">
+  <div style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:1px">CODE SECTION:</div>
+  <select id="calcSectionFilter" onchange="calcActiveSection=this.value; renderCalcList()">
+   <option value="ALL">All Sections</option>
+   <option value="2">Article 2: Society</option>
+   <option value="3">Article 3: State</option>
+   <option value="4">Article 4: Malfeasance</option>
+   <option value="5">Article 5: Traffic</option>
+   <option value="6">Article 6: Judicial / Parking</option>
+   <option value="8">Article 8: Commercial</option>
+   <option value="9">Article 9: Correctional</option>
+  </select>
+
+  <div style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:1px;margin-left:16px">STARS:</div>
+  <div class="calc-star-filters" id="starFilters">
+   <button class="calc-star-btn active" onclick="setCalcStar('ALL', this)">All</button>
+   <button class="calc-star-btn" onclick="setCalcStar('0', this)">0★ (Fine)</button>
+   <button class="calc-star-btn" onclick="setCalcStar('1', this)">1★</button>
+   <button class="calc-star-btn" onclick="setCalcStar('2', this)">2★</button>
+   <button class="calc-star-btn" onclick="setCalcStar('3', this)">3★</button>
+   <button class="calc-star-btn" onclick="setCalcStar('4', this)">4★</button>
+   <button class="calc-star-btn" onclick="setCalcStar('5', this)">5★</button>
+  </div>
+
+  <div class="calc-legend">
+   <span class="dot-y"></span> No Bailout &nbsp;
+   <span class="dot-r"></span> Revoke Driver &nbsp;
+   <span class="dot-g"></span> Revoke Gun &nbsp;
+   <span class="dot-p"></span> Revoke All &nbsp;
+   <span class="dot-b"></span> Blacklist
+  </div>
+ </div>
+ 
+ <div class="calc-search" style="margin-bottom:16px"><input id="calcFilter" placeholder="Search by code or description..." oninput="renderCalcList()"></div>
+ <div id="calcListHost"></div>`;
+ 
+ setTimeout(() => renderCalcList(), 50);
+ return out;
+}
+
+function setCalcStar(val, btn) {
+    calcActiveStar = val;
+    document.querySelectorAll('#starFilters .calc-star-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCalcList();
+}
+
+function renderCalcList() {
+    const host = document.getElementById('calcListHost');
+    if(!host) return;
+    const q = (document.getElementById('calcFilter')?document.getElementById('calcFilter').value:'').trim().toLowerCase();
+    
+    let items = calcAllItems();
+    
+    let filtered = items.filter(it => {
+        if(calcActiveSection !== 'ALL' && it.sec !== calcActiveSection) return false;
+        if(calcActiveStar !== 'ALL') {
+            if(calcActiveStar === '0' && it.stars > 0) return false;
+            if(calcActiveStar !== '0' && it.stars !== parseInt(calcActiveStar)) return false;
+        }
+        if(q && !(it.code+' '+it.name).toLowerCase().includes(q)) return false;
+        return true;
+    });
+
+    if(!filtered.length) {
+        host.innerHTML = '<div class="empty">No charges match the selected filters.</div>';
+        return;
+    }
+
+    const groups = {};
+    filtered.forEach(it => { (groups[it.group]=groups[it.group]||[]).push(it); });
+
+    let html = '';
+    Object.entries(groups).forEach(([gname, list]) => {
+        html += `<div class="card" style="margin-bottom:12px; border-color:rgba(255,255,255,0.05)"><div class="card-body" style="padding:12px">
+            <h3 style="margin:0 0 10px; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px">${esc(gname)}</h3>`;
+        list.forEach(it => {
+            const checked = calcSelected.has(it.id) ? 'checked' : '';
+            html += `<label class="calc-item ${checked}" id="row-${it.id}" style="padding:10px; margin-bottom:4px; border-color:rgba(255,255,255,0.05)">
+                <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleCalc('${it.id}',this.checked)">
+                <div class="ci-body">
+                 <div class="ci-title"><span class="code">${esc(it.code)}</span>${esc(it.name)}</div>
+                 <div class="ci-meta">
+                  ${it.fine ? `<span style="color:#f2b705">${fmtMoney(it.fine)}</span>` : 'No fine'}
+                  ${it.time ? ` • ${it.time} min` : ''}
+                  ${it.stars ? ` • <span style="color:#38bdf8">${it.stars}★</span>` : ''}
+                 </div>
+                 ${it.tags && it.tags.length ? `<div class="ci-tags">${renderTags(it.tags)}</div>` : ''}
+                </div>
+            </label>`;
+        });
+        html += `</div></div>`;
+    });
+    
+    host.innerHTML = html;
+    updateCalcTotals();
+}
+
+function toggleCalc(id,checked){
+ if(checked)calcSelected.add(id); else calcSelected.delete(id);
+ const el = document.getElementById('row-'+id);
+ if(el) el.classList.toggle('checked',checked);
+ updateCalcTotals();
+}
+
+function updateCalcTotals(){
+ const items=calcAllItems(); let fine=0,time=0,stars=0;
+ items.forEach(it=>{if(calcSelected.has(it.id)){fine+=it.fine;time+=it.time;stars+=it.stars}});
+ 
+ const limitFine = fine > 50000 ? 50000 : fine;
+ const limitStars = stars > 5 ? 5 : stars;
+
+ const f=document.getElementById('totFine'), t=document.getElementById('totTime'), s=document.getElementById('totStars'), c=document.getElementById('totCharges');
+ if(c) c.textContent = calcSelected.size;
+ if(f) f.textContent = fmtMoney(limitFine);
+ if(t) t.textContent = time + ' Mins';
+ if(s) s.textContent = limitStars + ' Stars';
+}
+
+function copyCitation(){
+ const items=calcAllItems().filter(it=>calcSelected.has(it.id));
+ if(!items.length){toast('No charges selected'); return}
+ let fine=0,time=0,stars=0; items.forEach(it=>{fine+=it.fine;time+=it.time;stars+=it.stars});
+ const text = `**CHARGES:**\n${items.map(it=>`• ${it.code} — ${it.name}`).join('\n')}\n\n**TOTAL FINE:** ${fmtMoney(fine>50000?50000:fine)}\n**SENTENCE:** ${time} mins\n**STARS:** ${stars>5?5:stars}`;
+ copyText(text, 'Citation details copied');
+}
+
+function copyCodesOnly() {
+ const items=calcAllItems().filter(it=>calcSelected.has(it.id));
+ if(!items.length){toast('No charges selected'); return}
+ const text = items.map(it => it.code).join(' + ');
+ copyText(text, 'Codes copied');
+}
+
+function clearCalc(){
+ calcSelected.clear();
+ updateCalcTotals();
+ renderCalcList();
+}
+
 function table(rows,cols,opts){
  opts=opts||{};
  const head=cols.map(c=>`<th>${c}</th>`).join("")+(opts.actions?`<th class="actioncol"></th><th class="actioncol"></th>`:"");
  const body=rows.map((r,i)=>{
-  const cells=r.map((v,ci)=>`<td class="${ci===0?'code':ci===2?'money':''}">${esc(v||'-')}</td>`).join("");
+  const cells=r.map((v,ci)=>{
+      if(ci===5 && Array.isArray(v)) return `<td>${renderTags(v)}</td>`;
+      return `<td class="${ci===0?'code':ci===2?'money':''}">${esc(v||'-')}</td>`;
+  }).join("");
   if(!opts.actions) return `<tr>${cells}</tr>`;
   const id=opts.idPrefix+i;
-  const plain=r.filter(Boolean).join(' — ');
-  return `<tr><td class="code">${esc(r[0]||'-')}</td>${r.slice(1).map((v,ci)=>`<td class="${ci===1?'money':''}">${esc(v||'-')}</td>`).join("")}<td class="actioncol"><button class="copybtn" title="Copy" onclick="copyText('${plain.replace(/'/g,"\\'")}','Code copied')">⧉</button></td><td class="actioncol">${starBtn(id,plain)}</td></tr>`;
+  const plain=r.slice(0,5).filter(Boolean).join(' — ');
+  return `<tr>${cells}<td class="actioncol"><button class="copybtn" title="Copy" onclick="copyText('${plain.replace(/'/g,"\\'")}','Code copied')">⧉</button></td><td class="actioncol">${starBtn(id,plain)}</td></tr>`;
  }).join("");
  return `<div class="tablewrap"><table class="table"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
 }
 
-function dashboard(){
- const pageLabels={general:'General Rules',state:'State Rules',green:'Green Zone',ghetto:'Ghetto Rules','traffic-stop':'10-51 Traffic Stop',arrest:'10-15 Arrest',penal:'Penal Code',traffic:'Traffic Code',events:'Event Rules',map:'Territory Map',terms:'RP Terms',calculator:'Fine Calculator',codes:'Radio Codes',bookmarks:'Bookmarks',bodycam:'Bodycam Commands',vehicle:'Vehicle Ticket Log',notepad:'Dispatch Notepad', deptradio:'Department Radio'};
- const totalFines=citationLogs.reduce((a,c)=>a+(c.fine||0),0)+vehicleLogs.length; 
- return `<div class="hero"><h1>Welcome back, Officer ${activeUser ? dbUsers.find(u=>u.id===activeUser)?.name || '' : ''}</h1><p>Badge #${activeUser||''} — Quick-access handbook for state rules, penal code, traffic code, traffic stops, arrests, events, bodycam procedure and roleplay terminology.</p><div class="tip-ticker" id="tipTicker"></div></div>
- <div class="clockcard">
-  <div class="cc-item"><h4>🇬🇧 In-Game Time — London</h4><b id="dashClockLondon">--:--:--</b><small id="dashDateLondon">—</small></div>
-  <div class="cc-divider"></div>
-  <div class="cc-item"><h4>Local Time</h4><b id="dashClockIndia">--:--:--</b><small id="dashDateIndia">—</small></div>
-  <div class="cc-divider"></div>
-  <div class="cc-item"><h4>Server Cycle</h4><b id="dashCycle">—</b><small>Grand RP runs on real-world London (UK) time</small></div>
- </div>
- <div class="grid"><div class="stat"><b>${penal.length}</b><span>Penal Code entries</span></div><div class="stat"><b>${todayDutyMinutes()}</b><span>Minutes on duty today</span></div><div class="stat"><b>${fmtMoney(totalFines)}</b><span>Citations Logs</span></div><div class="stat"><b>100%</b><span>Ready</span></div></div>
- ${recentPages.length?`<div class="card"><div class="card-head"><h2>Recently Viewed</h2></div><div class="card-body"><div class="chips">${recentPages.map(p=>`<button class="chip" onclick="go('${p}')">${esc(pageLabels[p]||p)}</button>`).join("")}</div></div></div>`:''}
- <div class="card"><div class="card-head"><h2>Quick Access</h2></div><div class="card-body"><div class="eventgrid">
- ${[['Department Radio','Dynamic inter-department comms generator','deptradio'],['Dispatch Notepad','Auto-saving scratchpad for active pursuits','notepad'],['Bodycam Commands','On/off-duty, drone, PDA & evidence scripts','bodycam'],['Vehicle Ticket Log','Upload plate photo, log and output to Discord','vehicle'],['Fine Calculator','Build a citation in seconds','calculator'],['Penal Code','Complete PC table by article','penal'],['10-15 Arrest','Step-by-step DOC process','arrest'],['Radio Codes','Radio codes + phonetics','codes']].map(x=>`<div class="eventcard" style="cursor:pointer" onclick="go('${x[2]}')"><h3>${x[0]}</h3><p style="font-size:12px;color:var(--muted);margin:0">${x[1]}</p></div>`).join("")}
- </div></div></div>
- <div class="notice"><b>Source note:</b> Penal and Traffic Code entries below follow the supplied Patrolman's Guide PDF. The PDF's own article headings, codes, fines, times and stars are preserved as provided.</div>`;
-}
-
-function penalPage(){
- let articles={};
- penal.forEach(r=>{let a=r[0].split('.')[0]; if(!articles[a])articles[a]=[];articles[a].push(r)});
- const names={2:'Crimes Against Society',3:'Crimes Against the State',4:'Malfeasance',5:'Traffic Statute Crimes',6:'Judicial Crimes',8:'Commercial and Taxation Crimes',9:'Correctional Crimes'};
- let out=`<h1 class="section-title">Penal Code</h1><p class="section-sub">Patrolman's Guide — fines, sentence time and stars. Entries are grouped by article, rather than flattened into one list.</p>
- <div class="notice"><b>Legend from source:</b> Yellow = No Bailout • Blue = Sentence Varies on Officer’s Judgement • Red = Driver's License Revocation (High Command/DOJ approval) • Green = Gun License Revocation • Pink = All License Revocation • Black = Blacklist • Gray = Dismissal from Organization.</div>`;
- Object.keys(articles).forEach(a=>{out+=`<div class="card"><div class="card-head"><h2>ARTICLE ${a}: ${names[a]||''}</h2><span class="badge">${articles[a].length} entries</span></div><div class="card-body">${table(articles[a].map(r=>[`P.C. ${r[0]}`,r[1],r[2],r[3]||'-',r[4]||'-']),['Code','Crime','Fine','Time','Stars'],{actions:true,idPrefix:'penal-'+a+'-'})}</div></div>`});
- out+=`<div class="card"><div class="card-head"><h2>Article 10 — Violations of Public Order</h2></div><div class="card-body"><div class="notice">A misdemeanour does not ordinarily carry imprisonment unless multiple misdemeanours are committed. The supplied guide states that a suspect identified and fined for a misdemeanour is to be released immediately and may not be searched when only a misdemeanour has been committed. A combination exceeding 5 points may be considered for up to 30 months plus a maximum $25,000 fine.</div>${table(misdemeanors.map(r=>[`P.C. ${r[0]}`,r[1],r[2]]),['Code','Crime','Points'])}</div></div>`;
- return out;
-}
-function trafficPage(){
- return `<h1 class="section-title">Traffic Code</h1><p class="section-sub">Traffic statutes and parking violations from the supplied Patrolman's Guide.</p>
- <div class="card"><div class="card-head"><h2>Traffic Statute Crimes</h2></div><div class="card-body">${table(traffic.map(r=>[`T.C. ${r[0]}`,r[1],r[2],r[3],r[4]]),['Code','Description','Fine','Time','Stars'],{actions:true,idPrefix:'traffic-'})}</div></div>
- <div class="card"><div class="card-head"><h2>Parking Violations</h2></div><div class="card-body"><p style="font-size:12px;color:var(--muted)">Parking along roadways: park in the direction of traffic with wheels parallel and next to the curb/side of road, or two right wheels on the curb.</p>${table(parking.map(r=>[`T.C. ${r[0]}`,r[1],r[2]]),['Code','Description','Fine'],{actions:true,idPrefix:'parking-'})}</div></div>
- <div class="card"><div class="card-head"><h2>Special / Location Parking</h2></div><div class="card-body">${table(specialParking.map(r=>[`T.C. ${r[0]}`,r[1],r[2]]),['Code','Description','Fine'],{actions:true,idPrefix:'specialparking-'})}</div></div>
- <div class="card"><div class="card-head"><h2>Habitual Traffic Offender</h2></div><div class="card-body"><div class="notice">The supplied guide defines a habitual traffic offender as a person who regularly and consistently violates traffic statutes by speeding or parking violations: three of the same type within seven days, three moving violations of the same type within seven days, or seven of any violation within seven days. Driver's License revocation must be approved by high command of the law enforcement officer or a DOJ judge.</div><div class="notice"><b>Aircraft Inspection:</b> Pilot licence checks, drug interdiction and safety inspections of aircraft coming into Sandy Shores Municipal Airfield. Operations are to be conducted by certified officers and may include joint operations as requested by SAHP leadership.</div></div></div>`;
-}
 function procedurePage(){
  let out=`<h1 class="section-title">10-15 Arrest Procedure</h1><p class="section-sub">The supplied Full Arrest Process PDF, presented as a clean step-by-step guide. No copy buttons are added to this procedure.</p>
  <div class="notice warn"><b>Important:</b> The source arrest-process PDF is reproduced as supplied. This page does not add or invent additional commands or penalties.</div><div class="card procedure"><div class="card-body">`;
@@ -1014,100 +1252,6 @@ function mapPage(){
 }
 function termsPage(){
  return `<h1 class="section-title">Roleplay Terms</h1><p class="section-sub">Common RP terminology from the supplied rules.</p><div class="card"><div class="card-body">${terms.map(t=>`<details class="rule" open><summary><span class="code">${esc(t[0])}</span><span style="font-weight:500;flex:1">${esc(t[1])}</span></summary></details>`).join("")}</div></div>`;
-}
-function calculatorPage(){
- const items=calcAllItems();
- const groups={};
- items.forEach(it=>{(groups[it.group]=groups[it.group]||[]).push(it)});
- let out=`<h1 class="section-title">Fine Calculator</h1><p class="section-sub">Check off every charge that applies to build a citation instantly — fines, sentence time and stars are totalled automatically from the Penal &amp; Traffic Code tables.</p>
- <div class="calc-summary" id="calcSummary">
-  <h3>Citation Summary</h3>
-  <div class="calc-totals">
-   <div><b id="totFine">$0</b><span>Total Fine</span></div>
-   <div><b id="totTime">0 min</b><span>Sentence Time</span></div>
-   <div><b id="totStars">0</b><span>Stars</span></div>
-  </div>
-  <div class="calc-fields">
-   <input id="fSuspect" placeholder="Suspect name" oninput="renderCitationPreview()">
-   <input id="fBadge" placeholder="Officer badge #" value="${esc(profile.badge||'')}" oninput="renderCitationPreview()">
-   <input id="fLocation" placeholder="Location" oninput="renderCitationPreview()">
-   <input id="fCase" placeholder="Case / report #" oninput="renderCitationPreview()">
-  </div>
-  <div class="calc-actions">
-   <button class="btn" onclick="copyCitation()">Copy Citation</button>
-   <button class="btn secondary" onclick="window.print()">Print</button>
-   <button class="btn ghost" onclick="clearCalc()">Clear All</button>
-  </div>
-  <div class="citation-preview" id="citationPreview"></div>
- </div>
- <div class="calc-search"><input id="calcFilter" placeholder="Filter charges by code or name..." oninput="filterCalc(this.value)"></div>
- <div id="calcList">
- ${Object.entries(groups).map(([gname,list])=>`<div class="card"><div class="card-head"><h2>${esc(gname)}</h2><span class="badge">${list.length}</span></div><div class="card-body calcgroup">
-  ${list.map(it=>`<label class="calc-item" data-search="${esc((it.code+' '+it.name).toLowerCase())}" id="row-${it.id}">
-   <input type="checkbox" onchange="toggleCalc('${it.id}',this.checked)">
-   <div class="ci-body"><div class="ci-title"><span class="code">${esc(it.code)}</span>${esc(it.name)}</div>
-   <div class="ci-meta">${it.fine?fmtMoney(it.fine)+' fine':'No fine'}${it.time?' • '+it.time+' min':''}${it.stars?' • '+it.stars+'★':''}${it.points?' • '+it.points+' pt':''}</div></div>
-  </label>`).join("")}
- </div></div>`).join("")}
- </div>
- <div class="card"><div class="card-head"><h2>Citation History</h2><span class="badge">${citationLogs.length}</span></div><div class="card-body loglist">
-  ${citationLogs.length?citationLogs.slice(0,15).map((l,i)=>`<div class="logitem"><div class="logitem-head"><b>${esc(l.suspect||'Unknown suspect')} — ${fmtMoney(l.fine||0)}</b><span>${esc(l.time)}</span></div><pre>${esc(l.text.slice(0,220))}${l.text.length>220?'…':''}</pre><div class="logitem-actions"><button class="btn ghost" onclick="copyText(citationLogs[${i}].text,'Citation copied')">Copy</button><button class="btn ghost" onclick="deleteCitationLog(${i})">Delete</button></div></div>`).join(""):'<div class="empty">No saved citations yet — every citation you copy is kept here automatically.</div>'}
-  ${citationLogs.length?`<div style="margin-top:8px"><button class="btn ghost" onclick="if(confirm('Clear all citation history?')){citationLogs=[];saveCitationLogs();render('calculator')}">Clear All History</button></div>`:''}
- </div></div>`;
- return out;
-}
-function toggleCalc(id,checked){
- if(checked)calcSelected.add(id); else calcSelected.delete(id);
- document.getElementById('row-'+id).classList.toggle('checked',checked);
- updateCalcTotals();
-}
-function updateCalcTotals(){
- const items=calcAllItems(); let fine=0,time=0,stars=0;
- items.forEach(it=>{if(calcSelected.has(it.id)){fine+=it.fine;time+=it.time;stars+=it.stars}});
- const f=document.getElementById('totFine'), t=document.getElementById('totTime'), s=document.getElementById('totStars');
- if(f){f.textContent=fmtMoney(fine); t.textContent=time+' min'; s.textContent=stars}
- renderCitationPreview();
-}
-function renderCitationPreview(){
- const el=document.getElementById('citationPreview'); if(!el)return;
- const items=calcAllItems().filter(it=>calcSelected.has(it.id));
- if(!items.length){el.textContent='Select charges above to generate a citation preview.'; return}
- const susp=document.getElementById('fSuspect').value||'—', badge=document.getElementById('fBadge').value||'—', loc=document.getElementById('fLocation').value||'—', cs=document.getElementById('fCase').value||'—';
- let fine=0,time=0,stars=0; items.forEach(it=>{fine+=it.fine;time+=it.time;stars+=it.stars});
- el.textContent=`GRAND RP — OFFICIAL CITATION
-Date: ${new Date().toLocaleString()}
-Case #: ${cs}
-Officer Badge #: ${badge}
-Location: ${loc}
-Suspect: ${susp}
-
-Charges:
-${items.map(it=>`  • ${it.code} — ${it.name}${it.fine?' ('+fmtMoney(it.fine)+')':''}`).join('\n')}
-
-TOTAL FINE: ${fmtMoney(fine)}
-TOTAL SENTENCE: ${time} min
-TOTAL STARS: ${stars}`;
-}
-function loadCitationLogs(){try{return JSON.parse(localStorage.getItem('grwiki_citationlogs')||'[]')}catch(e){return []}}
-let citationLogs=loadCitationLogs();
-function saveCitationLogs(){localStorage.setItem('grwiki_citationlogs',JSON.stringify(citationLogs))}
-function copyCitation(){
- renderCitationPreview();
- const t=document.getElementById('citationPreview').textContent;
- copyText(t,'Citation copied');
- const items=calcAllItems().filter(it=>calcSelected.has(it.id));
- let fine=0; items.forEach(it=>fine+=it.fine);
- const suspect=document.getElementById('fSuspect').value.trim();
- citationLogs.unshift({suspect,fine,time:new Date().toLocaleString(),text:t});
- citationLogs=citationLogs.slice(0,25); saveCitationLogs();
- if(document.getElementById('calcList'))render('calculator');
-}
-function deleteCitationLog(i){citationLogs.splice(i,1); saveCitationLogs(); render('calculator')}
-function clearCalc(){calcSelected.clear();document.querySelectorAll('#calcList input[type=checkbox]').forEach(c=>{c.checked=false});document.querySelectorAll('.calc-item').forEach(c=>c.classList.remove('checked'));['fSuspect','fBadge','fLocation','fCase'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});updateCalcTotals()}
-function filterCalc(q){
- q=q.trim().toLowerCase();
- document.querySelectorAll('#calcList .calc-item').forEach(el=>{el.style.display=(!q||el.dataset.search.includes(q))?'':'none'});
- document.querySelectorAll('#calcList .card').forEach(card=>{const vis=[...card.querySelectorAll('.calc-item')].some(el=>el.style.display!=='none');card.style.display=vis?'':'none'});
 }
 
 /* ---------- Vehicle Ticket Log ---------- */
@@ -1326,7 +1470,7 @@ function notepadPage(){
       <button class="btn ghost" onclick="if(confirm('Clear notepad?')){document.getElementById('npText').value='';saveNotepad()}">Clear All</button>
       <button class="btn ghost" onclick="copyText(document.getElementById('npText').value, 'Notes copied')">Copy</button>
      </div>
-     <textarea id="npText" style="width:100%;height:400px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px;color:var(--text);font-family:ui-monospace,monospace;font-size:13px;resize:vertical" placeholder="Start typing notes here..." oninput="saveNotepad(); playBeep(1500, 0.03, 0.02, 'square')">${esc(notepadContent)}</textarea>
+     <textarea id="npText" style="width:100%;height:400px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px;color:var(--text);font-family:ui-monospace,monospace;font-size:13px;resize:vertical" placeholder="Start typing notes here..." oninput="saveNotepad()">${esc(notepadContent)}</textarea>
     </div></div>`;
 }
 function saveNotepad(){
@@ -1405,7 +1549,6 @@ function toggleDuty(){
  }
  renderDutyBtn(); clearDutyInterval(); if(dutyState&&dutyState.on)startDutyInterval();
  if(document.getElementById('dutyWidget'))render('bodycam');
- playBeep(800, 0.2, 0.1, 'sine'); setTimeout(() => playBeep(1200, 0.3, 0.1, 'sine'), 200);
 }
 function renderDutyBtn(){
  const btn=document.getElementById('dutyBtn'), label=document.getElementById('dutyLabel');
@@ -1450,21 +1593,21 @@ function bodycamPage(){
  return out;
 }
 
-/* ---------- Department Radio (Exact Video Commands) ---------- */
+/* ---------- Department Radio (No "TO" Option) ---------- */
 const deptRadioCmds = [
-    {trigger: "Good Copy Reply", tpl: "{FROM} to {TO}: Good Copy! Please proceed."},
-    {trigger: "Bad Copy Reply", tpl: "{FROM} to {TO}: Negative Copy!"},
-    {trigger: "Asking Bad Copy Reason", tpl: "{FROM} to {TO}: Inquiring on the reason for the negative copy?"},
-    {trigger: "Asking How Copy", tpl: "{FROM} to {TO}: How copy?"},
-    {trigger: "10-15 Requesting State Lawyer", tpl: "{FROM} to {TO}: We have a 10-15 at DOC requesting state legal representation. Please check availability."},
-    {trigger: "10-15 Requesting Private Lawyer", tpl: "{FROM} to {TO}: Could you verify if Mr. Lawyer's Name is Bar certified?"},
-    {trigger: "Global Finished", tpl: "{FROM} to {TO}: Situation is now 10-99. Thank you for your assistance."},
-    {trigger: "Global at 10-10", tpl: "{FROM} to {TO}: Confirming a 10-10 situation at the global location. Requesting backup."},
-    {trigger: "Legal Org Employee in Custody", tpl: "{FROM} to {TO}: We have one of your agents in custody. Please 10-17 for Capitol for investigation."},
-    {trigger: "State Employee in Custody", tpl: "{FROM} to {TO}: State employee in custody. Requesting formal holdings process."},
-    {trigger: "Meeting Request", tpl: "{FROM} to {TO}: Requesting a briefing with your team at your HQ."},
-    {trigger: "Standby", tpl: "{FROM} to {TO}: Standby for a possible hostage situation."},
-    {trigger: "Officer Getting Robbed", tpl: "{FROM} to {TO}: Officer under duress at [Location] - all available units respond immediately!"},
+    {trigger: "Good Copy Reply", tpl: "{FROM} to LAST: Good Copy! Please proceed."},
+    {trigger: "Bad Copy Reply", tpl: "{FROM} to LAST: Negative Copy!"},
+    {trigger: "Asking Bad Copy Reason", tpl: "{FROM} to LAST: Inquiring on the reason for the negative copy?"},
+    {trigger: "Asking How Copy", tpl: "{FROM} to LAST: How copy?"},
+    {trigger: "10-15 Requesting State Lawyer", tpl: "{FROM} to LAST: We have a 10-15 at DOC requesting state legal representation. Please check availability."},
+    {trigger: "10-15 Requesting Private Lawyer", tpl: "{FROM} to LAST: Could you verify if Mr. Lawyer's Name is Bar certified?"},
+    {trigger: "Global Finished", tpl: "{FROM} to LAST: Situation is now 10-99. Thank you for your assistance."},
+    {trigger: "Global at 10-10", tpl: "{FROM} to LAST: Confirming a 10-10 situation at the global location. Requesting backup."},
+    {trigger: "Legal Org Employee in Custody", tpl: "{FROM} to LAST: We have one of your agents in custody. Please 10-17 for Capitol for investigation."},
+    {trigger: "State Employee in Custody", tpl: "{FROM} to LAST: State employee in custody. Requesting formal holdings process."},
+    {trigger: "Meeting Request", tpl: "{FROM} to LAST: Requesting a briefing with your team at your HQ."},
+    {trigger: "Standby", tpl: "{FROM} to LAST: Standby for a possible hostage situation."},
+    {trigger: "Officer Getting Robbed", tpl: "{FROM} to LAST: Officer under duress at [Location] - all available units respond immediately!"},
     {trigger: "Hostage Situation", tpl: "{FROM} to ALL: Active global at hostage situation. Requesting maximum 12-15 units from all orgs."},
     {trigger: "Gun Store Robbery", tpl: "{FROM} to ALL: Suspect demands at the Gun Store robbery. Armed suspects reported - maximum 10-12 units respond."},
     {trigger: "Events", tpl: "{FROM} to ALL: Suspect demands at the store robbery have been received. Hostages confirmed on scene."},
@@ -1474,28 +1617,17 @@ const deptRadioCmds = [
     {trigger: "Protecting the Informer", tpl: "{FROM} to ALL: Suspect convoy in progress. Ensure the informer reaches the destination safely."},
     {trigger: "Aircraft Carrier Protection", tpl: "{FROM} to ALL: Global activated for carrier security. Secure all access points and maintain defensive positions."},
     {trigger: "Bank Protection", tpl: "{FROM} to ALL: Global assigned to bank security. Establish a defensive perimeter and prevent hostile access."},
-    {trigger: "State Lawyer Unavailable", tpl: "GOV to {TO}: A state lawyer is available and enroute to your location."},
-    {trigger: "State Lawyer Available", tpl: "GOV to {TO}: No state lawyer is currently available. You may proceed as per SOP."},
-    {trigger: "Private Lawyer Certification Confirmed", tpl: "GOV to {TO}: Confirmed. Mr. Lawyer's Name is Bar certified."},
-    {trigger: "Candies Supply Depleted", tpl: "NG to {TO}: 10-4. However, if this is related to candies, we are currently at zero supply."},
-    {trigger: "Vehicle Theft - Exfiltration Assistance", tpl: "NG to {TO}: Some of our trucks have been stolen. Requesting assistance with exfiltration."}
+    {trigger: "State Lawyer Unavailable", tpl: "GOV to LAST: A state lawyer is available and enroute to your location."},
+    {trigger: "State Lawyer Available", tpl: "GOV to LAST: No state lawyer is currently available. You may proceed as per SOP."},
+    {trigger: "Private Lawyer Certification Confirmed", tpl: "GOV to LAST: Confirmed. Mr. Lawyer's Name is Bar certified."},
+    {trigger: "Candies Supply Depleted", tpl: "NG to LSPD: 10-4. However, if this is related to candies, we are currently at zero supply."},
+    {trigger: "Vehicle Theft - Exfiltration Assistance", tpl: "NG to LSPD: Some of our trucks have been stolen. Requesting assistance with exfiltration."}
 ];
-
-let globalRadioTo = localStorage.getItem('grwiki_radio_to') || 'LAST';
-
-function updateRadioTo(val) {
-    globalRadioTo = val;
-    localStorage.setItem('grwiki_radio_to', val);
-    updateDynamicRadioNodes();
-}
 
 function updateDynamicRadioNodes() {
     document.querySelectorAll('.dyn-radio').forEach(el => {
         let tpl = el.dataset.tpl;
-        
         tpl = tpl.replace(/\{FROM\}/g, globalOrg);
-        tpl = tpl.replace(/\{TO\}/g, globalRadioTo);
-
         el.textContent = tpl;
     });
 }
@@ -1507,21 +1639,14 @@ function copyRadioDynamic(btn) {
 
 function deptRadioPage() {
     const orgs = ["LSPD", "SAHP", "FIB", "GOV", "NG", "EMS", "Lifeinvader"];
-    const toOrgs = ["LAST", "ALL", "LSPD", "SAHP", "FIB", "GOV", "NG", "EMS", "DOC"];
     
-    let out = `<h1 class="section-title">Department Radio</h1><p class="section-sub">Dynamic inter-department communication commands exactly as requested. Select your department and target.</p>
+    let out = `<h1 class="section-title">Department Radio</h1><p class="section-sub">Dynamic inter-department communication commands exactly as requested. Select your department.</p>
     
     <div class="card" style="margin-bottom:20px; background:var(--panel2)"><div class="card-body" style="display:flex;align-items:center;gap:15px;flex-wrap:wrap">
      <div style="display:flex;align-items:center;gap:8px">
       <b>FROM:</b> 
-      <select onchange="updateDynamicOrg(this.value)" style="padding:6px;border-radius:6px;background:var(--panel);color:var(--text);border:1px solid var(--line)">
+      <select onchange="globalOrg=this.value; localStorage.setItem('grwiki_org', this.value); updateDynamicRadioNodes()" style="padding:6px;border-radius:6px;background:var(--panel);color:var(--text);border:1px solid var(--line)">
        ${orgs.map(o => `<option value="${o}" ${globalOrg===o?'selected':''}>${o}</option>`).join('')}
-      </select>
-     </div>
-     <div style="display:flex;align-items:center;gap:8px">
-      <b>TO:</b> 
-      <select onchange="updateRadioTo(this.value)" style="padding:6px;border-radius:6px;background:var(--panel);color:var(--text);border:1px solid var(--line)">
-       ${toOrgs.map(o => `<option value="${o}" ${globalRadioTo===o?'selected':''}>${o}</option>`).join('')}
       </select>
      </div>
     </div></div>
@@ -1605,7 +1730,161 @@ function bookmarksPage(){
  }).join("")}</div></div>`;
 }
 
-const pageFns={dashboard,penal:penalPage,traffic:trafficPage,arrest:procedurePage,'traffic-stop':trafficStopPage,events:eventsPage,map:mapPage,terms:termsPage,calculator:calculatorPage,codes:codesPage,bookmarks:bookmarksPage,bodycam:bodycamPage,deptradio:deptRadioPage,vehicle:vehiclePage,notepad:notepadPage};
+/* ---------- Legislation Library ---------- */
+const legiData = {
+    lawyer: { title: "Code of Lawyers and Judicial Law (Lawyers Code)", content: `
+    <div class="doc-section"><h2>Article 1. General Provisions and Principles of Judicial Law</h2>
+    <div class="doc-rule"><b>1.1 Code of Lawyers and Judicial Law.</b><p>This Code establishes the Principles of Legal Representation and the Obligations, Rights and Duties of all persons working in the legal profession, regardless of their affiliation to Government (GOV), the Department of Justice (DOJ) or a State Organisation.</p></div>
+    <div class="doc-rule"><b>1.3 Rules and Principles of Discovery.</b><p>The Principle of Discovery is a principle in law to ensure that any Legal Proceedings are conducted openly and fairly between all Parties.</p><div class="sub">a) A Lawyer must be granted full access to all Evidence, including but not limited to the Case File, Bodycam Evidence, Testimony Under Oath and all Additional Legal Documents.<br>b) A Lawyer must be granted reasonable time beforehand to review any Case Files and/or Valid Evidence.</div></div>
+    <div class="doc-rule"><b>1.4 Rules and Principles of Dual Authority.</b><p>A State Employee acting in their capacity as a Lawyer for a Case File or Court Trial may not invoke other authority granted to them by the State during a Hearing or a Court Trial.</p></div>
+    <div class="doc-rule"><b>1.5 Rules and Principles of Attorney-Client Privilege.</b><p>Attorney-Client Privilege is the legal right of every Citizen of the State, without exception, to not be obliged or forced to disclose information relevant to a Case or Investigation to anyone but their contracted or assigned Lawyer.</p></div>
+    <div class="doc-rule"><b>1.7 Rules and Principles of Recusal.</b><p>Recusal is a legal principle that ensures the Principles of Justice are upheld without bias or prejudice towards the Defendant.</p></div>
+    <div class="doc-rule"><b>1.8 Rules and Principles of Self-Representation.</b><p>A Lawyer, when Detained or Arrested, may act as their own Defence Attorney against the Charges. A Lawyer must state their intention to represent themselves.</p></div>
+    </div>
+    
+    <div class="doc-section"><h2>Article 2. Definitions in Law</h2>
+    <div class="doc-rule"><b>2.1 Client.</b><p>A Client is defined as either a Citizen of the State who has entered into a Contract for Legal Services with a Lawyer or the Organisation to which the Lawyer is Contracted.</p></div>
+    <div class="doc-rule"><b>2.2 Contract for Legal Services.</b><p>An Agreement that is Signed between a Lawyer and a Client in order for the Lawyer to provide Legal Services to their Client. Must be Signed by both the Client and the Lawyer.</p></div>
+    <div class="doc-rule"><b>2.4 Essential Legal Services.</b><p>Consulting and provision of Legal Advice during Detention and/or Arrest. Evaluation of evidence presented by Law Enforcement Officers. Representing the interests of their Client.</p></div>
+    <div class="doc-rule"><b>2.5 Additional Legal Services.</b><p>Provision of any Legal Advice outside of Detention and/or Arrest. Drafting of a Case File. Filing Legal Documents. Parole Proceedings and Bail. Formal Court Trial Representation.</p></div>
+    </div>
+
+    <div class="doc-section"><h2>Article 3. Lawyers</h2>
+    <div class="doc-rule"><b>3.1 Lawyer.</b><p>A Citizen of the State or State Employee who: Passed the Lawyers Bar Examination, Has been entered into the Registry, Holds a Valid Lawyers Licence.</p></div>
+    <div class="doc-rule"><b>3.2 State Lawyer.</b><p>All Lawyers employed by the Department of Justice (DOJ). May act as a Public Defender free of charge.</p></div>
+    <div class="doc-rule"><b>3.3 Government Lawyer.</b><p>All Lawyers employed by the Government (GOV) with the exception of Lawyers working within the DOJ.</p></div>
+    <div class="doc-rule"><b>3.4 Organisation Lawyer.</b><p>Lawyers in the Employment of FIB, LSPD or SAHP (District Attorneys), National Guard (JAG), EMS, or Private Organisations (Life Invader).</p></div>
+    <div class="doc-rule"><b>3.5 Private Lawyer.</b><p>All Licensed Lawyers who have registered as a Private Lawyer and who are not employed by the State/Gov/Orgs.</p></div>
+    </div>
+    `},
+    criminal: { title: "Code of Criminal and Misdemeanour Law (Criminal Code)", content: `
+    <div class="doc-section"><h2>Article 1. General Provisions and Principles of Criminal Law</h2>
+    <div class="doc-rule"><b>1.3 Principles of Corpus Delicti.</b><p>A criminal liability is based on the Principle of Corpus Delicti (body of evidence) that a crime must be proved to have occurred before a person can be convicted.</p></div>
+    <div class="doc-rule"><b>1.4 Principles of Criminal Liability.</b><p>Criminal Liability requires that an action was performed by a suspect where the action was unlawful and performed with criminal intent.</p></div>
+    <div class="doc-rule"><b>1.5 Principles of Complicity.</b><p>Complicity in a crime is defined as the intentional joint participation of two or more people in the commission of an intentional crime.</p></div>
+    <div class="doc-rule"><b>1.12 Principles of Sentencing for a Felony.</b><p>Class-1 (15-months, $10k), Class-2 (30-months, $20k), Class-3 (45-months, $30k), Class-4 (60-months, $40k), Class-5 (75-months, $50k).</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 2. Crimes Against Society</h2>
+    <div class="doc-rule"><b>2.1 Illicit Substances and Prohibited Items.</b><p>Possession of Narcotics, Possession of Narcotics in Large Quantities, Intent to Distribute.</p></div>
+    <div class="doc-rule"><b>2.2 Murder or Attempted Murder.</b><p>Culpable Homicide/Manslaughter, Murder or Attempted Murder, Premeditated Murder.</p></div>
+    <div class="doc-rule"><b>2.5 Kidnapping.</b><p>Kidnapping or Attempted Kidnapping of a Civilian, Civil Servant, or State Official.</p></div>
+    <div class="doc-rule"><b>2.9 Larceny or Theft.</b><p>Petty Larceny, Grand Larceny, Felony Larceny, Grand Theft Auto.</p></div>
+    <div class="doc-rule"><b>2.17 Firearms Violations.</b><p>Unlicensed Firearms Carry, Excessive Firearms Carry (Overcarrying), Possession of Illegal Firearms, Brandishing a Firearm, Discharging a Firearm.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 3. Crimes against the State</h2>
+    <div class="doc-rule"><b>3.1 Terrorism.</b><p>Actively participating in any type of violence or the threat of violence with the purpose of frightening the population.</p></div>
+    <div class="doc-rule"><b>3.5 Obstruction of Justice.</b><p>Obstruction of an Investigation, Obstruction of an Officer or Civil Servant, Obstruction of an Arrest or Detention.</p></div>
+    </div>
+    `},
+    tax: { title: "Code of Commercial and Taxation Law (Tax Code)", content: `
+    <div class="doc-section"><h2>Article 1. General Provisions and Principles of Commercial Law</h2>
+    <div class="doc-rule"><b>1.3 Rules and Principles of the Right to Private Commercial Enterprise.</b><p>A Citizen of the State has the unhindered Right to possess a commercial property or business as well as freely engage in lawful commercial activity without unlawful or unreasonable interference by the State.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 2: Definitions in Commercial and Taxation Law</h2>
+    <div class="doc-rule"><b>2.1 Sales Tax.</b><p>Sales Tax applies to all Businesses within the State that have opted to have their Taxes paid automatically on each sale of goods and/or services (Taxes On).</p></div>
+    <div class="doc-rule"><b>2.2 Direct Tax.</b><p>Direct Tax applies to all Businesses within the State that have not opted to have their taxes paid automatically (Taxes Off).</p></div>
+    <div class="doc-rule"><b>2.3 Taxable Businesses.</b><p>Service stations, Chip Tunings, 24/7, Clothing stores, Gas Stations, Ammunations, Bars, Tattoo Studios, Barber Shops, Jewellery store.</p></div>
+    <div class="doc-rule"><b>2.4 Non-Taxable Businesses.</b><p>Ticket tables, Purchase/sale of resources, Oil platforms, Public farms, Car Sharing Companies, Parking Businesses, Taxi Companies, ATM, Juice Shops.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 4 Legal Documentation for Tax Law</h2>
+    <div class="doc-rule"><b>4.2 Order of Foreclosure.</b><p>Issued on a business by the Governor or the Attorney General, authorising a business to be sealed in the event that the business owner has been found guilty of Tax Evasion.</p></div>
+    </div>
+    `},
+    firearms: { title: "Code of Firearms and Weapons Law (Firearms Code)", content: `
+    <div class="doc-section"><h2>Article 1. General Provisions and Principles</h2>
+    <div class="doc-rule"><b>1.3 Types of Armament.</b><p>Melee weapons, Firearms, Explosive weapons, Artillery weapons, Ammunition, Bulletproof vests, Weapon components.</p></div>
+    <div class="doc-rule"><b>1.4 Right to Bear Arms.</b><p>It is the Right of any Citizen of the State to possess Weapons, Firearms and Ammunition for those Firearms so long as they comply with the Laws for the Carry, Use and Storage.</p></div>
+    <div class="doc-rule"><b>1.6 Use of Firearms and Weapons by a State Employee.</b><p>A State Employee is permitted to use State Organisation Firearms, Ammunition and Equipment in the performance of their lawful duties.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 2. Basic Concepts and Definitions</h2>
+    <div class="doc-rule"><b>2.1 Gun License.</b><p>A Permit obtained by a Citizen of the State, giving them the right to buy, carry and use Legal Firearms and Weapons. Cannot be issued without valid medical insurance.</p></div>
+    <div class="doc-rule"><b>2.3 Illegal Firearms.</b><p>All Firearms with a scratched Serial Number (indicated with the marking "XXX") are considered Illegal Firearms. Weapons with serial numbers that include a state organization identifier are considered illegal for anyone not employed by that organization.</p></div>
+    <div class="doc-rule"><b>2.7 Open Carry.</b><p>Civilians are prohibited from openly carrying any type of weapon, and doing so incurs legal liability.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 3. Possession and Storage</h2>
+    <div class="doc-rule"><b>3.1 Possession.</b><p>Individuals are allowed to possess no more than one legal firearm and a total of 100 rounds of ammunition. Employees of state organizations can carry more while On-Duty.</p></div>
+    <div class="doc-rule"><b>3.3 Storage in a Vehicle.</b><p>No more than 3 Legal Firearms and a maximum total of 300 bullets in a Vehicle.</p></div>
+    <div class="doc-rule"><b>3.4 Storage in a House.</b><p>There is no legal limit to the secure storage of Firearms and Ammunition in the Warehouse of a Private Property.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 5. Use of Force by the State</h2>
+    <div class="doc-rule"><b>5.1 Necessity and Use of Force.</b><p>Law enforcement officers are encouraged to use a taser prior to resorting to a lethal weapon, except in situations where the suspect is armed, hostile, or poses an immediate threat to life.</p></div>
+    <div class="doc-rule"><b>5.6 Lethal Force.</b><p>Defined as the use of any Firearms, or the continued use of Damaging or Harmful Force only where continued use is necessary.</p></div>
+    </div>
+    `},
+    immunity: { title: "Code of Immunity and Special Status Law (Immunity Code)", content: `
+    <div class="doc-section"><h2>Article 1. General Provisions and Principles</h2>
+    <div class="doc-rule"><b>1.3 Rules and Principles of Legal Immunity.</b><p>Legal Immunity is a legal status wherein a State Employee who has been granted Legal Immunity is given certain protections from Civil and/or Criminal Liability. Types: Full Legal Immunity (First Person), Partial Immunity (Federal), Judicial Immunity.</p></div>
+    <div class="doc-rule"><b>1.4 Expectations and Rules of Conduct for First Persons.</b><p>A First Person is a Senior State Official and represents their State Organisation and the State while On-Duty and is expected to conduct themselves and dress in a manner befitting of their status.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 2. Definitions in Immunity Law</h2>
+    <div class="doc-rule"><b>2.1 Full Legal Immunity (First Person Immunity).</b><p>Includes: Governor, Deputy Governor(s), Attorney General, Supreme/District Court Judges, Director of USSS, Head of a Department, Leader/Deputy Leader of a State Organisation.</p></div>
+    <div class="doc-rule"><b>2.2 Partial Immunity (Federal Immunity).</b><p>Applies to FIB, USSS, DOJ. Protects from Detention/Search without the presence of a First Person or Higher Command.</p></div>
+    <div class="doc-rule"><b>2.3 Judicial Immunity.</b><p>Applies to Attorney General, Supreme/District Court Judges. Protects from liability while making necessary judicial decisions.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 3. Full Legal Immunity</h2>
+    <div class="doc-rule"><b>3.1 Protections.</b><p>Protection from Criminal Liability (for minor crimes), Civil Liability (while on duty), Traffic Penalties, Unauthorised Detention, Unauthorised Search, Unauthorised Investigation. Right to USSS Protection Detail.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 6. Procedural Actions</h2>
+    <div class="doc-rule"><b>6.2 Procedural Actions Against First Persons.</b><p>Any Investigation or Criminal Prosecution against a First Person requires authorisation granted by the Supreme Court (Order of Investigation, Order of Waiver, Criminal Indictment).</p></div>
+    </div>
+    `},
+    evidence: { title: "Code of Evidence and Investigation Law (Evidence Code)", content: `
+    <div class="doc-section"><h2>Article 1. General Provisions and Principles</h2>
+    <div class="doc-rule"><b>1.3 Rules and Principles of Evidence.</b><p>Evidence is defined as a body of information that may be used within the law to establish the facts of an Investigation and establish the Proof of any Claims. Must be Valid and Admissible.</p></div>
+    <div class="doc-rule"><b>1.5 Gathering and Recording.</b><p>All State Employees must ensure that they have a valid Proof of Bodycam and that their Bodycam is working and ready to record at all times while On-Duty.</p></div>
+    <div class="doc-rule"><b>1.6 Retaining of Evidence.</b><p>All Law Enforcement Officers must retain all Evidence of any Major Incident for a minimum of 48-hours.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 2. Definitions in Evidence Law</h2>
+    <div class="doc-rule"><b>2.2 Reasonable Suspicion.</b><p>The legal standard required in order to conduct a limited Procedural Action (Detention or a brief Search as a Stop and Frisk).</p></div>
+    <div class="doc-rule"><b>2.3 Probable Cause.</b><p>The legal standard required in order to conduct Procedural Actions (Detention/Arrest and a Search). Requires reasonably trustworthy information or facts.</p></div>
+    <div class="doc-rule"><b>2.9 Illegal Evidence.</b><p>Evidence that has been obtained by a violation of the Rights of a Citizen or by committing a crime.</p></div>
+    <div class="doc-rule"><b>2.11 Excluded Evidence (The Exclusion Rule).</b><p>Any Inadmissible, Invalid, or Illegal Evidence must be excluded from the considerations of the Court.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 4. Rules for Valid Evidence</h2>
+    <div class="doc-rule"><b>4.2 Bodycam Evidence.</b><p>Must have Valid Proof of Bodycam (shows date/time, turned on). Recording must not be broken/destroyed. Refresh not required after every pause.</p></div>
+    <div class="doc-rule"><b>4.9 Witness Statements and Testimony.</b><p>Affidavit (written under oath), Deposition (verbal under oath), Direct Examination, Cross Examination.</p></div>
+    <div class="doc-rule"><b>4.10 Statements by a Suspect.</b><p>Must have clearly been read their Miranda Rights.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 7. Search of a Citizen</h2>
+    <div class="doc-rule"><b>7.1 Grounds for Search.</b><p>Consent, Reasonable Suspicion, Probable Cause, Valid Arrest, Martial Law, Capitol Security, Protective Security, Military Security, Correctional Security, Judicial Security, Warrant.</p></div>
+    </div>
+    `}
+};
+
+function openLegislation(key) {
+    const data = legiData[key];
+    const c = document.getElementById('content');
+    c.innerHTML = `<h1 class="section-title">${esc(data.title)}</h1>
+                   <div style="margin-bottom:15px"><button class="btn ghost" onclick="go('legislation')">← Back to Library</button></div>
+                   ${data.content}`;
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function legislationPage() {
+    return `<h1 class="section-title">Legislation Library</h1><p class="section-sub">Access the full Codes of Law for the State of San Andreas.</p>
+    <div class="leg-grid">
+      <div class="leg-card" onclick="openLegislation('lawyer')">
+        <h3>Lawyer Code</h3><p>Code of Lawyers and Judicial Law</p>
+      </div>
+      <div class="leg-card" onclick="openLegislation('criminal')">
+        <h3>Criminal Code</h3><p>Code of Criminal and Misdemeanour Law</p>
+      </div>
+      <div class="leg-card" onclick="openLegislation('tax')">
+        <h3>Tax Code</h3><p>Code of Commercial and Taxation Law</p>
+      </div>
+      <div class="leg-card" onclick="openLegislation('firearms')">
+        <h3>Firearms Code</h3><p>Code of Firearms and Weapons Law</p>
+      </div>
+      <div class="leg-card" onclick="openLegislation('immunity')">
+        <h3>Immunity Code</h3><p>Code of Immunity and Special Status Law</p>
+      </div>
+      <div class="leg-card" onclick="openLegislation('evidence')">
+        <h3>Evidence Code</h3><p>Code of Evidence and Investigation Law</p>
+      </div>
+    </div>`;
+}
+
+const pageFns={dashboard,legislation:legislationPage,penal:calculatorPage,traffic:calculatorPage,arrest:procedurePage,'traffic-stop':trafficStopPage,events:eventsPage,map:mapPage,terms:termsPage,calculator:calculatorPage,codes:codesPage,bookmarks:bookmarksPage,bodycam:bodycamPage,deptradio:deptRadioPage,vehicle:vehiclePage,notepad:notepadPage};
 function render(page){
  clearDutyInterval();
  stopOcrPhrases();
@@ -1619,7 +1898,10 @@ function render(page){
   localStorage.setItem('grwiki_lastpage',page);
   if(page!=='dashboard'){recentPages=[page,...recentPages.filter(p=>p!==page)].slice(0,6); localStorage.setItem('grwiki_recentpages',JSON.stringify(recentPages))}
  }catch(e){}
- if(page==='calculator')updateCalcTotals();
+ if(page==='calculator'||page==='penal'||page==='traffic') {
+    calcActiveSection = 'ALL';
+    updateCalcTotals();
+ }
  if(page==='vehicle')initVehiclePage();
  if(page==='dashboard'){updateClocks();startTicker()}
  if(page==='bodycam'&&dutyState&&dutyState.on)startDutyInterval();
@@ -1757,9 +2039,7 @@ function updateClocks(){
      const tI=document.getElementById('clockLocal'); if(tI)tI.textContent=localTime;
      const dI=document.getElementById('dashClockIndia'); if(dI)dI.textContent=localTime;
      const ddI=document.getElementById('dashDateIndia'); if(ddI)ddI.textContent=fmtZone(now, activeTz, {weekday:'short',day:'numeric',month:'short'});
- } catch(e) {
-     console.error("Invalid Timezone", e);
- }
+ } catch(e) {}
 
  const dL=document.getElementById('dashClockLondon');
  if(dL){
@@ -1856,21 +2136,23 @@ procedure.forEach((x,i)=>searchIndex.push({page:'arrest',title:`10-15 Step ${i+1
 trafficStop.forEach((x)=>searchIndex.push({page:'traffic-stop',title:`10-51 Step ${x[0]} — ${x[1]}`,text:x[2]}));
 terms.forEach(x=>searchIndex.push({page:'terms',title:`${x[0]}`,text:x[1]}));
 tenCodes.forEach(x=>searchIndex.push({page:'codes',title:x[0],text:x[1]}));
-searchIndex.push({page:'calculator',title:'Fine Calculator',text:'Build a citation and total fines, time and stars'});
+searchIndex.push({page:'calculator',title:'Arrest Calculator',text:'Build a citation and total fines, time and stars'});
 bodycam.forEach(g=>searchIndex.push({page:'bodycam',title:'Bodycam — '+g.title,text:g.lines.join(' ')}));
 searchIndex.push({page:'vehicle',title:'Vehicle Ticket Log',text:'Upload vehicle photo, log plate, car name and owner, copy or send to Discord webhook'});
 searchIndex.push({page:'notepad',title:'Dispatch Notepad',text:'Scratchpad for active pursuits, license plates, and rapid notes'});
 searchIndex.push({page:'deptradio',title:'Department Radio',text:'Dynamic radio commands for LSPD, SAHP, FIB, GOV, NG'});
+searchIndex.push({page:'legislation',title:'Legislation Library',text:'Read the Immunity, Evidence, Firearms, Tax, Criminal, and Lawyer codes.'});
 
 /* ---------- Command palette actions (triggered with "> ") ---------- */
 const paletteActions=[
  {icon:'☾',label:'Toggle dark / light mode',run:()=>applyDark(document.documentElement.dataset.dark!=='1')},
  {icon:'⎙',label:'Print current page',run:()=>window.print()},
  {icon:'●',label:'Start / End duty',run:()=>toggleDuty()},
- {icon:'＋',label:'Go to Fine Calculator',run:()=>go('calculator')},
+ {icon:'＋',label:'Go to Arrest Calculator',run:()=>go('calculator')},
  {icon:'●',label:'Go to Bodycam Commands',run:()=>go('bodycam')},
  {icon:'📻',label:'Go to Department Radio',run:()=>go('deptradio')},
  {icon:'🚗',label:'Go to Vehicle Ticket Log',run:()=>go('vehicle')},
+ {icon:'⚖️',label:'Go to Legislation',run:()=>go('legislation')},
  {icon:'📝',label:'Go to Dispatch Notepad',run:()=>go('notepad')},
  {icon:'👤',label:'Open Officer Profile & Backup',run:()=>{fillProfileModal();profileModal.classList.add('show')}},
  {icon:'10',label:'Go to Radio Codes & Phonetics',run:()=>go('codes')},
@@ -1910,6 +2192,7 @@ window.addEventListener('keydown', function(e) {
  // Stealth Hide Mode (Ctrl/Cmd + B)
  if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'B')) {
     e.preventDefault();
+    e.stopPropagation();
     const stealth = document.getElementById('stealthOverlay');
     if (stealth) {
         if (stealth.style.display === 'flex') {
@@ -1920,7 +2203,7 @@ window.addEventListener('keydown', function(e) {
         }
     }
  }
-});
+}, true);
 
 document.addEventListener('keydown',e=>{
  const typing=['INPUT','TEXTAREA'].includes(document.activeElement.tagName);
@@ -1937,7 +2220,7 @@ document.getElementById('searchInput').addEventListener('input',e=>{if(e.target.
 
 updateFavCount();
 let startPage='dashboard';
-try{const lp=localStorage.getItem('grwiki_lastpage'); if(lp&&(pageFns[lp]||rules[lp]))startPage=lp}catch(e){}
+try{const lp=localStorage.getItem('grwiki_lastpage'); if(lp&&(pageFns[lp]||rules[lp]||lp==='penal'||lp==='traffic'))startPage=lp}catch(e){}
 render(startPage);
 </script>
 </body>
