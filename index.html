@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Grand RP Police Wiki — rules, penal code, traffic code, arrest procedures and event guides.">
 <title>Grand RP Police Wiki</title>
+<!-- FIREBASE SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
 :root{
@@ -106,7 +110,7 @@ button,input,textarea,select{font:inherit}.app{display:flex;min-height:100vh}
 .table td.actioncol{width:30px;text-align:center}
 .table th.actioncol{width:30px}
 
-/* --- NEW CALCULATOR UI --- */
+/* --- CALCULATOR UI --- */
 .calc-header { background: #0b101a; border: 1px solid var(--accent); border-radius: 8px; padding: 15px; margin-bottom: 20px; }
 .calc-title { color: #fff; font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; text-transform: uppercase; }
 .calc-title .badge { background: var(--accent); color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px; }
@@ -217,8 +221,9 @@ button,input,textarea,select{font:inherit}.app{display:flex;min-height:100vh}
 .photopreview img{max-width:100%;max-height:280px;border-radius:12px;display:block;box-shadow:var(--shadow)}
 .photopreview .rmphoto{position:absolute;top:8px;right:8px;background:rgba(5,7,15,.85);color:#fff;border:0;border-radius:8px;width:28px;height:28px;cursor:pointer;font-size:14px}
 .veh-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.veh-grid input,.veh-grid textarea{padding:11px 13px;border:1px solid var(--line);border-radius:11px;background:var(--panel2);width:100%;font:inherit;color:var(--text)}
+.veh-grid input,.veh-grid select,.veh-grid textarea{padding:11px 13px;border:1px solid var(--line);border-radius:11px;background:var(--panel2);width:100%;font:inherit;color:var(--text)}
 .veh-grid textarea{grid-column:1/-1;resize:vertical;min-height:60px}
+.veh-full{grid-column:1/-1}
 .webhookrow{display:flex;gap:8px;align-items:center;margin:12px 0}
 .webhookrow input{flex:1;padding:10px 13px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--text)}
 .loglist .logitem{border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin:9px 0;background:var(--panel)}
@@ -275,6 +280,33 @@ button,input,textarea,select{font:inherit}.app{display:flex;min-height:100vh}
 </style>
 </head>
 <body>
+
+<script>
+// =====================================================================
+// ADD YOUR FIREBASE DETAILS HERE
+// 1. Go to console.firebase.google.com -> Create Project
+// 2. Add a Web App (</>) and copy the config below
+// 3. Go to Realtime Database -> Create Database
+// 4. In Database Rules, set read: true and write: true
+// =====================================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyA5TlbeJrZSJNqaj1g2otQwEHQoMsRnZSQ",
+  authDomain: "grand-rp-wiki.firebaseapp.com",
+  databaseURL: "https://grand-rp-wiki-default-rtdb.firebaseio.com", 
+  projectId: "grand-rp-wiki",
+  storageBucket: "grand-rp-wiki.firebasestorage.app",
+  messagingSenderId: "452896834117",
+  appId: "1:452896834117:web:38f96a66735278188c592c",
+  measurementId: "G-QZP4YB1ZHW"
+};
+
+// Initialize Firebase only if the config is filled out
+let isFirebaseEnabled = false;
+if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+    firebase.initializeApp(firebaseConfig);
+    isFirebaseEnabled = true;
+}
+</script>
 
 <!-- STEALTH OVERLAY (Ctrl+B) -->
 <div id="stealthOverlay">
@@ -495,22 +527,30 @@ function doSignup() {
   const pass = document.getElementById('signupPass').value.trim();
 
   if(!name || !id || !pass) { alert("Please fill all fields"); return; }
-  if(dbUsers.find(u => u.id === id)) { alert("ID already registered. Please login."); return; }
 
-  dbUsers.push({ name, id, pass, date: new Date().toLocaleString() });
-  localStorage.setItem('grwiki_users', JSON.stringify(dbUsers));
-
-  activeUser = id;
-  localStorage.setItem('grwiki_active_user', activeUser);
-  document.getElementById('authOverlay').style.display = 'none';
-
-  let profile = loadProfile();
-  profile.name = name;
-  profile.badge = id;
-  localStorage.setItem('grwiki_profile', JSON.stringify(profile));
-
-  toast("Registered & Logged in successfully");
-  playStatic(0.6, 0.08); setTimeout(() => playBeep(1200, 0.2, 0.1), 600);
+  // ONLINE DB LOGIC
+  if (isFirebaseEnabled) {
+      firebase.database().ref('users/' + id).once('value').then((snapshot) => {
+          if (snapshot.exists()) {
+              alert("ID already registered online. Please login.");
+          } else {
+              firebase.database().ref('users/' + id).set({
+                  name: name,
+                  id: id,
+                  pass: pass,
+                  date: new Date().toLocaleString()
+              }).then(() => {
+                  completeLoginProcess(id, name);
+              });
+          }
+      });
+  } else {
+      // OFFLINE DB LOGIC
+      if(dbUsers.find(u => u.id === id)) { alert("ID already registered locally. Please login."); return; }
+      dbUsers.push({ name, id, pass, date: new Date().toLocaleString() });
+      localStorage.setItem('grwiki_users', JSON.stringify(dbUsers));
+      completeLoginProcess(id, name);
+  }
 }
 
 function doLogin() {
@@ -519,16 +559,43 @@ function doLogin() {
 
   if(!id || !pass) { alert("Please enter ID and Password"); return; }
 
-  const user = dbUsers.find(u => u.id === id && u.pass === pass);
-  if(user) {
+  // ONLINE DB LOGIC
+  if (isFirebaseEnabled) {
+      firebase.database().ref('users/' + id).once('value').then((snapshot) => {
+          if (snapshot.exists()) {
+              const userData = snapshot.val();
+              if (userData.pass === pass) {
+                  completeLoginProcess(id, userData.name);
+              } else {
+                  alert("Invalid Password");
+              }
+          } else {
+              alert("Invalid ID");
+          }
+      });
+  } else {
+      // OFFLINE DB LOGIC
+      const user = dbUsers.find(u => u.id === id && u.pass === pass);
+      if(user) {
+        completeLoginProcess(id, user.name);
+      } else {
+        alert("Invalid ID or Password locally");
+      }
+  }
+}
+
+function completeLoginProcess(id, name) {
     activeUser = id;
     localStorage.setItem('grwiki_active_user', activeUser);
     document.getElementById('authOverlay').style.display = 'none';
-    toast("Welcome back, Officer " + user.name);
+
+    let profile = loadProfile();
+    profile.name = name;
+    profile.badge = id;
+    localStorage.setItem('grwiki_profile', JSON.stringify(profile));
+
+    toast("Welcome back, Officer " + name);
     playStatic(0.6, 0.08); setTimeout(() => playBeep(1200, 0.2, 0.1), 600);
-  } else {
-    alert("Invalid ID or Password");
-  }
 }
 
 function doLogout() {
@@ -541,22 +608,37 @@ function doLogout() {
 }
 
 function showAdminUsers() {
-  const adminUsers = JSON.parse(localStorage.getItem('grwiki_users') || '[]');
-  if(adminUsers.length === 0) {
-    alert("No registered users yet.");
-    return;
+  if (isFirebaseEnabled) {
+      firebase.database().ref('users').once('value').then((snapshot) => {
+          if (!snapshot.exists()) {
+              alert("No registered users online yet.");
+              return;
+          }
+          const data = snapshot.val();
+          let txt = "Registered Officers (Online DB View):\n\n";
+          Object.keys(data).forEach(userId => {
+              const u = data[userId];
+              txt += `• Name: ${u.name} | ID: ${u.id} | Date: ${u.date}\n`;
+          });
+          alert(txt);
+      });
+  } else {
+      const adminUsers = JSON.parse(localStorage.getItem('grwiki_users') || '[]');
+      if(adminUsers.length === 0) {
+        alert("No registered users locally yet.");
+        return;
+      }
+      let txt = "Registered Officers (Local Admin View):\n\n";
+      adminUsers.forEach(u => {
+        txt += `• Name: ${u.name} | ID: ${u.id} | Date: ${u.date}\n`;
+      });
+      alert(txt);
   }
-  let txt = "Registered Officers (Admin View):\n\n";
-  adminUsers.forEach(u => {
-    txt += `• Name: ${u.name} | ID: ${u.id} | Date: ${u.date}\n`;
-  });
-  alert(txt);
 }
 
 
 /* ---------- Data Core ---------- */
 const rules = {
-// (Rules object remains unchanged for brevity, perfectly identical to original source)
 general: {
 title:"General Rules", sub:"Official server rules and regulations. Violating these rules will result in the listed penalties.",
 groups:[
@@ -1274,6 +1356,11 @@ function updateCalcTotals(){
         count++;
     }
  });
+ 
+ // Apply Grand RP Limits
+ if(fine > 50000) fine = 50000;
+ if(stars > 5) stars = 5;
+
  const c=document.getElementById('totCharges'), f=document.getElementById('totFine'), t=document.getElementById('totTime'), s=document.getElementById('totStars');
  if(c) c.textContent=count;
  if(f) f.textContent=fmtMoney(fine);
@@ -1284,7 +1371,13 @@ function updateCalcTotals(){
 function copyCitation(){
  const items=calcAllItems().filter(it=>calcSelected.has(it.id));
  if(!items.length){toast('No charges selected'); return;}
- let fine=0,time=0,stars=0; items.forEach(it=>{fine+=it.fine;time+=it.time;stars+=it.stars});
+ let fine=0,time=0,stars=0; 
+ items.forEach(it=>{fine+=it.fine;time+=it.time;stars+=it.stars});
+ 
+ // Apply Grand RP Limits to copied citation
+ if(fine > 50000) fine = 50000;
+ if(stars > 5) stars = 5;
+ 
  const t = `CHARGES:\n${items.map(it=>`• ${it.code} — ${it.name}`).join('\n')}\n\nTOTAL FINE: ${fmtMoney(fine)}\nTOTAL SENTENCE: ${time} min\nTOTAL STARS: ${stars}`;
  copyText(t, 'Citation copied');
 }
@@ -1292,7 +1385,7 @@ function copyCitation(){
 function copyCodes(){
  const items=calcAllItems().filter(it=>calcSelected.has(it.id));
  if(!items.length){toast('No charges selected'); return;}
- const t = items.map(it=>it.code).join(', ');
+ const t = items.map(it=>it.code).join(' + ');
  copyText(t, 'Codes copied');
 }
 
@@ -1325,7 +1418,7 @@ function filterCalc(q){
  });
 }
 
-/* ---------- Vehicle Ticket Log ---------- */
+/* ---------- Advanced Vehicle Ticket Log ---------- */
 let vehiclePhoto={dataUrl:null,file:null,name:null};
 function loadVehicleLogs(){try{return JSON.parse(localStorage.getItem('grwiki_vehiclelogs')||'[]')}catch(e){return []}}
 let vehicleLogs=loadVehicleLogs();
@@ -1334,7 +1427,18 @@ function loadWebhook(){try{return localStorage.getItem('grwiki_webhook')||''}cat
 
 function vehiclePage(){
  const wh=loadWebhook();
- let out=`<h1 class="section-title">Vehicle Ticket Log</h1><p class="section-sub">Upload a screenshot of the vehicle/plate, fill in the minimal stop details, and get a ready-to-paste clean Discord log.</p>
+ 
+ // Generate Traffic Code Options dynamically
+ let tcOptions = '<option value="">Select Traffic Offense...</option>';
+ [...traffic, ...parking, ...specialParking].forEach(t => {
+    let code = `T.C. ${t[0]}`;
+    let name = t[1];
+    let fineStr = String(t[2] || '$0');
+    let fineNum = parseMoney(fineStr);
+    tcOptions += `<option value="${code} - ${name}" data-fine="${fineNum}">${code} - ${name} (${fineStr})</option>`;
+ });
+
+ let out=`<h1 class="section-title">Advanced Vehicle Ticket Log</h1><p class="section-sub">Upload a screenshot of the vehicle/plate, fill in details, and auto-generate a professional Discord Police Embed.</p>
 
  <div class="card"><div class="card-head"><h2>1. Vehicle Photo</h2></div><div class="card-body">
   <div class="uploadbox" id="uploadBox" onclick="document.getElementById('photoInput').click()">
@@ -1345,33 +1449,51 @@ function vehiclePage(){
   <div id="ocrHost"></div>
  </div></div>
 
- <div class="card"><div class="card-head"><h2>2. Vehicle Details</h2></div><div class="card-body">
+ <div class="card"><div class="card-head"><h2>2. Vehicle & Incident Details</h2></div><div class="card-body">
   <div class="veh-grid">
-   <input id="vPlate" placeholder="Number Plate">
-   <input id="vModel" placeholder="Car Name (Model)">
+   <input id="vPlate" placeholder="Number Plate (e.g. 1A2B3C)">
+   <input id="vModel" placeholder="Vehicle Model (e.g. Sultan RS)">
    <input id="vOwner" placeholder="Owner Name">
+   <input id="vColor" placeholder="Vehicle Color">
+   <input id="vLocation" placeholder="Location Found">
+   
+   <select id="vReason" class="veh-full" onchange="updateVehicleFine()">
+    ${tcOptions}
+    <option value="Other">Other (Custom Reason)</option>
+   </select>
+   <input id="vFine" placeholder="Fine Amount ($)" class="veh-full">
   </div>
-  <p id="ocrHint" style="font-size:11px;color:var(--muted);margin:0">Upload a plate/registration screenshot above — Plate, Owner and Car Name will try to auto-fill.</p>
  </div></div>
 
- <div class="card"><div class="card-head"><h2>3. Log Output</h2></div><div class="card-body">
-  <div class="citation-preview" id="vehPreview">Fill in the details above to build the log.</div>
+ <div class="card"><div class="card-head"><h2>3. Discord Log Output</h2></div><div class="card-body">
+  <div class="citation-preview" id="vehPreview" style="white-space: pre-wrap;">Fill in the details above to build the log.</div>
   <div class="calc-actions" style="margin-top:12px">
-   <button class="btn" onclick="copyVehicleLog()">Copy Discord Log</button>
+   <button class="btn" onclick="copyVehicleLog()">Copy Text Log</button>
    <button class="btn ghost" onclick="clearVehicleForm()">Clear Form</button>
   </div>
   <div class="webhookrow">
    <input id="vWebhook" placeholder="Discord webhook URL (optional — saved only in your browser)" value="${esc(wh)}" oninput="localStorage.setItem('grwiki_webhook',this.value)">
-   <button class="btn secondary" id="sendWebhookBtn" onclick="sendVehicleWebhook()">Send to Discord</button>
+   <button class="btn secondary" id="sendWebhookBtn" onclick="sendVehicleWebhook()">Send Rich Embed</button>
   </div>
  </div></div>
 
  <div class="card"><div class="card-head"><h2>Recent Vehicle Logs</h2><span class="badge">${vehicleLogs.length}</span></div><div class="card-body loglist">
-  ${vehicleLogs.length?vehicleLogs.slice(0,15).map((l,i)=>`<div class="logitem"><div class="logitem-head"><b>${esc(l.plate||'Unknown plate')} — ${esc(l.model||'')}</b><span>${esc(l.time)}</span></div><pre>${esc(l.text.slice(0,220))}${l.text.length>220?'…':''}</pre><div class="logitem-actions"><button class="btn ghost" onclick="copyText(vehicleLogs[${i}].text,'Log copied')">Copy</button><button class="btn ghost" onclick="deleteVehicleLog(${i})">Delete</button></div></div>`).join(""):'<div class="empty">No saved logs yet — generated logs are kept here automatically.</div>'}
+  ${vehicleLogs.length?vehicleLogs.slice(0,15).map((l,i)=>`<div class="logitem"><div class="logitem-head"><b>${esc(l.plate||'Unknown plate')} — ${esc(l.model||'')}</b><span>${esc(l.time)}</span></div><pre>${esc(l.text.slice(0,150))}${l.text.length>150?'…':''}</pre><div class="logitem-actions"><button class="btn ghost" onclick="copyText(vehicleLogs[${i}].text,'Log copied')">Copy</button><button class="btn ghost" onclick="deleteVehicleLog(${i})">Delete</button></div></div>`).join(""):'<div class="empty">No saved logs yet — generated logs are kept here automatically.</div>'}
   ${vehicleLogs.length?`<div style="margin-top:8px"><button class="btn ghost" onclick="if(confirm('Clear all vehicle log history?')){vehicleLogs=[];saveVehicleLogs();render('vehicle')}">Clear All History</button></div>`:''}
  </div></div>`;
  return out;
 }
+
+function updateVehicleFine() {
+    const reasonSel = document.getElementById('vReason');
+    const fineInput = document.getElementById('vFine');
+    if(reasonSel.selectedIndex > 0 && reasonSel.value !== 'Other') {
+        const amt = reasonSel.options[reasonSel.selectedIndex].getAttribute('data-fine');
+        fineInput.value = amt ? "$" + parseInt(amt).toLocaleString() : "";
+    }
+    renderVehiclePreview();
+}
+
 function renderPhotoPreview(){
  const host=document.getElementById('photoPreviewHost'); if(!host)return;
  host.innerHTML=vehiclePhoto.dataUrl?`<div class="photopreview"><img src="${vehiclePhoto.dataUrl}" alt="Vehicle photo"><button class="rmphoto" title="Remove photo" onclick="removeVehiclePhoto()">✕</button></div>`:'';
@@ -1383,7 +1505,8 @@ function handlePhotoFile(file){
  reader.onload=e=>{vehiclePhoto={dataUrl:e.target.result,file:file,name:file.name}; renderPhotoPreview(); renderVehiclePreview(); toast('Photo attached'); scanVehiclePhoto()};
  reader.readAsDataURL(file);
 }
-/* ---------- OCR auto-detect (plate + owner + vehicle) ---------- */
+
+/* ---------- OCR auto-detect ---------- */
 let tesseractLoading=null;
 function ensureTesseract(){
  if(window.Tesseract)return Promise.resolve();
@@ -1435,22 +1558,47 @@ function flashAutoFilled(id){
  el.classList.remove('auto-filled'); void el.offsetWidth; el.classList.add('auto-filled');
  setTimeout(()=>el.classList.remove('auto-filled'),1900);
 }
+
 function guessVehicleFields(raw){
- const text = raw.replace(/\n/g, ' ');
+ // Clean up symbols that Tesseract misreads from game graphics
+ let cleanText = raw.replace(/[^a-zA-Z0-9\s:.-]/g, ' ');
+ const text = cleanText.replace(/\n/g, ' ');
  let plate=null,owner=null,model=null;
 
- // Advanced OCR for Grand RP MDT specific texts
- let plateMatch = text.match(/(?:Number Plate|Plate|Plate Number|Licence Plate)[\s\:\-]+([A-Z0-9]{2,8})/i) || text.match(/\b([0-9]{1,2}[A-Z]{2}[0-9]{3,4})\b/i) || text.match(/\b([A-Z0-9]{5,8})\b/i);
- if(plateMatch) plate = plateMatch[1].toUpperCase();
+ const blacklist = ['CLOSE', 'STOCK', 'LEVEL', 'SPEED', 'ENGINE', 'BRAKES', 'TYRES', 'INSTALL', 'CANCEL', 'ACCEPT', 'SUBMIT', 'SUSPENSION', 'TRANSMISSION', 'STREET', 'AVENUE', 'GRAND', 'ROLEPLAY', 'MDT', 'SEARCH'];
 
- let ownerMatch = text.match(/(?:Owner|Owner Name|Registered To|Name)[\s\:\-]+([A-Z][a-z]+ [A-Z][a-z]+)/i);
+ // Look for standard GTA plate formats (e.g. 46EEK572)
+ let plateMatch = text.match(/(?:Plate)[\s\:\-]+([A-Z0-9]{2,8})/i) || text.match(/\b([0-9]{1,2}[A-Z]{2}[0-9]{3,4})\b/i);
+ 
+ if (!plateMatch) {
+     let genericMatches = [...text.matchAll(/\b([A-Z0-9]{5,8})\b/gi)];
+     for (let m of genericMatches) {
+         let val = m[1].toUpperCase();
+         // Enforce mix of numbers and letters to avoid reading pure text buttons like "CLOSE" as plates
+         let hasNumbers = /\d/.test(val);
+         let hasLetters = /[A-Z]/.test(val);
+         
+         if (!blacklist.includes(val) && hasNumbers && hasLetters) {
+             plateMatch = m;
+             break;
+         }
+     }
+ }
+
+ if(plateMatch) {
+     let p = plateMatch[1].toUpperCase();
+     if (!blacklist.includes(p)) plate = p;
+ }
+
+ let ownerMatch = text.match(/(?:Owner|Registered To)[\s\:\-]+([A-Z][a-z]+ [A-Z][a-z]+)/i);
  if(ownerMatch) owner = ownerMatch[1];
 
- let modelMatch = text.match(/(?:Vehicle|Car Name|Model|Vehicle Model)[\s\:\-]+([A-Za-z0-9 ]{3,20})/i);
+ let modelMatch = text.match(/(?:Vehicle|Car Name|Model)[\s\:\-]+([A-Za-z0-9 ]{3,20})/i);
  if(modelMatch) model = modelMatch[1].trim();
 
  return {plate,owner,model};
 }
+
 async function scanVehiclePhoto(){
  if(!vehiclePhoto.dataUrl){toast('Upload a photo first'); return}
  renderOcrBar('scanning','/do MDT terminal is booting up…');
@@ -1480,8 +1628,16 @@ async function scanVehiclePhoto(){
 
 function buildVehicleLogText(){
  const g=id=>{const e=document.getElementById(id); return e?e.value.trim():''};
- const plate=g('vPlate'),model=g('vModel'),owner=g('vOwner');
- return `🚓 **VEHICLE TICKET LOG**\n**Number Plate:** \`${plate||'—'}\`\n**Owner Name:** ${owner||'—'}\n**Car Name:** ${model||'—'}`;
+ const plate=g('vPlate'),model=g('vModel'),owner=g('vOwner'), color=g('vColor'), loc=g('vLocation'), reason=g('vReason'), fine=g('vFine');
+ 
+ return `🚓 **VEHICLE CITATION ISSUED** 🚓
+**Number Plate:** \`${plate||'—'}\`
+**Vehicle Model:** ${model||'—'} (${color||'Unknown Color'})
+**Owner Name:** ${owner||'—'}
+**Location Found:** ${loc||'—'}
+**Offense:** ${reason||'—'}
+**Fine Amount:** ${fine||'—'}
+`;
 }
 function renderVehiclePreview(){
  const el=document.getElementById('vehPreview'); if(!el)return;
@@ -1497,25 +1653,46 @@ function copyVehicleLog(){
 }
 function deleteVehicleLog(i){vehicleLogs.splice(i,1); saveVehicleLogs(); render('vehicle')}
 function clearVehicleForm(){
- ['vPlate','vModel','vOwner'].forEach(id=>{const e=document.getElementById(id); if(e)e.value=''});
+ ['vPlate','vModel','vOwner','vColor','vLocation','vReason','vFine'].forEach(id=>{const e=document.getElementById(id); if(e)e.value=''});
  removeVehiclePhoto();
 }
+
 async function sendVehicleWebhook(){
  const url=document.getElementById('vWebhook').value.trim();
  if(!url){toast('Add a Discord webhook URL first'); return}
  if(!/^https:\/\/(discord\.com|discordapp\.com)\/api\/webhooks\//.test(url)){toast('That does not look like a Discord webhook URL'); return}
  const btn=document.getElementById('sendWebhookBtn'); btn.disabled=true; btn.textContent='Sending…';
  try{
-  const text=buildVehicleLogText();
+  const g=id=>{const e=document.getElementById(id); return e?e.value.trim()||'—':''};
+  
+  const embed = {
+      title: '🚓 Vehicle Citation Issued',
+      color: 16766720,
+      fields: [
+          { name: 'Number Plate', value: '`' + g('vPlate') + '`', inline: true },
+          { name: 'Vehicle Model', value: g('vModel'), inline: true },
+          { name: 'Color', value: g('vColor'), inline: true },
+          { name: 'Registered Owner', value: g('vOwner'), inline: true },
+          { name: 'Location Found', value: g('vLocation'), inline: true },
+          { name: 'Offense', value: g('vReason'), inline: false },
+          { name: 'Fine Amount', value: g('vFine'), inline: true }
+      ],
+      footer: { text: "Grand RP Police MDT • " + (activeUser ? "Officer ID: " + activeUser : "") },
+      timestamp: new Date().toISOString()
+  };
+
   const fd=new FormData();
-  const embed={title:'Vehicle Ticket Log',description:text.replace(/^🚓 \*\*VEHICLE TICKET LOG\*\*.*\n/,''),color:0x2563eb,timestamp:new Date().toISOString()};
-  if(vehiclePhoto.file){embed.image={url:'attachment://'+vehiclePhoto.name}; fd.append('files[0]',vehiclePhoto.file,vehiclePhoto.name)}
+  if(vehiclePhoto.file){
+      embed.image={url:'attachment://'+vehiclePhoto.name}; 
+      fd.append('files[0]',vehiclePhoto.file,vehiclePhoto.name)
+  }
   fd.append('payload_json',JSON.stringify({embeds:[embed]}));
   const res=await fetch(url,{method:'POST',body:fd});
-  if(res.ok){toast('Sent to Discord ✓')}else{toast('Discord rejected the request ('+res.status+')')}
+  if(res.ok){toast('Sent Rich Embed to Discord ✓')}else{toast('Discord rejected the request ('+res.status+')')}
  }catch(e){toast('Could not reach Discord — check the webhook URL')}
- finally{btn.disabled=false; btn.textContent='Send to Discord'}
+ finally{btn.disabled=false; btn.textContent='Send Rich Embed'}
 }
+
 function initVehiclePage(){
  const input=document.getElementById('photoInput'), box=document.getElementById('uploadBox');
  if(!input)return;
@@ -1525,7 +1702,7 @@ function initVehiclePage(){
  box.addEventListener('drop',e=>{if(e.dataTransfer.files[0])handlePhotoFile(e.dataTransfer.files[0])});
  renderPhotoPreview();
  renderOcrBar(vehiclePhoto.dataUrl?'done':'idle', vehiclePhoto.dataUrl?'Photo attached — tap Re-scan if Plate/Owner/Car Name need another pass.':'');
- ['vPlate','vModel','vOwner'].forEach(id=>{
+ ['vPlate','vModel','vOwner', 'vColor', 'vLocation', 'vReason', 'vFine'].forEach(id=>{
   const e=document.getElementById(id); if(e)e.addEventListener('input',renderVehiclePreview);
  });
  renderVehiclePreview();
