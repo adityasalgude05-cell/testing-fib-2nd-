@@ -38,14 +38,6 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .nav button.active::before{content:'';position:absolute;left:-14px;top:8px;bottom:8px;width:4px;border-radius:0 4px 4px 0;background:#1a1200}
 .nav .ico{width:18px;text-align:center;opacity:.9}
 
-/* Sidebar Collapsible Menus */
-.nav-group-btn { justify-content:space-between !important; }
-.nav-group-btn .caret { transition: transform 0.2s; opacity:0.6; }
-.nav-group-btn.expanded .caret { transform: rotate(180deg); }
-.nav-children { padding-left: 20px; display: none; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.05); margin-left: 18px; margin-bottom: 4px; }
-.nav-children.show { display: flex; }
-.nav-children button { font-size: 12.5px; padding: 8px 11px; }
-
 .main{margin-left:270px;width:calc(100% - 270px)}
 .topbar{height:72px;background:var(--panelGlass);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 24px;position:sticky;top:0;z-index:10}
 .search{flex:1;max-width:560px;position:relative}.search input{width:100%;padding:12px 44px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);outline:none;color:var(--text)}.search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accentSoft)}
@@ -134,7 +126,7 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .calc-stat-box p { margin: 8px 0 0 0; font-size: 11px; color: var(--textSoft); }
 
 .calc-filter-bar { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
-.calc-filter-bar select { background: var(--bg); color: var(--text); border: 1px solid var(--line); padding: 8px 12px; border-radius: 8px; outline: none; }
+.calc-filter-bar select { background: var(--bg); color: var(--text); border: 1px solid var(--line); padding: 8px 12px; border-radius: 8px; outline: none; cursor:pointer; }
 .calc-star-filters { display: flex; gap: 6px; align-items: center; }
 .calc-star-btn { background: transparent; border: 1px solid var(--line); color: var(--textSoft); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; }
 .calc-star-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -144,16 +136,19 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .dot-y { display:inline-block; width:8px; height:8px; border-radius:50%; background:#facc15; box-shadow:0 0 6px rgba(250,204,21,0.6); }
 .dot-r { display:inline-block; width:8px; height:8px; border-radius:50%; background:#ef4444; box-shadow:0 0 6px rgba(239,68,68,0.6); }
 .dot-g { display:inline-block; width:8px; height:8px; border-radius:50%; background:#22c55e; box-shadow:0 0 6px rgba(34,197,94,0.6); }
+.dot-p { display:inline-block; width:8px; height:8px; border-radius:50%; background:#ec4899; box-shadow:0 0 6px rgba(236,72,153,0.6); }
 .dot-b { display:inline-block; width:8px; height:8px; border-radius:50%; background:#94a3b8; box-shadow:0 0 6px rgba(148,163,184,0.6); }
+
+.tag-txt { margin-left: 4px; }
 
 .calc-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; background: var(--panel); cursor: pointer; transition: .15s; }
 .calc-item:hover { border-color: var(--accent); }
 .calc-item.checked { background: var(--accentSoft); border-color: var(--accent); }
-.calc-item input { margin-top: 4px; width: 16px; height: 16px; accent-color: var(--accent); }
+.calc-item input { margin-top: 4px; width: 16px; height: 16px; accent-color: var(--accent); cursor:pointer; }
 .calc-item .ci-body { flex: 1; }
 .calc-item .ci-title { font-weight: 700; font-size: 14px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; color: var(--text); }
 .calc-item .ci-meta { font-size: 12px; color: var(--textSoft); margin-top: 6px; display: flex; align-items: center; gap: 10px; }
-.calc-item .ci-tags { display: flex; gap: 10px; align-items: center; margin-top: 6px; font-size: 10.5px; font-family: monospace; color: var(--muted); }
+.calc-item .ci-tags { display: flex; gap: 10px; align-items: center; margin-top: 6px; font-size: 10.5px; font-family: monospace; color: var(--textSoft); font-weight:600; }
 
 .btn{border:0;border-radius:10px;padding:10px 16px;font-weight:800;font-size:12.5px;cursor:pointer;background:linear-gradient(135deg,#f6cb2f,#c98f00);color:#1a1200}
 .btn:hover{filter:brightness(1.08)}
@@ -196,6 +191,15 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .tz-item.active { background:rgba(255,255,255,0.05); }
 .tz-item.active .tz-item-time { color: #3b82f6; }
 .tz-item-time { font-family:'JetBrains Mono', monospace; font-weight:500; color:#8993ab; }
+
+.helpbox{padding:20px}
+.helphead{font-weight:800;font-size:15px;margin-bottom:12px;color:var(--text)}
+.helprow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;color:var(--text)}
+.helprow:last-child{border-bottom:0}
+.kbd2{border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-size:11px;color:var(--muted);background:var(--panel2)}
+.recent-title{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:12px 18px 4px}
+.emptybookmarks{padding:50px 20px;text-align:center;color:var(--muted)}
+.emptybookmarks .big{font-size:34px;display:block;margin-bottom:10px}
 
 @media print{.sidebar,.topbar,.totop,.toasthost,.mobilebtn,.footer,.calc-filter-bar,.calc-dash-actions,.starbtn,.copybtn,.fabmain,.fabstack,.bootsplash{display:none!important}.main{margin-left:0!important;width:100%!important}.content{padding:0!important;max-width:100%!important}.card{box-shadow:none;border:1px solid #999}body{background:#fff!important;color:#111!important}}
 @media(max-width:650px){.calc-stats-grid{grid-template-columns:1fr 1fr}}
@@ -240,39 +244,6 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .webhookrow{display:flex;gap:8px;align-items:center;margin:12px 0}
 .webhookrow input{flex:1;padding:10px 13px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--text)}
 @media(max-width:650px){.veh-grid{grid-template-columns:1fr}}
-
-.clockbox{display:flex;gap:0;align-items:center;padding:6px 4px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
-.clockbox .cz{display:flex;flex-direction:column;line-height:1.15;padding:4px 12px}
-.clockbox .cz b{font-size:13px;font-family:'JetBrains Mono',ui-monospace,monospace;color:var(--accent);letter-spacing:.02em}
-.clockbox .cz span{color:var(--muted);font-size:8.5px;text-transform:uppercase;letter-spacing:.06em}
-.clockbox .csep{width:1px;height:26px;background:var(--line)}
-.clockcard{background:linear-gradient(135deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:18px;padding:22px 24px;display:flex;gap:20px;flex-wrap:wrap;align-items:center;margin-bottom:20px;position:relative;overflow:hidden}
-.clockcard::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 10% 20%,rgba(242,183,5,.08),transparent 50%);pointer-events:none}
-.clockcard .cc-item{flex:1;min-width:170px;position:relative}
-.clockcard .cc-item h4{margin:0 0 4px;font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);display:flex;align-items:center;gap:6px}
-.clockcard .cc-item b{font-size:28px;font-family:'JetBrains Mono',ui-monospace,monospace;display:block;color:var(--text);letter-spacing:.01em}
-.clockcard .cc-item small{color:var(--muted);font-size:11px}
-.clockcard .cc-divider{width:1px;align-self:stretch;background:var(--line)}
-@media(max-width:750px){.clockcard{flex-direction:column;align-items:stretch}.clockcard .cc-divider{display:none}}
-@media(max-width:1000px){.clockbox{display:none}}
-
-.bootsplash{position:fixed;inset:0;background:#03040a;color:var(--accent);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',ui-monospace,monospace;transition:opacity .5s ease,visibility .5s ease}
-.bootsplash.hide{opacity:0;visibility:hidden;pointer-events:none}
-.bootsplash .bootlogo{font-size:15px;letter-spacing:.35em;margin-bottom:20px;opacity:.9;font-weight:700}
-.bootsplash .bootline{font-size:12.5px;margin:3px 0;opacity:.85;color:#c7cede}
-.bootsplash .bootbar{width:260px;height:3px;background:#1a2033;border-radius:2px;margin-top:20px;overflow:hidden}
-.bootsplash .bootbar i{display:block;height:100%;background:linear-gradient(90deg,#f2b705,#fff3b0);width:0%;animation:bootfill 2.2s ease forwards}
-@keyframes bootfill{to{width:100%}}
-.bootsplash .bootskip{margin-top:18px;font-size:10px;color:var(--sidebarMuted);cursor:pointer;text-decoration:underline}
-
-.ocrbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
-.ocrbar .ocr-status{flex:1;min-width:160px;font-size:12px;color:var(--muted)}
-.ocrbar .ocr-status b{color:var(--text)}
-.ocr-spinner{width:14px;height:14px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--accent);animation:ocrspin .7s linear infinite;display:inline-block;vertical-align:-2px;margin-right:6px}
-@keyframes ocrspin{to{transform:rotate(360deg)}}
-.veh-grid input.auto-filled{border-color:var(--success);background:var(--successSoft);animation:autoglow 1.8s ease}
-@keyframes autoglow{0%{box-shadow:0 0 0 3px var(--successSoft)}100%{box-shadow:0 0 0 0 transparent}}
-.ocr-chip{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:var(--successSoft);color:var(--success);padding:2px 7px;border-radius:999px;margin-left:6px}
 </style>
 </head>
 <body>
@@ -284,7 +255,7 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 </div>
 
 <!-- AUTHENTICATION OVERLAY -->
-<div id="authOverlay">
+<div id="authOverlay" style="display:none;">
   <div class="auth-box">
     <div class="auth-logo">GR</div>
     <h2 id="authTitle">Officer Login</h2>
@@ -429,67 +400,41 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 </div>
 
 <script>
-/* ---------- Audio Engine (Web Audio API) ---------- */
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-let bgOsc, bgGain;
+/* ---------- Audio Engine (Web Audio API - Clicks Only) ---------- */
+let audioCtx = null;
 
-function playBeep(freq = 800, dur = 0.1, vol = 0.1, type = 'sine') {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const osc = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
-    osc.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + dur);
-}
-
-function playStatic(dur = 0.5, vol = 0.05) {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const bufferSize = audioCtx.sampleRate * dur;
-    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-        data[i] = Math.random() * 2 - 1;
+function initAudio() {
+    if(audioCtx) return;
+    try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch(e) {
+        console.warn("Audio disabled or not supported.");
     }
-    const noise = audioCtx.createBufferSource();
-    noise.buffer = buffer;
-    const gainNode = audioCtx.createGain();
-    gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
-    noise.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    noise.start();
 }
 
-function startBgMusic() {
-    if(bgOsc) return;
-    bgOsc = audioCtx.createOscillator();
-    bgGain = audioCtx.createGain();
-    bgOsc.type = 'sine';
-    bgOsc.frequency.value = 55; // Low atmospheric hum
-    bgGain.gain.value = 0.015; // Very quiet
-    bgOsc.connect(bgGain);
-    bgGain.connect(audioCtx.destination);
-    bgOsc.start();
-    
-    setInterval(() => {
-        if(audioCtx.state === 'running') {
-            bgOsc.frequency.linearRampToValueAtTime(55 + Math.random()*4, audioCtx.currentTime + 3);
-        }
-    }, 4000);
+function playTapSound() {
+    if(!audioCtx) return;
+    try {
+        if (audioCtx.state === 'suspended') audioCtx.resume().catch(()=>{});
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+    } catch(e) {}
 }
 
-// Global click sound
-document.body.addEventListener('mousedown', () => {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    startBgMusic();
-    playBeep(2400, 0.02, 0.01, 'sine'); // Soft tap
+document.addEventListener('click', (e) => {
+    initAudio();
+    const clickable = e.target.closest('button, .calc-item, select, input[type="checkbox"], .nav button, .tz-item, .chip, .eventcard, summary, .auth-btn, .calc-star-btn');
+    if(clickable) playTapSound();
 });
-
 
 /* ---------- Auth System ---------- */
 let dbUsers = JSON.parse(localStorage.getItem('grwiki_users') || '[]');
@@ -499,8 +444,6 @@ function initAuth() {
   const overlay = document.getElementById('authOverlay');
   if (activeUser) {
     overlay.style.display = 'none';
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    startBgMusic();
   } else {
     overlay.style.display = 'flex';
   }
@@ -541,7 +484,6 @@ function doSignup() {
   localStorage.setItem('grwiki_profile', JSON.stringify(profile));
   
   toast("Registered & Logged in successfully");
-  playStatic(0.6, 0.08); setTimeout(() => playBeep(1200, 0.2, 0.1), 600);
 }
 
 function doLogin() {
@@ -556,7 +498,6 @@ function doLogin() {
     localStorage.setItem('grwiki_active_user', activeUser);
     document.getElementById('authOverlay').style.display = 'none';
     toast("Welcome back, Officer " + user.name);
-    playStatic(0.6, 0.08); setTimeout(() => playBeep(1200, 0.2, 0.1), 600);
   } else {
     alert("Invalid ID or Password");
   }
@@ -901,7 +842,7 @@ const penal = [
 ["2.17.9","Public Carrying of a Firearm",10000,0,0,[]],
 ["2.17.9","Repeat Offence",10000,15,1,["g"]],
 ["2.18.1","Misappropriation of a Vehicle (Reckless Driving)",20000,30,2,["r"]],
-["2.18.2","Misappropriation of a Official or State Vehicle",30000,45,3,["r","y"]],
+["2.18.2","Misappropriation of a Official or State Vehicle",30000,45,3,["r"]],
 ["2.18.3","Misuse of a Vehicle",10000,15,1,["r"]],
 ["2.18.4","Vehicle Used in Criminal Activity",10000,0,0,["r"]],
 ["2.19","Pimping",20000,30,2,[]],
@@ -909,7 +850,7 @@ const penal = [
 ["2.2","Repeat Offense",10000,15,1,[]],
 ["2.21","Hooliganism",40000,60,4,[]],
 ["2.22","Bribery or Attempted Bribery of an Official",30000,45,3,[]],
-["2.23","Failure to Pay Fines",50000,60,4,["y","r","g"]],
+["2.23","Failure to Pay Fines",50000,60,4,["y","p"]],
 ["2.24.1","Leaving the Scene",20000,30,2,[]],
 ["2.24.2","Evading Arrest",40000,60,4,[]],
 ["2.25","Attempted or Actual Escape from Custody",50000,75,5,["y"]],
@@ -956,10 +897,10 @@ const penal = [
 ["4.6","Receiving a Bribe",40000,60,4,["b"]],
 ["4.7.1","Conduct Unbecoming",20000,30,2,[]],
 ["4.7.2","Gross Ethics Violations",30000,45,3,["b"]],
-["6.1.1","Contempt of Court",30000,45,3,[]],
-["6.1.1","Contempt of Court by a State Employee",40000,60,4,[]],
+["6.1.1","Contempt of Court",30000,45,3,["b"]],
+["6.1.1","Contempt of Court by a State Employee",40000,60,4,["b"]],
 ["6.2.1","Disruption of the Trial",30000,45,3,[]],
-["6.2.2","Disruption of the Trial by a State Employee",40000,60,4,[]],
+["6.2.2","Disruption of the Trial by a State Employee",40000,60,4,["b"]],
 ["6.3","Threats to Litigants",40000,60,4,["y"]],
 ["6.4","Falsification of Evidence",40000,60,4,[]],
 ["6.5","Perjury",40000,60,4,[]],
@@ -970,13 +911,13 @@ const penal = [
 ["8.3.1","Tax Evasion",30000,0,0,[]],
 ["8.3.2","Felony Tax Evasion",40000,60,4,[]],
 ["9.2.1","Smuggling of Contraband",30000,45,3,[]],
-["9.2.2","Smuggling of Contraband by a State Employee",40000,60,4,[]],
+["9.2.2","Smuggling of Contraband by a State Employee",40000,60,4,["b"]],
 ["9.3.1","Aiding an Escape",50000,75,5,["y"]],
 ["9.3.2","Aiding an Escape by a State Employee",30000,45,3,["y","b"]],
 ["9.4.1","Aiding a Mass Escape",50000,75,5,["y"]],
 ["9.4.1","Aiding a Mass Escape by a State Employee",50000,75,5,["y","b"]],
 ["9.5.1","Sexual Acts with Inmates by a Civilian",20000,30,2,[]],
-["9.5.2","Sexual Acts with Inmates by a State Employee",20000,30,2,[]]
+["9.5.2","Sexual Acts with Inmates by a State Employee",20000,30,2,["b"]]
 ];
 
 const misdemeanors = [
@@ -1125,9 +1066,10 @@ function renderTags(tags) {
         if(t==='y') return `<span class="dot-y" title="No Bailout"></span> <span class="tag-txt">No Bailout</span>`;
         if(t==='r') return `<span class="dot-r" title="Revoke Driver"></span> <span class="tag-txt">Revoke Driver</span>`;
         if(t==='g') return `<span class="dot-g" title="Revoke Gun"></span> <span class="tag-txt">Revoke Gun</span>`;
+        if(t==='p') return `<span class="dot-p" title="Revoke All"></span> <span class="tag-txt">Revoke All</span>`;
         if(t==='b') return `<span class="dot-b" title="Blacklist"></span> <span class="tag-txt">Blacklist</span>`;
         return '';
-    }).join(' ');
+    }).join(' &nbsp; ');
 }
 
 function calculatorPage(){
@@ -1176,6 +1118,7 @@ function calculatorPage(){
    <span class="dot-y"></span> No Bailout &nbsp;
    <span class="dot-r"></span> Revoke Driver &nbsp;
    <span class="dot-g"></span> Revoke Gun &nbsp;
+   <span class="dot-p"></span> Revoke All &nbsp;
    <span class="dot-b"></span> Blacklist
   </div>
  </div>
@@ -1287,6 +1230,42 @@ function clearCalc(){
  renderCalcList();
 }
 
+function table(rows,cols,opts){
+ opts=opts||{};
+ const head=cols.map(c=>`<th>${c}</th>`).join("")+(opts.actions?`<th class="actioncol"></th><th class="actioncol"></th>`:"");
+ const body=rows.map((r,i)=>{
+  const cells=r.map((v,ci)=>{
+      if(ci===5 && Array.isArray(v)) return `<td>${renderTags(v)}</td>`;
+      return `<td class="${ci===0?'code':ci===2?'money':''}">${esc(v||'-')}</td>`;
+  }).join("");
+  if(!opts.actions) return `<tr>${cells}</tr>`;
+  const id=opts.idPrefix+i;
+  const plain=r.slice(0,5).filter(Boolean).join(' — ');
+  return `<tr>${cells}<td class="actioncol"><button class="copybtn" title="Copy" onclick="copyText('${plain.replace(/'/g,"\\'")}','Code copied')">⧉</button></td><td class="actioncol">${starBtn(id,plain)}</td></tr>`;
+ }).join("");
+ return `<div class="tablewrap"><table class="table"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+
+function penalPage(){
+ let articles={};
+ penal.forEach(r=>{let a=r[0].split('.')[0]; if(!articles[a])articles[a]=[];articles[a].push(r)});
+ const names={2:'Crimes Against Society',3:'Crimes Against the State',4:'Malfeasance',5:'Traffic Statute Crimes',6:'Judicial Crimes',8:'Commercial and Taxation Crimes',9:'Correctional Crimes'};
+ let out=`<h1 class="section-title">Penal Code</h1><p class="section-sub">Patrolman's Guide — fines, sentence time and stars.</p>
+ <div class="notice"><b>Legend:</b> <span class="dot-y"></span> No Bailout &nbsp; <span class="dot-r"></span> Revoke Driver &nbsp; <span class="dot-g"></span> Revoke Gun &nbsp; <span class="dot-p"></span> Revoke All &nbsp; <span class="dot-b"></span> Blacklist</div>`;
+ Object.keys(articles).forEach(a=>{
+     out+=`<div class="card"><div class="card-head"><h2>ARTICLE ${a}: ${names[a]||''}</h2><span class="badge">${articles[a].length} entries</span></div><div class="card-body">${table(articles[a].map(r=>[`P.C. ${r[0]}`,r[1], r[2]?fmtMoney(r[2]):'-',r[3]||'-',r[4]||'-', r[5]]),['Code','Crime','Fine','Time','Stars','Flags'],{actions:true,idPrefix:'penal-'+a+'-'})}</div></div>`
+ });
+ out+=`<div class="card"><div class="card-head"><h2>Article 10 — Violations of Public Order</h2></div><div class="card-body">${table(misdemeanors.map(r=>[`P.C. ${r[0]}`,r[1],r[6]||'-']),['Code','Crime','Points'])}</div></div>`;
+ return out;
+}
+function trafficPage(){
+ let out = `<h1 class="section-title">Traffic Code</h1><p class="section-sub">Traffic statutes and parking violations from the supplied Patrolman's Guide.</p>
+ <div class="notice"><b>Legend:</b> <span class="dot-y"></span> No Bailout &nbsp; <span class="dot-r"></span> Revoke Driver &nbsp; <span class="dot-g"></span> Revoke Gun &nbsp; <span class="dot-p"></span> Revoke All &nbsp; <span class="dot-b"></span> Blacklist</div>
+ <div class="card"><div class="card-head"><h2>Traffic Statute Crimes</h2></div><div class="card-body">${table(traffic.map(r=>[`T.C. ${r[0]}`,r[1], r[2]?fmtMoney(r[2]):'-',r[3]||'-',r[4]||'-', r[5]]),['Code','Description','Fine','Time','Stars','Flags'],{actions:true,idPrefix:'traffic-'})}</div></div>
+ <div class="card"><div class="card-head"><h2>Parking Violations</h2></div><div class="card-body">${table(parking.map(r=>[`T.C. ${r[0]}`,r[1], r[2]?fmtMoney(r[2]):'-']),['Code','Description','Fine'],{actions:true,idPrefix:'parking-'})}</div></div>
+ <div class="card"><div class="card-head"><h2>Special / Location Parking</h2></div><div class="card-body">${table(specialParking.map(r=>[`T.C. ${r[0]}`,r[1], r[2]?fmtMoney(r[2]):'-']),['Code','Description','Fine'],{actions:true,idPrefix:'specialparking-'})}</div></div>`;
+ return out;
+}
 
 function procedurePage(){
  let out=`<h1 class="section-title">10-15 Arrest Procedure</h1><p class="section-sub">The supplied Full Arrest Process PDF, presented as a clean step-by-step guide. No copy buttons are added to this procedure.</p>
@@ -1525,7 +1504,7 @@ function notepadPage(){
       <button class="btn ghost" onclick="if(confirm('Clear notepad?')){document.getElementById('npText').value='';saveNotepad()}">Clear All</button>
       <button class="btn ghost" onclick="copyText(document.getElementById('npText').value, 'Notes copied')">Copy</button>
      </div>
-     <textarea id="npText" style="width:100%;height:400px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px;color:var(--text);font-family:ui-monospace,monospace;font-size:13px;resize:vertical" placeholder="Start typing notes here..." oninput="saveNotepad(); playBeep(1500, 0.03, 0.02, 'square')">${esc(notepadContent)}</textarea>
+     <textarea id="npText" style="width:100%;height:400px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px;color:var(--text);font-family:ui-monospace,monospace;font-size:13px;resize:vertical" placeholder="Start typing notes here..." oninput="saveNotepad()">${esc(notepadContent)}</textarea>
     </div></div>`;
 }
 function saveNotepad(){
@@ -1604,7 +1583,7 @@ function toggleDuty(){
  }
  renderDutyBtn(); clearDutyInterval(); if(dutyState&&dutyState.on)startDutyInterval();
  if(document.getElementById('dutyWidget'))render('bodycam');
- playBeep(800, 0.2, 0.1, 'sine'); setTimeout(() => playBeep(1200, 0.3, 0.1, 'sine'), 200);
+ playTapSound();
 }
 function renderDutyBtn(){
  const btn=document.getElementById('dutyBtn'), label=document.getElementById('dutyLabel');
@@ -1649,7 +1628,7 @@ function bodycamPage(){
  return out;
 }
 
-/* ---------- Department Radio (No "TO" option) ---------- */
+/* ---------- Department Radio ---------- */
 const deptRadioCmds = [
     {trigger: "Good Copy Reply", tpl: "{FROM} to LAST: Good Copy! Please proceed."},
     {trigger: "Bad Copy Reply", tpl: "{FROM} to LAST: Negative Copy!"},
@@ -1701,7 +1680,7 @@ function deptRadioPage() {
     <div class="card" style="margin-bottom:20px; background:var(--panel2)"><div class="card-body" style="display:flex;align-items:center;gap:15px;flex-wrap:wrap">
      <div style="display:flex;align-items:center;gap:8px">
       <b>FROM:</b> 
-      <select onchange="updateDynamicOrg(this.value)" style="padding:6px;border-radius:6px;background:var(--panel);color:var(--text);border:1px solid var(--line)">
+      <select onchange="globalOrg=this.value; localStorage.setItem('grwiki_org', this.value); updateDynamicRadioNodes()" style="padding:6px;border-radius:6px;background:var(--panel);color:var(--text);border:1px solid var(--line)">
        ${orgs.map(o => `<option value="${o}" ${globalOrg===o?'selected':''}>${o}</option>`).join('')}
       </select>
      </div>
@@ -1720,7 +1699,6 @@ function deptRadioPage() {
     setTimeout(updateDynamicRadioNodes, 50);
     return out;
 }
-
 
 const tenCodes=[
 ["10-1","Roll call/announcement (supervisors and above), all units return to headquarters"],
@@ -1784,6 +1762,160 @@ function bookmarksPage(){
  <div class="card"><div class="card-body">${favs.map(f=>{
   return `<details class="rule" open><summary><span style="font-weight:500;flex:1">${esc(f.label)}</span><span class="rowflex"><button class="copybtn" title="Copy" onclick="event.preventDefault();event.stopPropagation();copyText('${f.label.replace(/'/g,"\\'")}','Copied')">⧉</button>${starBtn(f.id,f.label)}</span></summary></details>`;
  }).join("")}</div></div>`;
+}
+
+/* ---------- Legislation Library ---------- */
+const legiData = {
+    lawyer: { title: "Code of Lawyers and Judicial Law (Lawyers Code)", content: `
+    <div class="doc-section"><h2>Article 1. General Provisions and Principles of Judicial Law</h2>
+    <div class="doc-rule"><b>1.1 Code of Lawyers and Judicial Law.</b><p>This Code establishes the Principles of Legal Representation and the Obligations, Rights and Duties of all persons working in the legal profession, regardless of their affiliation to Government (GOV), the Department of Justice (DOJ) or a State Organisation.</p></div>
+    <div class="doc-rule"><b>1.3 Rules and Principles of Discovery.</b><p>The Principle of Discovery is a principle in law to ensure that any Legal Proceedings are conducted openly and fairly between all Parties.</p><div class="sub">a) A Lawyer must be granted full access to all Evidence, including but not limited to the Case File, Bodycam Evidence, Testimony Under Oath and all Additional Legal Documents.<br>b) A Lawyer must be granted reasonable time beforehand to review any Case Files and/or Valid Evidence.</div></div>
+    <div class="doc-rule"><b>1.4 Rules and Principles of Dual Authority.</b><p>A State Employee acting in their capacity as a Lawyer for a Case File or Court Trial may not invoke other authority granted to them by the State during a Hearing or a Court Trial.</p></div>
+    <div class="doc-rule"><b>1.5 Rules and Principles of Attorney-Client Privilege.</b><p>Attorney-Client Privilege is the legal right of every Citizen of the State, without exception, to not be obliged or forced to disclose information relevant to a Case or Investigation to anyone but their contracted or assigned Lawyer.</p></div>
+    <div class="doc-rule"><b>1.7 Rules and Principles of Recusal.</b><p>Recusal is a legal principle that ensures the Principles of Justice are upheld without bias or prejudice towards the Defendant.</p></div>
+    <div class="doc-rule"><b>1.8 Rules and Principles of Self-Representation.</b><p>A Lawyer, when Detained or Arrested, may act as their own Defence Attorney against the Charges. A Lawyer must state their intention to represent themselves.</p></div>
+    </div>
+    
+    <div class="doc-section"><h2>Article 2. Definitions in Law</h2>
+    <div class="doc-rule"><b>2.1 Client.</b><p>A Client is defined as either a Citizen of the State who has entered into a Contract for Legal Services with a Lawyer or the Organisation to which the Lawyer is Contracted.</p></div>
+    <div class="doc-rule"><b>2.2 Contract for Legal Services.</b><p>An Agreement that is Signed between a Lawyer and a Client in order for the Lawyer to provide Legal Services to their Client. Must be Signed by both the Client and the Lawyer.</p></div>
+    <div class="doc-rule"><b>2.4 Essential Legal Services.</b><p>Consulting and provision of Legal Advice during Detention and/or Arrest. Evaluation of evidence presented by Law Enforcement Officers. Representing the interests of their Client.</p></div>
+    <div class="doc-rule"><b>2.5 Additional Legal Services.</b><p>Provision of any Legal Advice outside of Detention and/or Arrest. Drafting of a Case File. Filing Legal Documents. Parole Proceedings and Bail. Formal Court Trial Representation.</p></div>
+    </div>
+
+    <div class="doc-section"><h2>Article 3. Lawyers</h2>
+    <div class="doc-rule"><b>3.1 Lawyer.</b><p>A Citizen of the State or State Employee who: Passed the Lawyers Bar Examination, Has been entered into the Registry, Holds a Valid Lawyers Licence.</p></div>
+    <div class="doc-rule"><b>3.2 State Lawyer.</b><p>All Lawyers employed by the Department of Justice (DOJ). May act as a Public Defender free of charge.</p></div>
+    <div class="doc-rule"><b>3.3 Government Lawyer.</b><p>All Lawyers employed by the Government (GOV) with the exception of Lawyers working within the DOJ.</p></div>
+    <div class="doc-rule"><b>3.4 Organisation Lawyer.</b><p>Lawyers in the Employment of FIB, LSPD or SAHP (District Attorneys), National Guard (JAG), EMS, or Private Organisations (Life Invader).</p></div>
+    <div class="doc-rule"><b>3.5 Private Lawyer.</b><p>All Licensed Lawyers who have registered as a Private Lawyer and who are not employed by the State/Gov/Orgs.</p></div>
+    </div>
+    `},
+    criminal: { title: "Code of Criminal and Misdemeanour Law (Criminal Code)", content: `
+    <div class="doc-section"><h2>Article 1. General Provisions and Principles of Criminal Law</h2>
+    <div class="doc-rule"><b>1.3 Principles of Corpus Delicti.</b><p>A criminal liability is based on the Principle of Corpus Delicti (body of evidence) that a crime must be proved to have occurred before a person can be convicted.</p></div>
+    <div class="doc-rule"><b>1.4 Principles of Criminal Liability.</b><p>Criminal Liability requires that an action was performed by a suspect where the action was unlawful and performed with criminal intent.</p></div>
+    <div class="doc-rule"><b>1.5 Principles of Complicity.</b><p>Complicity in a crime is defined as the intentional joint participation of two or more people in the commission of an intentional crime.</p></div>
+    <div class="doc-rule"><b>1.12 Principles of Sentencing for a Felony.</b><p>Class-1 (15-months, $10k), Class-2 (30-months, $20k), Class-3 (45-months, $30k), Class-4 (60-months, $40k), Class-5 (75-months, $50k).</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 2. Crimes Against Society</h2>
+    <div class="doc-rule"><b>2.1 Illicit Substances and Prohibited Items.</b><p>Possession of Narcotics, Possession of Narcotics in Large Quantities, Intent to Distribute.</p></div>
+    <div class="doc-rule"><b>2.2 Murder or Attempted Murder.</b><p>Culpable Homicide/Manslaughter, Murder or Attempted Murder, Premeditated Murder.</p></div>
+    <div class="doc-rule"><b>2.5 Kidnapping.</b><p>Kidnapping or Attempted Kidnapping of a Civilian, Civil Servant, or State Official.</p></div>
+    <div class="doc-rule"><b>2.9 Larceny or Theft.</b><p>Petty Larceny, Grand Larceny, Felony Larceny, Grand Theft Auto.</p></div>
+    <div class="doc-rule"><b>2.17 Firearms Violations.</b><p>Unlicensed Firearms Carry, Excessive Firearms Carry (Overcarrying), Possession of Illegal Firearms, Brandishing a Firearm, Discharging a Firearm.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 3. Crimes against the State</h2>
+    <div class="doc-rule"><b>3.1 Terrorism.</b><p>Actively participating in any type of violence or the threat of violence with the purpose of frightening the population.</p></div>
+    <div class="doc-rule"><b>3.5 Obstruction of Justice.</b><p>Obstruction of an Investigation, Obstruction of an Officer or Civil Servant, Obstruction of an Arrest or Detention.</p></div>
+    </div>
+    `},
+    tax: { title: "Code of Commercial and Taxation Law (Tax Code)", content: `
+    <div class="doc-section"><h2>Article 1. General Provisions and Principles of Commercial Law</h2>
+    <div class="doc-rule"><b>1.3 Rules and Principles of the Right to Private Commercial Enterprise.</b><p>A Citizen of the State has the unhindered Right to possess a commercial property or business as well as freely engage in lawful commercial activity without unlawful or unreasonable interference by the State.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 2: Definitions in Commercial and Taxation Law</h2>
+    <div class="doc-rule"><b>2.1 Sales Tax.</b><p>Sales Tax applies to all Businesses within the State that have opted to have their Taxes paid automatically on each sale of goods and/or services (Taxes On).</p></div>
+    <div class="doc-rule"><b>2.2 Direct Tax.</b><p>Direct Tax applies to all Businesses within the State that have not opted to have their taxes paid automatically (Taxes Off).</p></div>
+    <div class="doc-rule"><b>2.3 Taxable Businesses.</b><p>Service stations, Chip Tunings, 24/7, Clothing stores, Gas Stations, Ammunations, Bars, Tattoo Studios, Barber Shops, Jewellery store.</p></div>
+    <div class="doc-rule"><b>2.4 Non-Taxable Businesses.</b><p>Ticket tables, Purchase/sale of resources, Oil platforms, Public farms, Car Sharing Companies, Parking Businesses, Taxi Companies, ATM, Juice Shops.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 4 Legal Documentation for Tax Law</h2>
+    <div class="doc-rule"><b>4.2 Order of Foreclosure.</b><p>Issued on a business by the Governor or the Attorney General, authorising a business to be sealed in the event that the business owner has been found guilty of Tax Evasion.</p></div>
+    </div>
+    `},
+    firearms: { title: "Code of Firearms and Weapons Law (Firearms Code)", content: `
+    <div class="doc-section"><h2>Article 1. General Provisions and Principles</h2>
+    <div class="doc-rule"><b>1.3 Types of Armament.</b><p>Melee weapons, Firearms, Explosive weapons, Artillery weapons, Ammunition, Bulletproof vests, Weapon components.</p></div>
+    <div class="doc-rule"><b>1.4 Right to Bear Arms.</b><p>It is the Right of any Citizen of the State to possess Weapons, Firearms and Ammunition for those Firearms so long as they comply with the Laws for the Carry, Use and Storage.</p></div>
+    <div class="doc-rule"><b>1.6 Use of Firearms and Weapons by a State Employee.</b><p>A State Employee is permitted to use State Organisation Firearms, Ammunition and Equipment in the performance of their lawful duties.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 2. Basic Concepts and Definitions</h2>
+    <div class="doc-rule"><b>2.1 Gun License.</b><p>A Permit obtained by a Citizen of the State, giving them the right to buy, carry and use Legal Firearms and Weapons. Cannot be issued without valid medical insurance.</p></div>
+    <div class="doc-rule"><b>2.3 Illegal Firearms.</b><p>All Firearms with a scratched Serial Number (indicated with the marking "XXX") are considered Illegal Firearms. Weapons with serial numbers that include a state organization identifier are considered illegal for anyone not employed by that organization.</p></div>
+    <div class="doc-rule"><b>2.7 Open Carry.</b><p>Civilians are prohibited from openly carrying any type of weapon, and doing so incurs legal liability.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 3. Possession and Storage</h2>
+    <div class="doc-rule"><b>3.1 Possession.</b><p>Individuals are allowed to possess no more than one legal firearm and a total of 100 rounds of ammunition. Employees of state organizations can carry more while On-Duty.</p></div>
+    <div class="doc-rule"><b>3.3 Storage in a Vehicle.</b><p>No more than 3 Legal Firearms and a maximum total of 300 bullets in a Vehicle.</p></div>
+    <div class="doc-rule"><b>3.4 Storage in a House.</b><p>There is no legal limit to the secure storage of Firearms and Ammunition in the Warehouse of a Private Property.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 5. Use of Force by the State</h2>
+    <div class="doc-rule"><b>5.1 Necessity and Use of Force.</b><p>Law enforcement officers are encouraged to use a taser prior to resorting to a lethal weapon, except in situations where the suspect is armed, hostile, or poses an immediate threat to life.</p></div>
+    <div class="doc-rule"><b>5.6 Lethal Force.</b><p>Defined as the use of any Firearms, or the continued use of Damaging or Harmful Force only where continued use is necessary.</p></div>
+    </div>
+    `},
+    immunity: { title: "Code of Immunity and Special Status Law (Immunity Code)", content: `
+    <div class="doc-section"><h2>Article 1. General Provisions and Principles</h2>
+    <div class="doc-rule"><b>1.3 Rules and Principles of Legal Immunity.</b><p>Legal Immunity is a legal status wherein a State Employee who has been granted Legal Immunity is given certain protections from Civil and/or Criminal Liability. Types: Full Legal Immunity (First Person), Partial Immunity (Federal), Judicial Immunity.</p></div>
+    <div class="doc-rule"><b>1.4 Expectations and Rules of Conduct for First Persons.</b><p>A First Person is a Senior State Official and represents their State Organisation and the State while On-Duty and is expected to conduct themselves and dress in a manner befitting of their status.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 2. Definitions in Immunity Law</h2>
+    <div class="doc-rule"><b>2.1 Full Legal Immunity (First Person Immunity).</b><p>Includes: Governor, Deputy Governor(s), Attorney General, Supreme/District Court Judges, Director of USSS, Head of a Department, Leader/Deputy Leader of a State Organisation.</p></div>
+    <div class="doc-rule"><b>2.2 Partial Immunity (Federal Immunity).</b><p>Applies to FIB, USSS, DOJ. Protects from Detention/Search without the presence of a First Person or Higher Command.</p></div>
+    <div class="doc-rule"><b>2.3 Judicial Immunity.</b><p>Applies to Attorney General, Supreme/District Court Judges. Protects from liability while making necessary judicial decisions.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 3. Full Legal Immunity</h2>
+    <div class="doc-rule"><b>3.1 Protections.</b><p>Protection from Criminal Liability (for minor crimes), Civil Liability (while on duty), Traffic Penalties, Unauthorised Detention, Unauthorised Search, Unauthorised Investigation. Right to USSS Protection Detail.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 6. Procedural Actions</h2>
+    <div class="doc-rule"><b>6.2 Procedural Actions Against First Persons.</b><p>Any Investigation or Criminal Prosecution against a First Person requires authorisation granted by the Supreme Court (Order of Investigation, Order of Waiver, Criminal Indictment).</p></div>
+    </div>
+    `},
+    evidence: { title: "Code of Evidence and Investigation Law (Evidence Code)", content: `
+    <div class="doc-section"><h2>Article 1. General Provisions and Principles</h2>
+    <div class="doc-rule"><b>1.3 Rules and Principles of Evidence.</b><p>Evidence is defined as a body of information that may be used within the law to establish the facts of an Investigation and establish the Proof of any Claims. Must be Valid and Admissible.</p></div>
+    <div class="doc-rule"><b>1.5 Gathering and Recording.</b><p>All State Employees must ensure that they have a valid Proof of Bodycam and that their Bodycam is working and ready to record at all times while On-Duty.</p></div>
+    <div class="doc-rule"><b>1.6 Retaining of Evidence.</b><p>All Law Enforcement Officers must retain all Evidence of any Major Incident for a minimum of 48-hours.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 2. Definitions in Evidence Law</h2>
+    <div class="doc-rule"><b>2.2 Reasonable Suspicion.</b><p>The legal standard required in order to conduct a limited Procedural Action (Detention or a brief Search as a Stop and Frisk).</p></div>
+    <div class="doc-rule"><b>2.3 Probable Cause.</b><p>The legal standard required in order to conduct Procedural Actions (Detention/Arrest and a Search). Requires reasonably trustworthy information or facts.</p></div>
+    <div class="doc-rule"><b>2.9 Illegal Evidence.</b><p>Evidence that has been obtained by a violation of the Rights of a Citizen or by committing a crime.</p></div>
+    <div class="doc-rule"><b>2.11 Excluded Evidence (The Exclusion Rule).</b><p>Any Inadmissible, Invalid, or Illegal Evidence must be excluded from the considerations of the Court.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 4. Rules for Valid Evidence</h2>
+    <div class="doc-rule"><b>4.2 Bodycam Evidence.</b><p>Must have Valid Proof of Bodycam (shows date/time, turned on). Recording must not be broken/destroyed. Refresh not required after every pause.</p></div>
+    <div class="doc-rule"><b>4.9 Witness Statements and Testimony.</b><p>Affidavit (written under oath), Deposition (verbal under oath), Direct Examination, Cross Examination.</p></div>
+    <div class="doc-rule"><b>4.10 Statements by a Suspect.</b><p>Must have clearly been read their Miranda Rights.</p></div>
+    </div>
+    <div class="doc-section"><h2>Article 7. Search of a Citizen</h2>
+    <div class="doc-rule"><b>7.1 Grounds for Search.</b><p>Consent, Reasonable Suspicion, Probable Cause, Valid Arrest, Martial Law, Capitol Security, Protective Security, Military Security, Correctional Security, Judicial Security, Warrant.</p></div>
+    </div>
+    `}
+};
+
+function openLegislation(key) {
+    const data = legiData[key];
+    const c = document.getElementById('content');
+    c.innerHTML = `<h1 class="section-title">${esc(data.title)}</h1>
+                   <div style="margin-bottom:15px"><button class="btn ghost" onclick="go('legislation')">← Back to Library</button></div>
+                   ${data.content}`;
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function legislationPage() {
+    return `<h1 class="section-title">Legislation Library</h1><p class="section-sub">Access the full Codes of Law for the State of San Andreas.</p>
+    <div class="leg-grid">
+      <div class="leg-card" onclick="openLegislation('lawyer')">
+        <h3>Lawyer Code</h3><p>Code of Lawyers and Judicial Law</p>
+      </div>
+      <div class="leg-card" onclick="openLegislation('criminal')">
+        <h3>Criminal Code</h3><p>Code of Criminal and Misdemeanour Law</p>
+      </div>
+      <div class="leg-card" onclick="openLegislation('tax')">
+        <h3>Tax Code</h3><p>Code of Commercial and Taxation Law</p>
+      </div>
+      <div class="leg-card" onclick="openLegislation('firearms')">
+        <h3>Firearms Code</h3><p>Code of Firearms and Weapons Law</p>
+      </div>
+      <div class="leg-card" onclick="openLegislation('immunity')">
+        <h3>Immunity Code</h3><p>Code of Immunity and Special Status Law</p>
+      </div>
+      <div class="leg-card" onclick="openLegislation('evidence')">
+        <h3>Evidence Code</h3><p>Code of Evidence and Investigation Law</p>
+      </div>
+    </div>`;
 }
 
 const pageFns={dashboard,legislation:legislationPage,penal:calculatorPage,traffic:calculatorPage,arrest:procedurePage,'traffic-stop':trafficStopPage,events:eventsPage,map:mapPage,terms:termsPage,calculator:calculatorPage,codes:codesPage,bookmarks:bookmarksPage,bodycam:bodycamPage,deptradio:deptRadioPage,vehicle:vehiclePage,notepad:notepadPage};
@@ -1953,8 +2085,10 @@ function updateClocks(){
   if(cyc){const lonHour=parseInt(fmtZone(now,'Europe/London',{hour:'2-digit'}),10); cyc.textContent=(lonHour>=6&&lonHour<19)?'☀ Daytime in London':'🌙 Night in London'}
  }
  
+ // Dynamic nodes update
  if(document.querySelector('.dyn-cmd')) updateDynamicNodes();
  
+ // Update the dropdown preview times
  document.querySelectorAll('.tz-item-time').forEach(el => {
      let tzid = el.id.replace('tz_', '');
      let tzStr = '';
@@ -1978,6 +2112,7 @@ function updateClocks(){
  });
 }
 
+// Initial setup of TZ label
 document.addEventListener("DOMContentLoaded", () => {
     const lbl = document.getElementById('tzLabel');
     if(lbl) lbl.textContent = activeTzLabel + ' ▾';
