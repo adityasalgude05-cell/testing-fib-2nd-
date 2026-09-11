@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Grand RP Police Wiki — rules, penal code, traffic code, arrest procedures and event guides.">
 <title>Grand RP Police Wiki</title>
-<!-- FIREBASE SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
@@ -281,33 +278,6 @@ button,input,textarea,select{font:inherit}.app{display:flex;min-height:100vh}
 </head>
 <body>
 
-<script>
-// =====================================================================
-// ADD YOUR FIREBASE DETAILS HERE
-// 1. Go to console.firebase.google.com -> Create Project
-// 2. Add a Web App (</>) and copy the config below
-// 3. Go to Realtime Database -> Create Database
-// 4. In Database Rules, set read: true and write: true
-// =====================================================================
-const firebaseConfig = {
-  apiKey: "AIzaSyA5TlbeJrZSJNqaj1g2otQwEHQoMsRnZSQ",
-  authDomain: "grand-rp-wiki.firebaseapp.com",
-  databaseURL: "https://grand-rp-wiki-default-rtdb.firebaseio.com", 
-  projectId: "grand-rp-wiki",
-  storageBucket: "grand-rp-wiki.firebasestorage.app",
-  messagingSenderId: "452896834117",
-  appId: "1:452896834117:web:38f96a66735278188c592c",
-  measurementId: "G-QZP4YB1ZHW"
-};
-
-// Initialize Firebase only if the config is filled out
-let isFirebaseEnabled = false;
-if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
-    firebase.initializeApp(firebaseConfig);
-    isFirebaseEnabled = true;
-}
-</script>
-
 <!-- STEALTH OVERLAY (Ctrl+B) -->
 <div id="stealthOverlay">
     <div class="stealth-logo">Google<span style="color:#EA4335">e</span><span style="color:#FBBC05">g</span><span style="color:#4285F4">l</span><span style="color:#34A853">e</span></div>
@@ -493,6 +463,14 @@ function playStatic(dur = 0.5, vol = 0.05) {
     noise.start();
 }
 
+/* Global Click Sound */
+document.addEventListener('click', (e) => {
+    const clickable = e.target.closest('button, a, summary, .calc-item, .chip, .tz-item, .result, select, input[type="checkbox"], label');
+    if (clickable) {
+        playBeep(900, 0.03, 0.015, 'sine');
+    }
+});
+
 
 /* ---------- Auth System ---------- */
 let dbUsers = JSON.parse(localStorage.getItem('grwiki_users') || '[]');
@@ -527,30 +505,11 @@ function doSignup() {
   const pass = document.getElementById('signupPass').value.trim();
 
   if(!name || !id || !pass) { alert("Please fill all fields"); return; }
-
-  // ONLINE DB LOGIC
-  if (isFirebaseEnabled) {
-      firebase.database().ref('users/' + id).once('value').then((snapshot) => {
-          if (snapshot.exists()) {
-              alert("ID already registered online. Please login.");
-          } else {
-              firebase.database().ref('users/' + id).set({
-                  name: name,
-                  id: id,
-                  pass: pass,
-                  date: new Date().toLocaleString()
-              }).then(() => {
-                  completeLoginProcess(id, name);
-              });
-          }
-      });
-  } else {
-      // OFFLINE DB LOGIC
-      if(dbUsers.find(u => u.id === id)) { alert("ID already registered locally. Please login."); return; }
-      dbUsers.push({ name, id, pass, date: new Date().toLocaleString() });
-      localStorage.setItem('grwiki_users', JSON.stringify(dbUsers));
-      completeLoginProcess(id, name);
-  }
+  
+  if(dbUsers.find(u => u.id === id)) { alert("ID already registered locally. Please login."); return; }
+  dbUsers.push({ name, id, pass, date: new Date().toLocaleString() });
+  localStorage.setItem('grwiki_users', JSON.stringify(dbUsers));
+  completeLoginProcess(id, name);
 }
 
 function doLogin() {
@@ -559,28 +518,11 @@ function doLogin() {
 
   if(!id || !pass) { alert("Please enter ID and Password"); return; }
 
-  // ONLINE DB LOGIC
-  if (isFirebaseEnabled) {
-      firebase.database().ref('users/' + id).once('value').then((snapshot) => {
-          if (snapshot.exists()) {
-              const userData = snapshot.val();
-              if (userData.pass === pass) {
-                  completeLoginProcess(id, userData.name);
-              } else {
-                  alert("Invalid Password");
-              }
-          } else {
-              alert("Invalid ID");
-          }
-      });
+  const user = dbUsers.find(u => u.id === id && u.pass === pass);
+  if(user) {
+    completeLoginProcess(id, user.name);
   } else {
-      // OFFLINE DB LOGIC
-      const user = dbUsers.find(u => u.id === id && u.pass === pass);
-      if(user) {
-        completeLoginProcess(id, user.name);
-      } else {
-        alert("Invalid ID or Password locally");
-      }
+    alert("Invalid ID or Password locally");
   }
 }
 
@@ -608,32 +550,16 @@ function doLogout() {
 }
 
 function showAdminUsers() {
-  if (isFirebaseEnabled) {
-      firebase.database().ref('users').once('value').then((snapshot) => {
-          if (!snapshot.exists()) {
-              alert("No registered users online yet.");
-              return;
-          }
-          const data = snapshot.val();
-          let txt = "Registered Officers (Online DB View):\n\n";
-          Object.keys(data).forEach(userId => {
-              const u = data[userId];
-              txt += `• Name: ${u.name} | ID: ${u.id} | Date: ${u.date}\n`;
-          });
-          alert(txt);
-      });
-  } else {
-      const adminUsers = JSON.parse(localStorage.getItem('grwiki_users') || '[]');
-      if(adminUsers.length === 0) {
-        alert("No registered users locally yet.");
-        return;
-      }
-      let txt = "Registered Officers (Local Admin View):\n\n";
-      adminUsers.forEach(u => {
-        txt += `• Name: ${u.name} | ID: ${u.id} | Date: ${u.date}\n`;
-      });
-      alert(txt);
+  const adminUsers = JSON.parse(localStorage.getItem('grwiki_users') || '[]');
+  if(adminUsers.length === 0) {
+    alert("No registered users locally yet.");
+    return;
   }
+  let txt = "Registered Officers (Local Admin View):\n\n";
+  adminUsers.forEach(u => {
+    txt += `• Name: ${u.name} | ID: ${u.id} | Date: ${u.date}\n`;
+  });
+  alert(txt);
 }
 
 
@@ -1429,7 +1355,7 @@ function vehiclePage(){
  const wh=loadWebhook();
  
  // Generate Traffic Code Options dynamically
- let tcOptions = '<option value="">Select Traffic Offense...</option>';
+ let tcOptions = '';
  [...traffic, ...parking, ...specialParking].forEach(t => {
     let code = `T.C. ${t[0]}`;
     let name = t[1];
@@ -1454,10 +1380,9 @@ function vehiclePage(){
    <input id="vPlate" placeholder="Number Plate (e.g. 1A2B3C)">
    <input id="vModel" placeholder="Vehicle Model (e.g. Sultan RS)">
    <input id="vOwner" placeholder="Owner Name">
-   <input id="vColor" placeholder="Vehicle Color">
-   <input id="vLocation" placeholder="Location Found">
    
-   <select id="vReason" class="veh-full" onchange="updateVehicleFine()">
+   <p style="grid-column:1/-1; margin:0; font-size:12px; color:var(--muted)">Hold Ctrl (Windows) or Cmd (Mac) to select multiple offenses</p>
+   <select id="vReason" multiple class="veh-full" style="min-height: 120px;" onchange="updateVehicleFine()">
     ${tcOptions}
     <option value="Other">Other (Custom Reason)</option>
    </select>
@@ -1487,10 +1412,19 @@ function vehiclePage(){
 function updateVehicleFine() {
     const reasonSel = document.getElementById('vReason');
     const fineInput = document.getElementById('vFine');
-    if(reasonSel.selectedIndex > 0 && reasonSel.value !== 'Other') {
-        const amt = reasonSel.options[reasonSel.selectedIndex].getAttribute('data-fine');
-        fineInput.value = amt ? "$" + parseInt(amt).toLocaleString() : "";
+    let total = 0;
+    
+    for(let i=0; i<reasonSel.selectedOptions.length; i++) {
+        let opt = reasonSel.selectedOptions[i];
+        if(opt.value && opt.value !== 'Other') {
+            total += parseInt(opt.getAttribute('data-fine') || 0);
+        }
     }
+    
+    // Cap vehicle fines at $50,000 as per Grand RP limits
+    if (total > 50000) total = 50000;
+    
+    fineInput.value = total > 0 ? "$" + total.toLocaleString() : "";
     renderVehiclePreview();
 }
 
@@ -1628,21 +1562,27 @@ async function scanVehiclePhoto(){
 
 function buildVehicleLogText(){
  const g=id=>{const e=document.getElementById(id); return e?e.value.trim():''};
- const plate=g('vPlate'),model=g('vModel'),owner=g('vOwner'), color=g('vColor'), loc=g('vLocation'), reason=g('vReason'), fine=g('vFine');
+ const plate=g('vPlate'),model=g('vModel'),owner=g('vOwner'), fine=g('vFine');
  
- return `🚓 **VEHICLE CITATION ISSUED** 🚓
-**Number Plate:** \`${plate||'—'}\`
-**Vehicle Model:** ${model||'—'} (${color||'Unknown Color'})
-**Owner Name:** ${owner||'—'}
-**Location Found:** ${loc||'—'}
-**Offense:** ${reason||'—'}
-**Fine Amount:** ${fine||'—'}
-`;
+ const reasonSel = document.getElementById('vReason');
+ let selectedOffenses = [];
+ if(reasonSel) {
+    for(let i=0; i<reasonSel.selectedOptions.length; i++) {
+        if(reasonSel.selectedOptions[i].value) {
+            selectedOffenses.push(reasonSel.selectedOptions[i].value);
+        }
+    }
+ }
+ const reason = selectedOffenses.length > 0 ? selectedOffenses.join('\n- ') : '—';
+ 
+ return `🚓 **VEHICLE CITATION ISSUED** 🚓\n**Number Plate:** \`${plate||'—'}\`\n**Vehicle Model:** ${model||'—'}\n**Owner Name:** ${owner||'—'}\n**Offenses:**\n- ${reason}\n**Fine Amount:** ${fine||'—'}\n`;
 }
+
 function renderVehiclePreview(){
  const el=document.getElementById('vehPreview'); if(!el)return;
  el.textContent=buildVehicleLogText();
 }
+
 function copyVehicleLog(){
  const text=buildVehicleLogText();
  copyText(text,'Log copied — paste into Discord');
@@ -1651,9 +1591,11 @@ function copyVehicleLog(){
  vehicleLogs=vehicleLogs.slice(0,25); saveVehicleLogs();
  if(document.getElementById('photoInput'))render('vehicle');
 }
+
 function deleteVehicleLog(i){vehicleLogs.splice(i,1); saveVehicleLogs(); render('vehicle')}
+
 function clearVehicleForm(){
- ['vPlate','vModel','vOwner','vColor','vLocation','vReason','vFine'].forEach(id=>{const e=document.getElementById(id); if(e)e.value=''});
+ ['vPlate','vModel','vOwner','vReason','vFine'].forEach(id=>{const e=document.getElementById(id); if(e)e.value=''});
  removeVehiclePhoto();
 }
 
@@ -1665,16 +1607,25 @@ async function sendVehicleWebhook(){
  try{
   const g=id=>{const e=document.getElementById(id); return e?e.value.trim()||'—':''};
   
+  const reasonSel = document.getElementById('vReason');
+  let selectedOffenses = [];
+  if(reasonSel) {
+      for(let i=0; i<reasonSel.selectedOptions.length; i++) {
+          if(reasonSel.selectedOptions[i].value) {
+              selectedOffenses.push(reasonSel.selectedOptions[i].value);
+          }
+      }
+  }
+  const reason = selectedOffenses.length > 0 ? selectedOffenses.join('\n- ') : '—';
+  
   const embed = {
       title: '🚓 Vehicle Citation Issued',
       color: 16766720,
       fields: [
           { name: 'Number Plate', value: '`' + g('vPlate') + '`', inline: true },
           { name: 'Vehicle Model', value: g('vModel'), inline: true },
-          { name: 'Color', value: g('vColor'), inline: true },
           { name: 'Registered Owner', value: g('vOwner'), inline: true },
-          { name: 'Location Found', value: g('vLocation'), inline: true },
-          { name: 'Offense', value: g('vReason'), inline: false },
+          { name: 'Offenses', value: '- ' + reason, inline: false },
           { name: 'Fine Amount', value: g('vFine'), inline: true }
       ],
       footer: { text: "Grand RP Police MDT • " + (activeUser ? "Officer ID: " + activeUser : "") },
@@ -1702,7 +1653,7 @@ function initVehiclePage(){
  box.addEventListener('drop',e=>{if(e.dataTransfer.files[0])handlePhotoFile(e.dataTransfer.files[0])});
  renderPhotoPreview();
  renderOcrBar(vehiclePhoto.dataUrl?'done':'idle', vehiclePhoto.dataUrl?'Photo attached — tap Re-scan if Plate/Owner/Car Name need another pass.':'');
- ['vPlate','vModel','vOwner', 'vColor', 'vLocation', 'vReason', 'vFine'].forEach(id=>{
+ ['vPlate','vModel','vOwner', 'vReason', 'vFine'].forEach(id=>{
   const e=document.getElementById(id); if(e)e.addEventListener('input',renderVehiclePreview);
  });
  renderVehiclePreview();
