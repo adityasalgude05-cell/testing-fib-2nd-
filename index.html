@@ -37,6 +37,7 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .nav button.active{background:linear-gradient(135deg,#f6cb2f,#c98f00);color:#1a1200;font-weight:700;box-shadow:0 6px 18px rgba(242,183,5,.3)}
 .nav button.active::before{content:'';position:absolute;left:-14px;top:8px;bottom:8px;width:4px;border-radius:0 4px 4px 0;background:#1a1200}
 .nav .ico{width:18px;text-align:center;opacity:.9}
+
 .main{margin-left:270px;width:calc(100% - 270px)}
 .topbar{height:72px;background:var(--panelGlass);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 24px;position:sticky;top:0;z-index:10}
 .search{flex:1;max-width:560px;position:relative}.search input{width:100%;padding:12px 44px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);outline:none;color:var(--text)}.search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accentSoft)}
@@ -74,6 +75,22 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 @media(max-width:1000px){.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:none}.main{margin-left:0;width:100%}.mobilebtn{display:block}.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:650px){.content{padding:17px}.topbar{padding:0 14px}.hero{padding:22px}.hero h1{font-size:24px}.grid{grid-template-columns:1fr 1fr}.eventgrid{grid-template-columns:1fr}.kbd{display:none}}
 
+/* --- Auth System --- */
+#authOverlay{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;}
+.auth-box{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.auth-box::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(242,183,5,.15),transparent 60%);pointer-events:none;}
+.auth-logo{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#f6cb2f,#b6790a);display:grid;place-items:center;font-weight:900;color:#1a1200;font-size:20px;margin:0 auto 20px;box-shadow:0 10px 24px rgba(242,183,5,.35);}
+.auth-box h2{text-align:center;margin:0 0 8px;color:var(--text);font-size:22px;}
+.auth-box p{text-align:center;color:var(--muted);font-size:13px;margin:0 0 24px;}
+.auth-form{display:flex;flex-direction:column;gap:16px;}
+.auth-input{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);color:var(--text);font-size:14px;outline:none;transition:border-color .2s;}
+.auth-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accentSoft);}
+.auth-btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#f6cb2f,#c98f00);color:#1a1200;font-weight:800;font-size:15px;cursor:pointer;transition:transform .2s, filter .2s;margin-top:8px;}
+.auth-btn:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.auth-switch{text-align:center;margin-top:20px;font-size:13px;color:var(--muted);}
+.auth-switch span{color:var(--accent);cursor:pointer;font-weight:600;}
+.auth-switch span:hover{text-decoration:underline;}
+
 /* --- Officer tools / advanced features --- */
 .navcount{margin-left:auto;background:var(--accent);color:#1a1200;font-size:10px;font-weight:800;border-radius:999px;padding:2px 7px;min-width:8px;text-align:center}
 .nav button{position:relative}
@@ -98,7 +115,7 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .calc-totals b{display:block;font-size:19px;color:var(--accent)}
 .calc-totals span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 .calc-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.calc-fields input{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);width:100%;color:var(--text)}
+.calc-fields input, .calc-fields select{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);width:100%;color:var(--text)}
 .calc-actions{display:flex;gap:8px;flex-wrap:wrap}
 .btn{border:0;border-radius:10px;padding:10px 16px;font-weight:800;font-size:12.5px;cursor:pointer;background:linear-gradient(135deg,#f6cb2f,#c98f00);color:#1a1200}
 .btn:hover{filter:brightness(1.08)}
@@ -125,6 +142,19 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 .recent-title{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:12px 18px 4px}
 .emptybookmarks{padding:50px 20px;text-align:center;color:var(--muted)}
 .emptybookmarks .big{font-size:34px;display:block;margin-bottom:10px}
+
+/* Custom Timezone Dropdown */
+.tz-dropdown-container { position:relative; cursor:pointer; user-select:none; }
+.tz-dropdown-container:hover { border-color: var(--accent); background: var(--accentSoft); }
+.tz-dropdown-container .cz span { color: var(--accent); font-weight:700; }
+.tz-menu { position:absolute; top:calc(100% + 8px); right:0; background:var(--panel); border:1px solid var(--line); border-radius:12px; box-shadow:0 12px 30px rgba(0,0,0,0.6); min-width:220px; z-index:100; display:none; flex-direction:column; overflow:hidden; }
+.tz-menu.show { display:flex; animation: fadein 0.15s ease; }
+.tz-item { padding:12px 16px; font-size:12px; color:var(--text); cursor:pointer; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
+.tz-item:last-child { border-bottom:0; }
+.tz-item:hover { background:var(--hoverBg); color:var(--accent); }
+.tz-item-time { font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--textSoft); }
+.tz-item:hover .tz-item-time { color:var(--accent); }
+
 @media print{.sidebar,.topbar,.totop,.toasthost,.mobilebtn,.footer,.calc-fields,.calc-actions,.calc-search,.starbtn,.copybtn,.fabmain,.fabstack,.bootsplash{display:none!important}.main{margin-left:0!important;width:100%!important}.content{padding:0!important;max-width:100%!important}.card{box-shadow:none;border:1px solid #999}.calc-summary{position:static;box-shadow:none}body{background:#fff!important;color:#111!important}}
 @media(max-width:650px){.calc-totals{grid-template-columns:1fr 1fr}.calc-fields{grid-template-columns:1fr}.calc-summary{position:static}}
 
@@ -228,31 +258,34 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 @keyframes autoglow{0%{box-shadow:0 0 0 3px var(--successSoft)}100%{box-shadow:0 0 0 0 transparent}}
 .ocr-chip{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:var(--successSoft);color:var(--success);padding:2px 7px;border-radius:999px;margin-left:6px}
 @media print{.ocrbar{display:none!important}}
-
-/* --- v7: BOLO board, RP scripts, profile modal --- */
-.bolo-form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
-.bolo-form input,.bolo-form select,.bolo-form textarea{padding:11px 13px;border:1px solid var(--line);border-radius:11px;background:var(--panel2);width:100%;font:inherit;color:var(--text)}
-.bolo-form textarea{grid-column:1/-1;resize:vertical;min-height:56px}
-.bolocard{border:1px solid var(--line);border-left-width:4px;border-radius:12px;padding:14px 16px;margin:10px 0;background:var(--panel);position:relative}
-.bolocard.lvl-low{border-left-color:var(--success)}
-.bolocard.lvl-medium{border-left-color:var(--warn)}
-.bolocard.lvl-high{border-left-color:#f97316}
-.bolocard.lvl-armed{border-left-color:var(--danger);background:rgba(239,68,68,.06)}
-.bolocard h3{margin:0 0 4px;font-size:15px;color:var(--text);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.bolocard .bolo-meta{font-size:11px;color:var(--muted);margin-bottom:8px}
-.bolocard p{margin:0;font-size:12.5px;color:var(--textSoft);line-height:1.6}
-.bolocard .bolo-actions{margin-top:10px;display:flex;gap:6px}
-.lvltag{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:2px 8px;border-radius:999px}
-.lvltag.lvl-low{background:var(--successSoft);color:var(--success)}
-.lvltag.lvl-medium{background:var(--warnSoft);color:var(--warn)}
-.lvltag.lvl-high{background:rgba(249,115,22,.14);color:#f97316}
-.lvltag.lvl-armed{background:rgba(239,68,68,.14);color:var(--danger)}
-.bolo-alert{border:1px solid var(--danger);background:rgba(239,68,68,.09);border-radius:14px;padding:14px 16px;margin-bottom:16px;color:var(--danger);font-size:13px;display:flex;gap:10px;align-items:flex-start}
-.bolo-alert .ba-ico{font-size:20px;flex-shrink:0}
-@media(max-width:650px){.bolo-form{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+
+<!-- AUTHENTICATION OVERLAY -->
+<div id="authOverlay">
+  <div class="auth-box">
+    <div class="auth-logo">GR</div>
+    <h2 id="authTitle">Officer Login</h2>
+    <p id="authSub">Access the Grand RP Police Wiki</p>
+    
+    <div class="auth-form" id="loginForm">
+      <input type="text" id="loginId" class="auth-input" placeholder="IC ID Number (e.g. 12345)">
+      <input type="password" id="loginPass" class="auth-input" placeholder="Password">
+      <button class="auth-btn" onclick="doLogin()">Log In</button>
+      <div class="auth-switch">No account? <span onclick="switchAuth('signup')">Sign Up</span></div>
+    </div>
+
+    <div class="auth-form" id="signupForm" style="display:none;">
+      <input type="text" id="signupName" class="auth-input" placeholder="IC Name (e.g. John Doe)">
+      <input type="text" id="signupId" class="auth-input" placeholder="IC ID Number">
+      <input type="password" id="signupPass" class="auth-input" placeholder="Create Password">
+      <button class="auth-btn" onclick="doSignup()">Sign Up & Access</button>
+      <div class="auth-switch">Already registered? <span onclick="switchAuth('login')">Log In</span></div>
+    </div>
+  </div>
+</div>
+
 <div class="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand"><div class="logo">GR</div><div><strong>Grand RP Wiki</strong><small>Police / State Handbook</small></div></div>
@@ -263,6 +296,7 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
     <button data-page="state"><span class="ico">◉</span>State Rules</button>
     <button data-page="green"><span class="ico">●</span>Green Zone Rules</button>
     <button data-page="ghetto"><span class="ico">◆</span>Ghetto Rules</button>
+
     <div class="nav-title">Police Handbook</div>
     <button data-page="traffic-stop"><span class="ico">10</span>10-51 Traffic Stop</button>
     <button data-page="arrest"><span class="ico">15</span>10-15 Arrest Procedure</button>
@@ -270,27 +304,48 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
     <button data-page="traffic"><span class="ico">↔</span>Traffic Code</button>
     <button data-page="events"><span class="ico">★</span>Event Rules</button>
     <button data-page="map"><span class="ico">⌖</span>Territory Map</button>
+    
     <div class="nav-title">Officer Tools</div>
     <button data-page="bodycam"><span class="ico">●</span>Bodycam Commands</button>
+    <button data-page="deptradio"><span class="ico">📻</span>Department Radio</button>
     <button data-page="vehicle"><span class="ico">🚗</span>Vehicle Ticket Log</button>
-    <button data-page="bolo"><span class="ico">⚠</span>BOLO Board<span class="navcount" id="boloCount"></span><span class="navtag">NEW</span></button>
-    <button data-page="scripts"><span class="ico">✎</span>RP Script Library<span class="navtag">NEW</span></button>
+    <button data-page="notepad"><span class="ico">📝</span>Dispatch Notepad</button>
     <button data-page="calculator"><span class="ico">＋</span>Fine Calculator</button>
-    <button data-page="codes"><span class="ico">10</span>10-Codes &amp; Phonetics</button>
+    <button data-page="codes"><span class="ico">10</span>Radio Codes &amp; Phonetics</button>
     <button data-page="bookmarks"><span class="ico">★</span>Bookmarks<span class="navcount" id="favCount"></span></button>
+    
     <div class="nav-title">Reference</div>
     <button data-page="terms"><span class="ico">?</span>Roleplay Terms</button>
+    <button onclick="doLogout()" style="margin-top:20px;color:var(--danger)"><span class="ico">🚪</span>Log Out</button>
   </div>
 </aside>
 <main class="main">
 <header class="topbar">
   <button class="iconbtn mobilebtn" id="mobileMenu">☰</button>
   <div class="search"><span>⌕</span><input id="searchInput" placeholder="Search rules, PC, TC, or type > for commands..." autocomplete="off"><span class="kbd">Ctrl K</span></div>
-  <div class="clockbox" id="topClock">
+  
+  <div class="clockbox tz-dropdown-container" id="topClock">
    <div class="cz"><b id="clockLondon">--:--:--</b><span>🇬🇧 In-Game (London)</span></div>
    <div class="csep"></div>
-   <div class="cz"><b id="clockIndia">--:--:--</b><span>🇮🇳 India (IST)</span></div>
+   <div class="cz" onclick="toggleTzMenu()">
+     <b id="clockLocal">--:--:--</b>
+     <span id="tzLabel">🇮🇳 India (IST) ▾</span>
+     <div class="tz-menu" id="tzMenu">
+       <div class="tz-item" onclick="setTz('Asia/Kabul', '🇦🇫 Kabul (AFT)')"><span>UTC+04:30 — Kabul</span><span class="tz-item-time" id="tz_AFT">--:--</span></div>
+       <div class="tz-item" onclick="setTz('Asia/Karachi', '🇵🇰 Karachi (PKT)')"><span>UTC+05:00 — Karachi / PKT</span><span class="tz-item-time" id="tz_PKT">--:--</span></div>
+       <div class="tz-item" onclick="setTz('Asia/Kolkata', '🇮🇳 India (IST)')"><span>UTC+05:30 — India (IST)</span><span class="tz-item-time" id="tz_IST">--:--</span></div>
+       <div class="tz-item" onclick="setTz('Asia/Kathmandu', '🇳🇵 Nepal (NPT)')"><span>UTC+05:45 — Nepal</span><span class="tz-item-time" id="tz_NPT">--:--</span></div>
+       <div class="tz-item" onclick="setTz('Asia/Dhaka', '🇧🇩 Dhaka (BST)')"><span>UTC+06:00 — Dhaka / BST</span><span class="tz-item-time" id="tz_BST">--:--</span></div>
+       <div class="tz-item" onclick="setTz('Asia/Yangon', '🇲🇲 Myanmar (MMT)')"><span>UTC+06:30 — Myanmar</span><span class="tz-item-time" id="tz_MMT">--:--</span></div>
+       <div class="tz-item" onclick="setTz('Asia/Bangkok', '🇹🇭 Bangkok (ICT)')"><span>UTC+07:00 — Bangkok / ICT</span><span class="tz-item-time" id="tz_ICT">--:--</span></div>
+       <div class="tz-item" onclick="setTz('Asia/Singapore', '🇸🇬 Singapore (SGT)')"><span>UTC+08:00 — Singapore / SGT</span><span class="tz-item-time" id="tz_SGT">--:--</span></div>
+       <div class="tz-item" onclick="setTz('Asia/Tokyo', '🇯🇵 Tokyo (JST)')"><span>UTC+09:00 — Tokyo / JST</span><span class="tz-item-time" id="tz_JST">--:--</span></div>
+       <div class="tz-item" onclick="setTz('Australia/Sydney', '🇦🇺 Sydney (AEST)')"><span>UTC+10:00 — Sydney / AEST</span><span class="tz-item-time" id="tz_AEST">--:--</span></div>
+       <div class="tz-item" onclick="setTz('Pacific/Auckland', '🇳🇿 Auckland (NZST)')"><span>UTC+12:00 — Auckland / NZST</span><span class="tz-item-time" id="tz_NZST">--:--</span></div>
+     </div>
+   </div>
   </div>
+
   <div class="top-actions">
    <button class="dutybtn" id="dutyBtn" title="Toggle duty status"><span class="dutydot"></span><span id="dutyLabel">Off Duty</span></button>
    <button class="iconbtn" id="printBtn" title="Print this page">⎙</button><button class="iconbtn" id="profileBtn" title="Officer profile &amp; backup">👤</button><button class="iconbtn" id="helpBtn" title="Keyboard shortcuts">⌨</button><button class="iconbtn" id="themeBtn" title="Toggle theme">☾</button></div>
@@ -302,7 +357,7 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 <div class="modal" id="modal"><div class="modalbox"><input id="modalSearch" placeholder="Search the wiki..."><div class="results" id="results"></div></div></div>
 <div class="modal" id="profileModal"><div class="modalbox helpbox">
   <div class="helphead">Officer Profile &amp; Backup</div>
-  <p style="font-size:12px;color:var(--muted);margin:-4px 0 14px">Saved only in this browser. Your badge, name and department auto-fill into the Fine Calculator and Vehicle Ticket Log.</p>
+  <p style="font-size:12px;color:var(--muted);margin:-4px 0 14px">Saved only in this browser. Your badge, name and department auto-fill into the Fine Calculator.</p>
   <div class="veh-grid" style="margin-bottom:14px">
    <input id="pfName" placeholder="Officer name">
    <input id="pfBadge" placeholder="Badge #">
@@ -314,7 +369,7 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
    <button class="btn ghost" onclick="clearProfile()">Clear Profile</button>
   </div>
   <div class="helphead" style="font-size:13px">Backup &amp; Restore</div>
-  <p style="font-size:12px;color:var(--muted);margin:-4px 0 12px">Export everything (profile, bookmarks, vehicle logs, shift log, BOLOs) to a file, or restore it on another device/browser.</p>
+  <p style="font-size:12px;color:var(--muted);margin:-4px 0 12px">Export everything (profile, bookmarks, vehicle logs, shift log, notes) to a file, or restore it on another device.</p>
   <div class="calc-actions">
    <button class="btn secondary" onclick="exportBackup()">Export Backup (.json)</button>
    <button class="btn ghost" onclick="document.getElementById('importInput').click()">Import Backup</button>
@@ -350,6 +405,99 @@ button,input,textarea{font:inherit}.app{display:flex;min-height:100vh}
 </div>
 
 <script>
+/* ---------- Auth System ---------- */
+let dbUsers = JSON.parse(localStorage.getItem('grwiki_users') || '[]');
+let activeUser = localStorage.getItem('grwiki_active_user');
+
+function initAuth() {
+  const overlay = document.getElementById('authOverlay');
+  if (activeUser) {
+    overlay.style.display = 'none';
+  } else {
+    overlay.style.display = 'flex';
+  }
+}
+
+function switchAuth(type) {
+  if(type === 'signup') {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('signupForm').style.display = 'flex';
+    document.getElementById('authTitle').textContent = 'Officer Registration';
+    document.getElementById('authSub').textContent = 'Create your state ID profile';
+  } else {
+    document.getElementById('signupForm').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'flex';
+    document.getElementById('authTitle').textContent = 'Officer Login';
+    document.getElementById('authSub').textContent = 'Access the Grand RP Police Wiki';
+  }
+}
+
+function doSignup() {
+  const name = document.getElementById('signupName').value.trim();
+  const id = document.getElementById('signupId').value.trim();
+  const pass = document.getElementById('signupPass').value.trim();
+  
+  if(!name || !id || !pass) { alert("Please fill all fields"); return; }
+  if(dbUsers.find(u => u.id === id)) { alert("ID already registered. Please login."); return; }
+  
+  dbUsers.push({ name, id, pass, date: new Date().toLocaleString() });
+  localStorage.setItem('grwiki_users', JSON.stringify(dbUsers));
+  
+  // Auto login
+  activeUser = id;
+  localStorage.setItem('grwiki_active_user', activeUser);
+  document.getElementById('authOverlay').style.display = 'none';
+  
+  // Also save to profile
+  let profile = loadProfile();
+  profile.name = name;
+  profile.badge = id;
+  localStorage.setItem('grwiki_profile', JSON.stringify(profile));
+  
+  toast("Registered & Logged in successfully");
+}
+
+function doLogin() {
+  const id = document.getElementById('loginId').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  
+  if(!id || !pass) { alert("Please enter ID and Password"); return; }
+  
+  const user = dbUsers.find(u => u.id === id && u.pass === pass);
+  if(user) {
+    activeUser = id;
+    localStorage.setItem('grwiki_active_user', activeUser);
+    document.getElementById('authOverlay').style.display = 'none';
+    toast("Welcome back, Officer " + user.name);
+  } else {
+    alert("Invalid ID or Password");
+  }
+}
+
+function doLogout() {
+  localStorage.removeItem('grwiki_active_user');
+  activeUser = null;
+  document.getElementById('loginId').value = '';
+  document.getElementById('loginPass').value = '';
+  switchAuth('login');
+  document.getElementById('authOverlay').style.display = 'flex';
+}
+
+function showAdminUsers() {
+  const adminUsers = JSON.parse(localStorage.getItem('grwiki_users') || '[]');
+  if(adminUsers.length === 0) {
+    alert("No registered users yet.");
+    return;
+  }
+  let txt = "Registered Officers (Admin View):\n\n";
+  adminUsers.forEach(u => {
+    txt += `• Name: ${u.name} | ID: ${u.id} | Date: ${u.date}\n`;
+  });
+  alert(txt);
+}
+
+
+/* ---------- Data Core ---------- */
 const rules = {
 general: {
 title:"General Rules", sub:"Official server rules and regulations. Violating these rules will result in the listed penalties.",
@@ -400,7 +548,64 @@ groups:[
 ["6.24","It is forbidden to rob/kidnap people who working on starting jobs such as busmen/taxi drivers/electricians, etc.",""],
 ["6.25","It is forbidden to rob/kidnap people on the territory of Fort Zancudo (National Guard).","WARN"],
 ["6.26","It is forbidden to abuse EMS clothes if you are not EMS employee.","WARN or BAN up to 7 days"],
-["6.27","Placing contraband machines inside other objects or physically inaccessible areas is not allowed.","Ban 1-3 days"]]]
+["6.27","Placing contraband machines inside other objects or physically inaccessible areas is not allowed.","Ban 1-3 days"]]],
+["Rules for Leaders",[
+["1.1","The minimum term of leadership is at least 30 days, otherwise the leader is removed from his post by blocking the game account for 3 days. If the leader leaves his post with serious reason, then he is removed without a ban and his post is transferred to a trusted 9th (or other rank-deputy) or a new applications will be opened.","3 days ban / Removal"],
+["1.2","It is prohibited to use warehouse of the organization for personal purposes",""],
+["1.3","When appointed to his post, the leader has the right to take a freeze of the faction for 24 hours.",""],
+["1.4","The leader of criminal organizations (gangs) has the right to have four 9th(deputy) ranks",""],
+["1.5","The leader of the state organization (and LifeInvader) has the right to have two 9th(deputy) ranks",""],
+["1.6","The senior staff of any organizations is considered only 9th(deputy) rank and the leader of the faction.",""],
+["1.7","The leader of the organization has the right to dismiss employees of his organization if he has lost any confidence in them with the senior curators approval.",""],
+["1.8","The leader can take a freeze of his faction from 12 to 24 hours once per term with the permission of the senior curator.",""],
+["1.9","Every leader must make a global event at least once in a 2 weeks.",""],
+["2.1","Responsibilities: Compliance with the rules of the server",""],
+["2.2","Responsibilities: Maintain a minimum daily online time of 2+ hours",""],
+["2.3","Responsibilities: Do not allow any provocative and conflict situations between the members of your organization",""],
+["2.4","Responsibilities: Listen to and comply with the requirements of the curators.",""],
+["3.1","Prohibited: Play on other RP / RPG projects for GTA V and SAMP, holding any position (leader, admin, being on another servers discord etc.)",""],
+["3.2","Prohibited: Play on an additional account (twinkie) for the opposite sphere of your organization.",""],
+["3.3","Prohibited: Behave inappropriately (conflict, inappropriate). Toxicity is strictly restricted",""]]],
+["Election Rules",[
+["1","Everyone can create a party to participate in the elections.",""],
+["2","A leader of a party becomes the new governor.",""],
+["3","The party has to contain minimum of 20 members and has to be unique.",""],
+["4","Every party must have an election program which has to be according to the rules of server.",""],
+["5","Election is completely IC process. Usage of any OOC is forbidden.(exception #leaders-of-the-party) our official discord channel.",""],
+["6","You cannot advertise your party through department, state wave, radios, ingrand and etc.(Reference to rule 15)","(-20 votes)"],
+["7","You cannot advertise a party in the radios of jobs (truck, taxi driver, etc)","(-10 votes)"],
+["8","The day before the elections there will be a day for debates where all candidates must participate. (The candidates who do not participate in debates will be eliminated from elections)",""],
+["9","On debates each candidate has 10 minutes for first speech to present his election program.",""],
+["10","Each candidate can ask up to 5 questions to his opponent.",""],
+["11","Each candidate can receive 5 questions from citizens.",""],
+["12","A leader of the party must have a clean record. (No active warnings)",""],
+["13","After the application for a party has been accepted there will be interview process with the administration.",""],
+["14","After the debates next day there will be elections.",""],
+["15","You can advertise your party through creating your own events and doing broadcasts in LifeInvader only.","(-20 votes)"],
+["16","It is forbidden to make promises in elections which are against the script.",""]]],
+["Event Rules (General)",[
+["1.1","Teaming is strictly forbidden(except events where it is systematically)","Jail 120 min"],
+["1.2","It is forbidden to kill/rob/kidnap/etc. before the event starts(10 minutes before), during and 5 minutes after","Warn"],
+["1.3","It is forbidden to enter event area before the event starts.","Jail 120 min"],
+["1.4","A limit of people on robberies of gunshops / 24/7 should be 40/40 people for gang/state organisation.","Demorgan 180 min"],
+["1.5","An event like robberies of gunshops 24/7 have to be a role play and state organisations can talk to criminals","Demorgan 180 min"],
+["1.6","Machine guns and sniper rifles are forbidden.","Jail 120 min"],
+["1.7","All participants of all events under all spheres must record POV and hold it within 48 hours","30 days ban"],
+["1.8","It is forbidden to transfer family members between families for family war/business war.","Warn and disqualification"],
+["1.9","It is forbidden to block the entrance by barricades or cars. You must leave free pass that people can go through by driving cars.","Jail 120 min"],
+["1.10","During the purge it is forbidden to use weapons of any organisation. All warehouses must be closed at 11 PM.","Ban 30 days"],
+["1.11","During events with a red circles, all players must be inside a red circle. Shooting outside the zone is forbidden.","Jail 120 min"],
+["1.12","There is a limit of 2 hostages during robbery events and kidnapping","Warn"],
+["1.13","Families are not allowed to kill other families members on purpose in aircraft carrier event and bank robbery.","Jail 120 min"],
+["1.14","During robbery of Fort Zancudo it is forbidden to be on roofs","Jail 120 min"],
+["1.15","During Submarine Event, it is not allowed to use roofs.","Jail 120 min"],
+["1.16","During any hostage situation including (robbery of 24/7, gunshop) gangs can ask only for money for a hostage(Only 1 demand per 1 hostage) Civilian - up to 100k, Law enforcement officer - up to 200k, High command - up to 300k, Leaders - up to 400k",""],
+["1.17","It is forbidden to use personal cars in events where you are acting as a gangmember. (You have to use only org cars)",""],
+["1.18","It is forbidden to use places that cannot be accessed by foot or ladder when event already started and it is not allowed to use highground such as highways which are not accessible from inside the event once it has started.","Jail 120 min"],
+["1.19","During a gunshop or 24/7 robbery, FIB, SAHP, LSPD are allowed demand to replace hostages.",""],
+["1.20","At the Bank Robbery Event, it is not allowed to kill, attack, shoot or rob while a player is loading into the interior.(e.g. joined tunnel 3 and instantly got killed while textures and players are still loading)","WARN"],
+["1.21","During aircraft carrier event, LEOs are not allowed to shoot others while they are in a water. They should let them get on a carrier.","WARN"],
+["1.22","Parachutes are forbidden(counts as a bug abusing). 'Flying into red zone using parachute'","Ban 1-30 days"]]]
 ]},
 state:{title:"State Rules",sub:"Official server rules and regulations. Violating these rules will result in the listed penalties.",groups:[
 ["General Rules for State",[
@@ -553,12 +758,12 @@ const events = {
 "Ghetto Patrol":["Heavy Weapons are allowed.","Minimum 8-10 Units should be there including four cars.","Should be in ghetto for minimum of 15 minutes.","Should patrol from near 3 gang HQs.","Necessary to take halt for 5 minutes in Fake Parking."],
 "FZ Raid":["Happens in NG Base.","Heavy Weapons are NOT allowed.","Accessing roof is NOT allowed.","Can't stay in base after raid is over."],
 "Bank Protection":["Only Heavy Shotgun is allowed, other heavy weapons are NOT allowed.","Event happens alternate day at 21:30.","You are NOT allowed to shoot people who just entered the tunnel."],
-"Store Robbery / Gun Store Robbery":["Don't shoot outside the perimeter from inside.","Don't shoot inside the perimeter from outside.","Don't shoot without taking demands from gangster.","Heavy Weapons are NOT allowed."],
+"Store Robbery / Gun Store Robbery":["Don't shoot outside the parameter from inside.","Don't shoot inside the parameter from outside.","Don't shoot without taking demands from gangster.","Heavy Weapons are NOT allowed."],
 "ACC (Aircraft Carrier Protection)":["Happens alternate day at 21:30 on the Aircraft Carrier.","NOT allowed to shoot people inside the water.","Heavy Weapons are NOT allowed."],
 "Prison Protection":["Happens only on Friday at 22:10.","Heavy Weapons are NOT allowed."],
 "Submarine Protection":["Happens everyday at 00:00.","Heavy Weapons are NOT allowed."],
 "Gang Raid":["Happens with coordination with FIB during Special Operation.","Heavy Weapons are NOT allowed."],
-"Black Market Raid":["Happens with coordination with FIB during Special Operation.","Heavy Weapons are NOT allowed.","Can't shoot anyone without demands inside the perimeter.","NOT allowed to shoot outside the perimeter from inside."]
+"Black Market Raid":["Happens with coordination with FIB during Special Operation.","Heavy Weapons are NOT allowed.","Can't shoot anyone without demands inside the parameter.","NOT allowed to shoot outside the parameter from inside."]
 };
 
 const penal = [
@@ -705,26 +910,26 @@ function table(rows,cols,opts){
  }).join("");
  return `<div class="tablewrap"><table class="table"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
 }
+
 function dashboard(){
- const pageLabels={general:'General Rules',state:'State Rules',green:'Green Zone',ghetto:'Ghetto Rules','traffic-stop':'10-51 Traffic Stop',arrest:'10-15 Arrest',penal:'Penal Code',traffic:'Traffic Code',events:'Event Rules',map:'Territory Map',terms:'RP Terms',calculator:'Fine Calculator',codes:'10-Codes',bookmarks:'Bookmarks',bodycam:'Bodycam Commands',vehicle:'Vehicle Ticket Log',bolo:'BOLO Board',scripts:'RP Script Library'};
- const armedCount=bolos.filter(b=>b.threat==='armed').length;
- const totalFines=citationLogs.reduce((a,c)=>a+(c.fine||0),0)+vehicleLogs.reduce((a,v)=>{const m=(v.text||'').match(/TOTAL FINE:\s*\$([\d,]+)/); return a+(m?parseInt(m[1].replace(/,/g,''),10):0)},0);
- return `<div class="hero"><h1>${profile.name?`Welcome back, Officer ${esc(profile.name)}`:'Grand RP Police Wiki'}</h1><p>${profile.badge?`Badge #${esc(profile.badge)}${profile.dept?' • '+esc(profile.dept):''} — `:''}Quick-access handbook for state rules, penal code, traffic code, traffic stops, arrests, events, bodycam procedure and roleplay terminology.</p><div class="tip-ticker" id="tipTicker"></div></div>
+ const pageLabels={general:'General Rules',state:'State Rules',green:'Green Zone',ghetto:'Ghetto Rules','traffic-stop':'10-51 Traffic Stop',arrest:'10-15 Arrest',penal:'Penal Code',traffic:'Traffic Code',events:'Event Rules',map:'Territory Map',terms:'RP Terms',calculator:'Fine Calculator',codes:'Radio Codes',bookmarks:'Bookmarks',bodycam:'Bodycam Commands',vehicle:'Vehicle Ticket Log',notepad:'Dispatch Notepad', deptradio:'Department Radio'};
+ const totalFines=citationLogs.reduce((a,c)=>a+(c.fine||0),0)+vehicleLogs.length; 
+ return `<div class="hero"><h1>Welcome back, Officer ${activeUser ? dbUsers.find(u=>u.id===activeUser)?.name || '' : ''}</h1><p>Badge #${activeUser||''} — Quick-access handbook for state rules, penal code, traffic code, traffic stops, arrests, events, bodycam procedure and roleplay terminology.</p><div class="tip-ticker" id="tipTicker"></div></div>
  <div class="clockcard">
   <div class="cc-item"><h4>🇬🇧 In-Game Time — London</h4><b id="dashClockLondon">--:--:--</b><small id="dashDateLondon">—</small></div>
   <div class="cc-divider"></div>
-  <div class="cc-item"><h4>🇮🇳 India Standard Time</h4><b id="dashClockIndia">--:--:--</b><small id="dashDateIndia">—</small></div>
+  <div class="cc-item"><h4>Local Time</h4><b id="dashClockIndia">--:--:--</b><small id="dashDateIndia">—</small></div>
   <div class="cc-divider"></div>
   <div class="cc-item"><h4>Server Cycle</h4><b id="dashCycle">—</b><small>Grand RP runs on real-world London (UK) time</small></div>
  </div>
- ${armedCount?`<div class="bolo-alert"><span class="ba-ico">⚠</span><div><b>${armedCount} Armed &amp; Dangerous BOLO${armedCount===1?'':'s'} active.</b> <button onclick="go('bolo')" style="background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font:inherit">Open BOLO Board</button></div></div>`:''}
- <div class="grid"><div class="stat"><b>${penal.length}</b><span>Penal Code entries</span></div><div class="stat"><b>${todayDutyMinutes()}</b><span>Minutes on duty today</span></div><div class="stat"><b>${fmtMoney(totalFines)}</b><span>Fines logged (citations + stops)</span></div><div class="stat"><b>${bolos.length}</b><span>Active BOLOs</span></div></div>
+ <div class="grid"><div class="stat"><b>${penal.length}</b><span>Penal Code entries</span></div><div class="stat"><b>${todayDutyMinutes()}</b><span>Minutes on duty today</span></div><div class="stat"><b>${fmtMoney(totalFines)}</b><span>Citations Logs</span></div><div class="stat"><b>100%</b><span>Ready</span></div></div>
  ${recentPages.length?`<div class="card"><div class="card-head"><h2>Recently Viewed</h2></div><div class="card-body"><div class="chips">${recentPages.map(p=>`<button class="chip" onclick="go('${p}')">${esc(pageLabels[p]||p)}</button>`).join("")}</div></div></div>`:''}
  <div class="card"><div class="card-head"><h2>Quick Access</h2></div><div class="card-body"><div class="eventgrid">
- ${[['BOLO Board','Post and track wanted suspects & vehicles','bolo'],['RP Script Library','Cuffing, Miranda, search & radio scripts','scripts'],['Bodycam Commands','On/off-duty, drone, PDA & evidence scripts','bodycam'],['Vehicle Ticket Log','Upload plate photo, log fines, send to Discord','vehicle'],['Fine Calculator','Build a citation in seconds','calculator'],['Penal Code','Complete PC table by article','penal'],['10-15 Arrest','Step-by-step DOC process','arrest'],['10-Codes','Radio codes + phonetics','codes']].map(x=>`<div class="eventcard" style="cursor:pointer" onclick="go('${x[2]}')"><h3>${x[0]}</h3><p style="font-size:12px;color:var(--muted);margin:0">${x[1]}</p></div>`).join("")}
+ ${[['Department Radio','Dynamic inter-department comms generator','deptradio'],['Dispatch Notepad','Auto-saving scratchpad for active pursuits','notepad'],['Bodycam Commands','On/off-duty, drone, PDA & evidence scripts','bodycam'],['Vehicle Ticket Log','Upload plate photo, log and output to Discord','vehicle'],['Fine Calculator','Build a citation in seconds','calculator'],['Penal Code','Complete PC table by article','penal'],['10-15 Arrest','Step-by-step DOC process','arrest'],['Radio Codes','Radio codes + phonetics','codes']].map(x=>`<div class="eventcard" style="cursor:pointer" onclick="go('${x[2]}')"><h3>${x[0]}</h3><p style="font-size:12px;color:var(--muted);margin:0">${x[1]}</p></div>`).join("")}
  </div></div></div>
  <div class="notice"><b>Source note:</b> Penal and Traffic Code entries below follow the supplied Patrolman's Guide PDF. The PDF's own article headings, codes, fines, times and stars are preserved as provided.</div>`;
 }
+
 function penalPage(){
  let articles={};
  penal.forEach(r=>{let a=r[0].split('.')[0]; if(!articles[a])articles[a]=[];articles[a].push(r)});
@@ -859,63 +1064,34 @@ function filterCalc(q){
 
 /* ---------- Vehicle Ticket Log ---------- */
 let vehiclePhoto={dataUrl:null,file:null,name:null};
-const vehicleSelected=new Set();
-function vehicleAllItems(){
- const items=[];
- traffic.forEach((r,i)=>items.push({id:'vt'+i,code:'T.C. '+r[0],name:r[1],fine:parseMoney(r[2]),group:'Traffic Statute'}));
- parking.forEach((r,i)=>items.push({id:'vp'+i,code:'T.C. '+r[0],name:r[1],fine:parseMoney(r[2]),group:'Parking'}));
- specialParking.forEach((r,i)=>items.push({id:'vs'+i,code:'T.C. '+r[0],name:r[1],fine:parseMoney(r[2]),group:'Location Parking'}));
- return items;
-}
 function loadVehicleLogs(){try{return JSON.parse(localStorage.getItem('grwiki_vehiclelogs')||'[]')}catch(e){return []}}
 let vehicleLogs=loadVehicleLogs();
 function saveVehicleLogs(){localStorage.setItem('grwiki_vehiclelogs',JSON.stringify(vehicleLogs))}
 function loadWebhook(){try{return localStorage.getItem('grwiki_webhook')||''}catch(e){return ''}}
+
 function vehiclePage(){
- const items=vehicleAllItems();
- const groups={}; items.forEach(it=>{(groups[it.group]=groups[it.group]||[]).push(it)});
  const wh=loadWebhook();
- let out=`<h1 class="section-title">Vehicle Ticket Log</h1><p class="section-sub">Upload a screenshot of the vehicle/plate, fill in the stop details, tick the traffic charges, and get a ready-to-paste Discord log — or send it straight to your department's Discord webhook.</p>
+ let out=`<h1 class="section-title">Vehicle Ticket Log</h1><p class="section-sub">Upload a screenshot of the vehicle/plate, fill in the minimal stop details, and get a ready-to-paste clean Discord log.</p>
 
  <div class="card"><div class="card-head"><h2>1. Vehicle Photo</h2></div><div class="card-body">
   <div class="uploadbox" id="uploadBox" onclick="document.getElementById('photoInput').click()">
-   <span class="up-ico">📷</span><b>Click to upload, or drag a photo here</b><small>Plate / vehicle screenshot — we'll try to auto-read the plate, owner name &amp; vehicle model. Stays in your browser unless you send it via webhook below.</small>
+   <span class="up-ico">📷</span><b>Click to upload, or drag a photo here</b><small>Plate / vehicle screenshot — we'll try to auto-read the plate, owner name &amp; car name.</small>
   </div>
   <input type="file" id="photoInput" accept="image/*" style="display:none">
   <div id="photoPreviewHost"></div>
   <div id="ocrHost"></div>
  </div></div>
 
- <div class="card"><div class="card-head"><h2>2. Stop Details</h2></div><div class="card-body">
+ <div class="card"><div class="card-head"><h2>2. Vehicle Details</h2></div><div class="card-body">
   <div class="veh-grid">
-   <input id="vPlate" placeholder="Plate number">
-   <input id="vModel" placeholder="Vehicle model">
-   <input id="vColor" placeholder="Vehicle color">
-   <input id="vOwner" placeholder="Owner / suspect name">
-   <input id="vBadge" placeholder="Officer badge #" value="${esc(profile.badge||'')}">
-   <input id="vLocation" placeholder="Location">
-   <input id="vCase" placeholder="Case / report #">
-   <input id="vDept" placeholder="Department (LSPD, SAHP, FIB...)" value="${esc(profile.dept||'')}">
-   <textarea id="vNotes" placeholder="Notes / additional context (optional)"></textarea>
+   <input id="vPlate" placeholder="Number Plate">
+   <input id="vModel" placeholder="Car Name (Model)">
+   <input id="vOwner" placeholder="Owner Name">
   </div>
-  <p id="ocrHint" style="font-size:11px;color:var(--muted);margin:0">Upload a plate/registration screenshot above — Plate, Owner and Vehicle will try to auto-fill — always double-check before sending.</p>
+  <p id="ocrHint" style="font-size:11px;color:var(--muted);margin:0">Upload a plate/registration screenshot above — Plate, Owner and Car Name will try to auto-fill.</p>
  </div></div>
 
- <div class="card"><div class="card-head"><h2>3. Charges</h2><span class="badge" id="vehTotalBadge">$0</span></div><div class="card-body">
-  <div class="calc-search"><input id="vehFilter" placeholder="Filter charges by code or name..." oninput="filterVehicle(this.value)"></div>
-  <div id="vehList">
-  ${Object.entries(groups).map(([gname,list])=>`<div class="traffic-group"><h3>${esc(gname)}</h3>
-   ${list.map(it=>`<label class="calc-item" data-search="${esc((it.code+' '+it.name).toLowerCase())}" id="vrow-${it.id}">
-    <input type="checkbox" onchange="toggleVehicle('${it.id}',this.checked)">
-    <div class="ci-body"><div class="ci-title"><span class="code">${esc(it.code)}</span>${esc(it.name)}</div>
-    <div class="ci-meta">${it.fine?fmtMoney(it.fine)+' fine':'No fine'}</div></div>
-   </label>`).join("")}
-  </div>`).join("")}
-  </div>
-  <textarea id="vCustomCharge" placeholder="Custom charge(s) not listed above (optional)" style="margin-top:10px"></textarea>
- </div></div>
-
- <div class="card"><div class="card-head"><h2>4. Log Output</h2></div><div class="card-body">
+ <div class="card"><div class="card-head"><h2>3. Log Output</h2></div><div class="card-body">
   <div class="citation-preview" id="vehPreview">Fill in the details above to build the log.</div>
   <div class="calc-actions" style="margin-top:12px">
    <button class="btn" onclick="copyVehicleLog()">Copy Discord Log</button>
@@ -925,7 +1101,6 @@ function vehiclePage(){
    <input id="vWebhook" placeholder="Discord webhook URL (optional — saved only in your browser)" value="${esc(wh)}" oninput="localStorage.setItem('grwiki_webhook',this.value)">
    <button class="btn secondary" id="sendWebhookBtn" onclick="sendVehicleWebhook()">Send to Discord</button>
   </div>
-  <p style="font-size:11px;color:var(--muted);margin:4px 0 0">The webhook URL and any logs never leave your browser except when you tap "Send to Discord", which posts directly from your browser to your webhook — this site has no server of its own.</p>
  </div></div>
 
  <div class="card"><div class="card-head"><h2>Recent Vehicle Logs</h2><span class="badge">${vehicleLogs.length}</span></div><div class="card-body loglist">
@@ -998,39 +1173,20 @@ function flashAutoFilled(id){
  setTimeout(()=>el.classList.remove('auto-filled'),1900);
 }
 function guessVehicleFields(raw){
- const lines=raw.split('\n').map(l=>l.replace(/\s+/g,' ').trim()).filter(Boolean);
- let plate=null,owner=null,model=null,color=null;
- lines.forEach(line=>{
-  if(!plate){const m=line.match(/\b(plate|registration|reg|licen[cs]e)\b\s*[:\-#]\s*([A-Z0-9]{4,10})\b/i); if(m)plate=m[2].toUpperCase()}
-  if(!owner){const m=line.match(/\b(owner|registered\s*to|name)\b\s*[:\-]\s*([A-Za-z][A-Za-z .'\-]{2,40})/i); if(m)owner=m[2].trim()}
-  if(!model){const m=line.match(/\b(model|vehicle|car\s*type|make(?:\s*\/\s*model)?)\b\s*[:\-]\s*([A-Za-z0-9][A-Za-z0-9 .'\-]{2,30})/i); if(m)model=m[2].trim()}
-  if(!color){const m=line.match(/\b(colou?r)\b\s*[:\-]\s*([A-Za-z][A-Za-z \-]{2,20})/i); if(m)color=m[2].trim()}
- });
- if(!plate){
-  for(const line of lines){
-   for(const tok of line.split(/\s+/)){
-    const clean=tok.replace(/[^A-Za-z0-9]/g,'');
-    if(clean.length>=5&&clean.length<=8&&/[A-Za-z]/.test(clean)&&/[0-9]/.test(clean)){plate=clean.toUpperCase(); break}
-   }
-   if(plate)break;
-  }
- }
- const usedLines=new Set();
- if(!owner){
-  for(const line of lines){
-   const m=line.match(/^([A-Z][a-z'\-]+(?:\s+[A-Z][a-z'\-]+){1,2})$/);
-   if(m&&m[1].toUpperCase().replace(/\s+/g,'')!==plate){owner=m[1]; usedLines.add(line); break}
-  }
- }
- if(!model){
-  for(const line of lines){
-   if(usedLines.has(line))continue;
-   if(plate&&line.toUpperCase().includes(plate))continue;
-   const m=line.match(/^([A-Z][a-z]+(?:\s+[A-Za-z0-9]{1,8}){0,1})$/);
-   if(m&&m[1].length>=3&&m[1].length<=28&&m[1]!==owner){model=m[1]; break}
-  }
- }
- return {plate,owner,model,color};
+ const text = raw.replace(/\n/g, ' ');
+ let plate=null,owner=null,model=null;
+
+ // Advanced OCR for Grand RP MDT specific texts
+ let plateMatch = text.match(/(?:Number Plate|Plate|Plate Number|Licence Plate)[\s\:\-]+([A-Z0-9]{2,8})/i) || text.match(/\b([0-9]{1,2}[A-Z]{2}[0-9]{3,4})\b/i) || text.match(/\b([A-Z0-9]{5,8})\b/i);
+ if(plateMatch) plate = plateMatch[1].toUpperCase();
+
+ let ownerMatch = text.match(/(?:Owner|Owner Name|Registered To|Name)[\s\:\-]+([A-Z][a-z]+ [A-Z][a-z]+)/i);
+ if(ownerMatch) owner = ownerMatch[1];
+
+ let modelMatch = text.match(/(?:Vehicle|Car Name|Model|Vehicle Model)[\s\:\-]+([A-Za-z0-9 ]{3,20})/i);
+ if(modelMatch) model = modelMatch[1].trim();
+
+ return {plate,owner,model};
 }
 async function scanVehiclePhoto(){
  if(!vehiclePhoto.dataUrl){toast('Upload a photo first'); return}
@@ -1041,62 +1197,28 @@ async function scanVehiclePhoto(){
   startOcrPhrases();
   const {data:{text}}=await Tesseract.recognize(vehiclePhoto.dataUrl,'eng',{logger:()=>{}});
   stopOcrPhrases();
-  const {plate,owner,model,color}=guessVehicleFields(text||'');
+  const {plate,owner,model}=guessVehicleFields(text||'');
   const found=[];
   if(plate){const el=document.getElementById('vPlate'); if(el){el.value=plate; flashAutoFilled('vPlate'); found.push('plate')}}
   if(owner){const el=document.getElementById('vOwner'); if(el){el.value=owner; flashAutoFilled('vOwner'); found.push('owner')}}
-  if(model){const el=document.getElementById('vModel'); if(el){el.value=model; flashAutoFilled('vModel'); found.push('vehicle')}}
-  if(color){const el=document.getElementById('vColor'); if(el&&!el.value){el.value=color; flashAutoFilled('vColor'); found.push('color')}}
+  if(model){const el=document.getElementById('vModel'); if(el){el.value=model; flashAutoFilled('vModel'); found.push('car name')}}
   renderVehiclePreview();
   if(found.length){
    renderOcrBar('done',`✓ /do MDT pulled the vehicle file — ${found.join(', ')} auto-filled <span class="ocr-chip">verify before citing</span>`);
    toast('MDT pulled the '+found.join(', ')+' — verify before citing');
   }else{
-   renderOcrBar('error',"/do MDT got a read but couldn't confidently match a plate, owner or vehicle — please fill them in manually.");
+   renderOcrBar('error',"/do MDT got a read but couldn't confidently match a plate, owner or car name — please fill them in manually.");
   }
  }catch(e){
   stopOcrPhrases();
-  renderOcrBar('error',"/do MDT lost connection to dispatch — enter Plate/Owner/Vehicle manually.");
+  renderOcrBar('error',"/do MDT lost connection to dispatch — enter Plate/Owner/Car Name manually.");
  }
 }
-function toggleVehicle(id,checked){
- if(checked)vehicleSelected.add(id); else vehicleSelected.delete(id);
- document.getElementById('vrow-'+id).classList.toggle('checked',checked);
- updateVehicleTotals();
-}
-function updateVehicleTotals(){
- const items=vehicleAllItems(); let fine=0;
- items.forEach(it=>{if(vehicleSelected.has(it.id))fine+=it.fine});
- const b=document.getElementById('vehTotalBadge'); if(b)b.textContent=fmtMoney(fine);
- renderVehiclePreview();
-}
-function filterVehicle(q){
- q=q.trim().toLowerCase();
- document.querySelectorAll('#vehList .calc-item').forEach(el=>{el.style.display=(!q||el.dataset.search.includes(q))?'':'none'});
- document.querySelectorAll('#vehList .traffic-group').forEach(g=>{const vis=[...g.querySelectorAll('.calc-item')].some(el=>el.style.display!=='none');g.style.display=vis?'':'none'});
-}
+
 function buildVehicleLogText(){
  const g=id=>{const e=document.getElementById(id); return e?e.value.trim():''};
- const plate=g('vPlate'),model=g('vModel'),color=g('vColor'),owner=g('vOwner'),badge=g('vBadge'),loc=g('vLocation'),cs=g('vCase'),dept=g('vDept'),notes=g('vNotes'),custom=g('vCustomCharge');
- const items=vehicleAllItems().filter(it=>vehicleSelected.has(it.id));
- let fine=0; items.forEach(it=>fine+=it.fine);
- const chargeLines=items.map(it=>`• ${it.code} — ${it.name}${it.fine?' ('+fmtMoney(it.fine)+')':''}`);
- if(custom)custom.split('\n').filter(Boolean).forEach(l=>chargeLines.push('• '+l.trim()));
- return `🚓 **VEHICLE TICKET LOG**${dept?' — '+dept:''}
-**Date/Time:** ${new Date().toLocaleString()}
-**Officer Badge #:** ${badge||'—'}
-**Case #:** ${cs||'—'}
-**Location:** ${loc||'—'}
-
-**Plate:** \`${plate||'—'}\`
-**Vehicle:** ${[color,model].filter(Boolean).join(' ')||'—'}
-**Owner/Suspect:** ${owner||'—'}
-
-**Charges:**
-${chargeLines.length?chargeLines.join('\n'):'—'}
-
-**Total Fine:** ${fmtMoney(fine)}
-${notes?'**Notes:** '+notes:''}${vehiclePhoto.name?'\n**Attachment:** '+vehiclePhoto.name:''}`.trim();
+ const plate=g('vPlate'),model=g('vModel'),owner=g('vOwner');
+ return `🚓 **VEHICLE TICKET LOG**\n**Number Plate:** \`${plate||'—'}\`\n**Owner Name:** ${owner||'—'}\n**Car Name:** ${model||'—'}`;
 }
 function renderVehiclePreview(){
  const el=document.getElementById('vehPreview'); if(!el)return;
@@ -1108,15 +1230,12 @@ function copyVehicleLog(){
  const plate=document.getElementById('vPlate').value.trim(), model=document.getElementById('vModel').value.trim();
  vehicleLogs.unshift({plate,model,time:new Date().toLocaleString(),text});
  vehicleLogs=vehicleLogs.slice(0,25); saveVehicleLogs();
- if(document.getElementById('vehList'))render('vehicle');
+ if(document.getElementById('photoInput'))render('vehicle');
 }
 function deleteVehicleLog(i){vehicleLogs.splice(i,1); saveVehicleLogs(); render('vehicle')}
 function clearVehicleForm(){
- ['vPlate','vModel','vColor','vOwner','vBadge','vLocation','vCase','vDept','vNotes','vCustomCharge'].forEach(id=>{const e=document.getElementById(id); if(e)e.value=''});
- vehicleSelected.clear();
- document.querySelectorAll('#vehList input[type=checkbox]').forEach(c=>c.checked=false);
- document.querySelectorAll('#vehList .calc-item').forEach(c=>c.classList.remove('checked'));
- removeVehiclePhoto(); updateVehicleTotals();
+ ['vPlate','vModel','vOwner'].forEach(id=>{const e=document.getElementById(id); if(e)e.value=''});
+ removeVehiclePhoto();
 }
 async function sendVehicleWebhook(){
  const url=document.getElementById('vWebhook').value.trim();
@@ -1142,15 +1261,37 @@ function initVehiclePage(){
  ['dragleave','drop'].forEach(ev=>box.addEventListener(ev,e=>{e.preventDefault();box.classList.remove('drag')}));
  box.addEventListener('drop',e=>{if(e.dataTransfer.files[0])handlePhotoFile(e.dataTransfer.files[0])});
  renderPhotoPreview();
- renderOcrBar(vehiclePhoto.dataUrl?'done':'idle', vehiclePhoto.dataUrl?'Photo attached — tap Re-scan if Plate/Owner/Vehicle need another pass.':'');
- ['vPlate','vModel','vColor','vOwner','vBadge','vLocation','vCase','vDept','vNotes','vCustomCharge'].forEach(id=>{
+ renderOcrBar(vehiclePhoto.dataUrl?'done':'idle', vehiclePhoto.dataUrl?'Photo attached — tap Re-scan if Plate/Owner/Car Name need another pass.':'');
+ ['vPlate','vModel','vOwner'].forEach(id=>{
   const e=document.getElementById(id); if(e)e.addEventListener('input',renderVehiclePreview);
  });
  renderVehiclePreview();
 }
+
+/* ---------- Dispatch Notepad ---------- */
+let notepadContent = localStorage.getItem('grwiki_notepad')||'';
+function notepadPage(){
+    return `<h1 class="section-title">Dispatch Notepad</h1><p class="section-sub">A scratchpad for active pursuits, license plates, and rapid notes. Auto-saves as you type.</p>
+    <div class="card"><div class="card-body">
+     <div class="calc-actions" style="margin-bottom:10px">
+      <button class="btn secondary" onclick="const ta=document.getElementById('npText');ta.value+='['+new Date().toLocaleTimeString()+'] ';ta.focus();saveNotepad()">+ Timestamp</button>
+      <button class="btn ghost" onclick="if(confirm('Clear notepad?')){document.getElementById('npText').value='';saveNotepad()}">Clear All</button>
+      <button class="btn ghost" onclick="copyText(document.getElementById('npText').value, 'Notes copied')">Copy</button>
+     </div>
+     <textarea id="npText" style="width:100%;height:400px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px;color:var(--text);font-family:ui-monospace,monospace;font-size:13px;resize:vertical" placeholder="Start typing notes here..." oninput="saveNotepad()">${esc(notepadContent)}</textarea>
+    </div></div>`;
+}
+function saveNotepad(){
+    const text = document.getElementById('npText').value;
+    notepadContent = text;
+    localStorage.setItem('grwiki_notepad', text);
+}
+
+
+/* ---------- Bodycam (Dynamic Time & Org) ---------- */
 const bodycam=[
- {title:"On Duty",tag:"Start",lines:["/me turns on bodycam","/do makes sure its recording and uploading to FIB cloud server","/me connects PDA to FIB cloud server"]},
- {title:"Going as UC",tag:"Undercover",lines:["/me turns on bodycam","/me straps ballistic waterproof hidden bodycam in belt","/do it is recording and uploading to FIB cloud server","/me connects PDA to nearest cell tower and FIB cloud server"]},
+ {title:"On Duty",tag:"Start",lines:["/me turns on bodycam","/do makes sure its recording and uploading to {ORG} cloud server","/me connects PDA to {ORG} cloud server"]},
+ {title:"Going as UC",tag:"Undercover",lines:["/me turns on bodycam","/me straps ballistic waterproof hidden bodycam in belt","/do it is recording and uploading to {ORG} cloud server","/me connects PDA to nearest cell tower and {ORG} cloud server"]},
  {title:"Taking Drone",tag:"Equipment",lines:["/me takes out drone from locker and put it in the backpack"]},
  {title:"Drone While Undercover",tag:"Undercover",lines:["/me takes out drone from backpack and launches it"]},
  {title:"Refresh Bodycam",tag:"Maintenance",lines:["/me refreshes bodycam","/do it is recording"]},
@@ -1158,11 +1299,46 @@ const bodycam=[
  {title:"Drone",tag:"Equipment",lines:["/me launches drone"]},
  {title:"Putting ID in Car Trunk",tag:"ID",lines:["/me puts my ID card in the car trunk"]},
  {title:"Taking ID from Car Trunk",tag:"ID",lines:["/me take the ID card from cark trunk"]},
- {title:"PDA Connect",tag:"PDA",lines:["/me connect PDA to FIB cloud server"]},
+ {title:"PDA Connect",tag:"PDA",lines:["/me connect PDA to {ORG} cloud server"]},
  {title:"Save Bodycam",tag:"Maintenance",lines:["/me saves bodycam"]},
  {title:"Handing Bodycam SSD to Lawyers",tag:"Evidence",lines:["/me uploads the bodycam footage in a SSD Card","/me hands over the SSD card to (lawyer's name)"]},
- {title:"Off Duty",tag:"End",lines:["/me turns off bodycam","/do makes sure it has been successfully recorded and uploaded to FIB cloud server","/me disconnects the PDA from FIB cloud server"]}
+ {title:"Off Duty",tag:"End",lines:["/me turns off bodycam","/do makes sure it has been successfully recorded and uploaded to {ORG} cloud server at {TIME}","/me disconnects the PDA from {ORG} cloud server"]}
 ];
+
+let globalOrg = localStorage.getItem('grwiki_org') || 'LSPD';
+
+function updateDynamicOrg(val) {
+    globalOrg = val;
+    localStorage.setItem('grwiki_org', val);
+    updateDynamicNodes();
+    updateDynamicRadioNodes();
+}
+
+function updateDynamicNodes() {
+    const now = new Date();
+    const lonTime = fmtZone(now, 'Europe/London', {hour: '2-digit', minute: '2-digit'});
+    
+    document.querySelectorAll('.dyn-cmd').forEach(el => {
+        let tpl = el.dataset.tpl;
+        tpl = tpl.replace(/\{ORG\}/g, globalOrg);
+        tpl = tpl.replace(/\{TIME\}/g, lonTime);
+        el.textContent = tpl;
+    });
+}
+
+function cmdCopyDynamic(btn) {
+    const textSpan = btn.parentElement.querySelector('.dyn-cmd');
+    if(textSpan) copyText(textSpan.textContent, 'Command copied');
+}
+
+function cmdCopyDynamicGroup(btn, linesJson) {
+    const lines = JSON.parse(linesJson);
+    const now = new Date();
+    const lonTime = fmtZone(now, 'Europe/London', {hour: '2-digit', minute: '2-digit'});
+    const evaluated = lines.map(l => l.replace(/\{ORG\}/g, globalOrg).replace(/\{TIME\}/g, lonTime));
+    copyText(evaluated.join('\n'), 'Commands copied');
+}
+
 /* ---------- Duty clock (persisted) ---------- */
 function loadDuty(){try{return JSON.parse(localStorage.getItem('grwiki_duty')||'null')}catch(e){return null}}
 function loadShiftLog(){try{return JSON.parse(localStorage.getItem('grwiki_shiftlog')||'[]')}catch(e){return []}}
@@ -1196,109 +1372,185 @@ function todayDutyMinutes(){
  if(dutyState&&dutyState.on&&new Date(dutyState.start).toLocaleDateString()===today)mins+=Math.round((Date.now()-dutyState.start)/60000);
  return mins;
 }
-function cmdCopy(text,btn){copyText(text,'Command copied')}
+
 function bodycamPage(){
  const on=!!(dutyState&&dutyState.on);
- let out=`<h1 class="section-title">Bodycam &amp; Equipment Commands</h1><p class="section-sub">Exact /me and /do lines to use for bodycam, drone, radar, PDA and evidence handling. Every line is verbatim — tap ⧉ to copy a single line or "Copy sequence" for the whole block.</p>
+ const orgs = ["LSPD", "SAHP", "FIB", "GOV", "NG", "EMS", "Lifeinvader"];
+ 
+ let out=`<h1 class="section-title">Bodycam &amp; Equipment Commands</h1><p class="section-sub">Dynamic /me and /do lines for bodycam, drone, radar, and evidence handling. Time and Organization auto-update based on your selection.</p>
+ 
+ <div class="card" style="margin-bottom:20px; background:var(--panel2)"><div class="card-body" style="display:flex;align-items:center;gap:15px;padding:12px 20px">
+  <b>Organization:</b> 
+  <select id="bcOrgSelect" onchange="updateDynamicOrg(this.value)" style="padding:6px;border-radius:6px;background:var(--panel);color:var(--text);border:1px solid var(--line)">
+   ${orgs.map(o => `<option value="${o}" ${globalOrg===o?'selected':''}>${o}</option>`).join('')}
+  </select>
+  <span style="font-size:12px;color:var(--muted)">Commands below will automatically use this department and current IC Time.</span>
+ </div></div>
+
  <div class="duty-widget" id="dutyWidget">
   <div class="dw-status"><b>${on?fmtDur(Date.now()-dutyState.start):'Off Duty'}</b><span>${on?'Currently on duty':'Not currently on duty'} • ${todayDutyMinutes()} min on duty today</span></div>
   <button class="btn ${on?'ghost':''}" onclick="toggleDuty()">${on?'End Duty & Log Shift':'Start Duty'}</button>
  </div>
  ${shiftLog.length?`<div class="card"><div class="card-head"><h2>Recent Shifts</h2><span class="badge">${shiftLog.length}</span></div><div class="card-body shiftlog">${table(shiftLog.slice(0,8).map(s=>[s.date,s.start,s.end,s.minutes+' min']),['Date','Start','End','Duration'])}<div style="margin-top:10px"><button class="btn ghost" onclick="if(confirm('Clear shift history?')){shiftLog=[];saveShiftLog();render('bodycam')}">Clear Shift History</button></div></div></div>`:''}
  ${bodycam.map((g,gi)=>`<div class="cmdgroup"><div class="cmdgroup-head"><h3>${esc(g.title)}</h3><span class="badge">${esc(g.tag)}</span></div>
-  ${g.lines.map(l=>`<div class="cmdline"><span class="cmdtxt">${esc(l)}</span><button class="copybtn" title="Copy line" onclick="cmdCopy('${l.replace(/'/g,"\\'")}')">⧉</button></div>`).join("")}
-  <div class="cmdgroup-foot"><button class="btn secondary" onclick="cmdCopy('${g.lines.join('\\n').replace(/'/g,"\\'")}')">Copy full sequence (${g.lines.length} line${g.lines.length===1?'':'s'})</button></div>
+  ${g.lines.map(l=>`<div class="cmdline"><span class="cmdtxt dyn-cmd" data-tpl="${esc(l)}">${esc(l)}</span><button class="copybtn" title="Copy line" onclick="cmdCopyDynamic(this)">⧉</button></div>`).join("")}
+  <div class="cmdgroup-foot"><button class="btn secondary" onclick="cmdCopyDynamicGroup(this, '${esc(JSON.stringify(g.lines))}')">Copy full sequence (${g.lines.length} line${g.lines.length===1?'':'s'})</button></div>
  </div>`).join("")}`;
+ 
+ setTimeout(updateDynamicNodes, 50);
  return out;
 }
-const tenCodes=[["10-4","Acknowledged"],["10-6","Busy"],["10-7","Out of service"],["10-8","In service"],["10-15","Arrest / suspect in custody"],["10-19","Return to station"],["10-20","Location"],["10-23","Arrived at scene"],["10-51","Traffic stop"],["10-52","Request ambulance"],["10-55","Intoxicated driver"],["10-71","Shooting"],["10-78","Request backup"],["10-80","Pursuit in progress"],["10-97","On scene"],["10-99","Officer safe / task complete"],["Code 1","Routine, no lights/siren"],["Code 2","Urgent, no siren"],["Code 3","Emergency, lights + siren"],["Code 4","Scene secure, no further help needed"],["Code 6","Officer investigating, stay clear"],["Code 0","Officer needs immediate help"]];
+
+/* ---------- Department Radio (Exact Video Commands) ---------- */
+const deptRadioCmds = [
+    {trigger: "Good Copy Reply", to:"LAST", tpl: "{FROM} to LAST: Good Copy! Please proceed."},
+    {trigger: "Bad Copy Reply", to:"LAST", tpl: "{FROM} to LAST: Negative Copy!"},
+    {trigger: "Asking Bad Copy Reason", to:"LAST", tpl: "{FROM} to LAST: Inquiring on the reason for the negative copy?"},
+    {trigger: "Asking How Copy", to:"LAST", tpl: "{FROM} to LAST: How copy?"},
+    {trigger: "10-15 Requesting State Lawyer", to:"LAST", tpl: "{FROM} to LAST: We have a 10-15 at DOC requesting state legal representation. Please check availability."},
+    {trigger: "10-15 Requesting Private Lawyer", to:"LAST", tpl: "{FROM} to LAST: Could you verify if Mr. Lawyer's Name is Bar certified?"},
+    {trigger: "Global Finished", to:"LAST", tpl: "{FROM} to LAST: Situation is now 10-99. Thank you for your assistance."},
+    {trigger: "Global at 10-10", to:"LAST", tpl: "{FROM} to LAST: Confirming a 10-10 situation at the global location. Requesting backup."},
+    {trigger: "Legal Org Employee in Custody", to:"LAST", tpl: "{FROM} to LAST: We have one of your agents in custody. Please 10-17 for Capitol for investigation."},
+    {trigger: "State Employee in Custody", to:"LAST", tpl: "{FROM} to LAST: State employee in custody. Requesting formal holdings process."},
+    {trigger: "Meeting Request", to:"LAST", tpl: "{FROM} to LAST: Requesting a briefing with your team at your HQ."},
+    {trigger: "Standby", to:"LAST", tpl: "{FROM} to LAST: Standby for a possible hostage situation."},
+    {trigger: "Officer Getting Robbed", to:"LAST", tpl: "{FROM} to LAST: Officer under duress at [Location] - all available units respond immediately!"},
+    {trigger: "Hostage Situation", to:"ALL", tpl: "{FROM} to ALL: Active global at hostage situation. Requesting maximum 12-15 units from all orgs."},
+    {trigger: "Gun Store Robbery", to:"ALL", tpl: "{FROM} to ALL: Suspect demands at the Gun Store robbery. Armed suspects reported - maximum 10-12 units respond."},
+    {trigger: "Events", to:"ALL", tpl: "{FROM} to ALL: Suspect demands at the store robbery have been received. Hostages confirmed on scene."},
+    {trigger: "Hacker Attack / Data Breach", to:"ALL", tpl: "{FROM} to ALL: Global activated for cyberattack response. Secure the facility and establish an outer perimeter."},
+    {trigger: "Transport Protection", to:"ALL", tpl: "{FROM} to ALL: 10-17 in progress. Maintain convoy security and clear the designated route."},
+    {trigger: "Submarine Protection", to:"ALL", tpl: "{FROM} to ALL: Global assigned to submarine security. Hold the perimeter until the operation concludes."},
+    {trigger: "Protecting the Informer", to:"ALL", tpl: "{FROM} to ALL: Suspect convoy in progress. Ensure the informer reaches the destination safely."},
+    {trigger: "Aircraft Carrier Protection", to:"ALL", tpl: "{FROM} to ALL: Global activated for carrier security. Secure all access points and maintain defensive positions."},
+    {trigger: "Bank Protection", to:"ALL", tpl: "{FROM} to ALL: Global assigned to bank security. Establish a defensive perimeter and prevent hostile access."},
+    {trigger: "State Lawyer Unavailable", to:"LAST", tpl: "GOV to LAST: A state lawyer is available and enroute to your location."},
+    {trigger: "State Lawyer Available", to:"LAST", tpl: "GOV to LAST: No state lawyer is currently available. You may proceed as per SOP."},
+    {trigger: "Private Lawyer Certification Confirmed", to:"LAST", tpl: "GOV to LAST: Confirmed. Mr. Lawyer's Name is Bar certified."},
+    {trigger: "Candies Supply Depleted", to:"LSPD", tpl: "NG to LSPD: 10-4. However, if this is related to candies, we are currently at zero supply."},
+    {trigger: "Vehicle Theft - Exfiltration Assistance", to:"LSPD", tpl: "NG to LSPD: Some of our trucks have been stolen. Requesting assistance with exfiltration."}
+];
+
+let globalRadioTo = localStorage.getItem('grwiki_radio_to') || 'LAST';
+
+function updateRadioTo(val) {
+    globalRadioTo = val;
+    localStorage.setItem('grwiki_radio_to', val);
+    updateDynamicRadioNodes();
+}
+
+function updateDynamicRadioNodes() {
+    document.querySelectorAll('.dyn-radio').forEach(el => {
+        let tpl = el.dataset.tpl;
+        let toTarget = el.dataset.toTarget;
+        
+        tpl = tpl.replace(/\{FROM\}/g, globalOrg);
+        
+        // If template has {TO}, replace it with the selected target OR the forced target from array
+        if(tpl.includes('{TO}')) {
+             let replaceTo = globalRadioTo;
+             // Some commands strictly use LAST or ALL
+             if(toTarget === "ALL") replaceTo = "ALL";
+             tpl = tpl.replace(/\{TO\}/g, replaceTo);
+        }
+
+        el.textContent = tpl;
+    });
+}
+
+function copyRadioDynamic(btn) {
+    const textSpan = btn.parentElement.querySelector('.dyn-radio');
+    if(textSpan) copyText(textSpan.textContent, 'Radio command copied');
+}
+
+function deptRadioPage() {
+    const orgs = ["LSPD", "SAHP", "FIB", "GOV", "NG", "EMS", "Lifeinvader"];
+    const toOrgs = ["LAST", "ALL", "LSPD", "SAHP", "FIB", "GOV", "NG", "EMS", "DOC"];
+    
+    let out = `<h1 class="section-title">Department Radio</h1><p class="section-sub">Dynamic inter-department communication commands exactly as requested. Select your department and target.</p>
+    
+    <div class="card" style="margin-bottom:20px; background:var(--panel2)"><div class="card-body" style="display:flex;align-items:center;gap:15px;flex-wrap:wrap">
+     <div style="display:flex;align-items:center;gap:8px">
+      <b>FROM:</b> 
+      <select onchange="updateDynamicOrg(this.value)" style="padding:6px;border-radius:6px;background:var(--panel);color:var(--text);border:1px solid var(--line)">
+       ${orgs.map(o => `<option value="${o}" ${globalOrg===o?'selected':''}>${o}</option>`).join('')}
+      </select>
+     </div>
+     <div style="display:flex;align-items:center;gap:8px">
+      <b>TO:</b> 
+      <select onchange="updateRadioTo(this.value)" style="padding:6px;border-radius:6px;background:var(--panel);color:var(--text);border:1px solid var(--line)">
+       ${toOrgs.map(o => `<option value="${o}" ${globalRadioTo===o?'selected':''}>${o}</option>`).join('')}
+      </select>
+     </div>
+    </div></div>
+    
+    <div class="card"><div class="card-body" style="padding:0">
+    ${deptRadioCmds.map(c => `
+      <div class="cmdline" style="border-radius:0;border-left:0;border-right:0;border-top:0">
+        <div style="width:250px;font-weight:700;color:var(--text)">${esc(c.trigger)}</div>
+        <span class="cmdtxt dyn-radio" data-tpl="${esc(c.tpl)}" data-to-target="${esc(c.to)}" style="color:var(--accent)">${esc(c.tpl)}</span>
+        <button class="copybtn" title="Copy line" onclick="copyRadioDynamic(this)">⧉</button>
+      </div>
+    `).join('')}
+    </div></div>`;
+    
+    setTimeout(updateDynamicRadioNodes, 50);
+    return out;
+}
+
+
+const tenCodes=[
+["10-1","Roll call/announcement (supervisors and above), all units return to headquarters"],
+["10-2","Negative"],
+["10-3","Stop transmitting"],
+["10-4","Acknowledged/affirmative"],
+["10-5","Repeat last transmission"],
+["10-6","Disregard the last transmission"],
+["10-7","Break at headquarters (AFK)"],
+["10-8","In-service/available"],
+["10-9","Out of service/unavailable"],
+["TANGO 10-10","Training Shots fired"],
+["10-10","Shots fired"],
+["10-11","Robbery in progress"],
+["10-12","Estimated Time of Arrival."],
+["10-13","Agent/government employee down (Top Priority)"],
+["10-15","Suspect in custody"],
+["10-16","Injured civilian"],
+["10-17","Enroute"],
+["10-19","Return to the Headquarter"],
+["10-20","Location"],
+["10-21","Status check (Specify your current status and location)"],
+["10-22","Hostage situation"],
+["10-23","Arrived on scene"],
+["10-32","Backup needed (Specify the number of units and location)"],
+["10-41","Start of watch"],
+["10-42","End of watch"],
+["10-51","Vehicle traffic stop"],
+["10-52","Felony traffic stop"],
+["10-70","Suspect has warrants"],
+["10-75","Vehicle Wanted/Stolen"],
+["10-80","Vehicle pursuit"],
+["10-80 FOXTROT","Foot pursuit"],
+["10-90","Crime in Progress"],
+["10-92","Armed Robbery in Progress"],
+["10-99","Situation concluded"],
+["Code A","Game Crash"],
+["Code B","Paused RP, Admin Situation"],
+["Code 1","Life-Threatening Emergency. Drop what you are doing and respond ASAP (Lights & Siren)"],
+["Code 2","Semi-Emergency (Lights Only)"],
+["Code 3","Emergency (Lights & Siren)"],
+["Code 4","Situation Under Control"],
+["Code 5","Terrorist Attack"],
+["Code 6","Out Of Vehicle"],
+["Code 7","Conducting an Investigation"]
+];
 const phonetic=[["A","Alpha"],["B","Bravo"],["C","Charlie"],["D","Delta"],["E","Echo"],["F","Foxtrot"],["G","Golf"],["H","Hotel"],["I","India"],["J","Juliett"],["K","Kilo"],["L","Lima"],["M","Mike"],["N","November"],["O","Oscar"],["P","Papa"],["Q","Quebec"],["R","Romeo"],["S","Sierra"],["T","Tango"],["U","Uniform"],["V","Victor"],["W","Whiskey"],["X","Xray"],["Y","Yankee"],["Z","Zulu"]];
 function codesPage(){
- return `<h1 class="section-title">10-Codes &amp; Phonetic Alphabet</h1><p class="section-sub">General police radio brevity codes commonly used on GTA-style RP servers. Always defer to your department's SOP or dispatcher training if it differs from this quick reference.</p>
+ return `<h1 class="section-title">Radio Codes &amp; Phonetic Alphabet</h1><p class="section-sub">General police radio brevity codes commonly used on GTA-style RP servers. Always defer to your department's SOP or dispatcher training if it differs from this quick reference.</p>
  <div class="notice"><b>Note:</b> Unlike the Penal/Traffic Code and Arrest Process pages, this reference is a community quick-reference and not reproduced from the supplied PDFs — verify against your department's own SOP before relying on it in-game.</div>
  <div class="card"><div class="card-head"><h2>Radio Codes</h2><span class="badge">${tenCodes.length}</span></div><div class="card-body">${table(tenCodes,['Code','Meaning'])}</div></div>
  <div class="card"><div class="card-head"><h2>Phonetic Alphabet</h2></div><div class="card-body"><div class="codeschart">${phonetic.map(p=>`<div>${p[0]}<span>${p[1]}</span></div>`).join("")}</div></div></div>`;
-}
-/* ---------- BOLO Board ---------- */
-function loadBolos(){try{return JSON.parse(localStorage.getItem('grwiki_bolos')||'[]')}catch(e){return []}}
-let bolos=loadBolos();
-function saveBolos(){localStorage.setItem('grwiki_bolos',JSON.stringify(bolos)); updateBoloCount()}
-function updateBoloCount(){const el=document.getElementById('boloCount'); if(el)el.textContent=bolos.length?bolos.length:''}
-const threatLabels={low:'Low',medium:'Medium',high:'High',armed:'Armed & Dangerous'};
-function boloPage(){
- const armedCount=bolos.filter(b=>b.threat==='armed').length;
- let out=`<h1 class="section-title">BOLO Board</h1><p class="section-sub">Be-On-The-Lookout board for wanted suspects and vehicles. Saved in your browser and easy to copy straight into Discord dispatch.</p>`;
- if(armedCount)out+=`<div class="bolo-alert"><span class="ba-ico">⚠</span><div><b>${armedCount} Armed &amp; Dangerous BOLO${armedCount===1?'':'s'} active.</b> Brief incoming units before engaging.</div></div>`;
- out+=`<div class="card"><div class="card-head"><h2>Post a BOLO</h2></div><div class="card-body">
-  <div class="bolo-form">
-   <input id="bSubject" placeholder="Subject name or vehicle (e.g. 'Red Sultan RS — ABC123')">
-   <select id="bThreat"><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option><option value="armed">Armed &amp; Dangerous</option></select>
-   <input id="bLastSeen" placeholder="Last seen location">
-   <input id="bOfficer" placeholder="Reporting officer" value="${esc(profile.name||profile.badge||'')}">
-   <textarea id="bDesc" placeholder="Description / details"></textarea>
-  </div>
-  <div class="calc-actions"><button class="btn" onclick="addBolo()">Post BOLO</button></div>
- </div></div>
- <div class="calc-search"><input id="boloFilter" placeholder="Filter BOLOs..." oninput="filterBolo(this.value)"></div>
- <div id="boloList">
- ${bolos.length?bolos.map((b,i)=>`<div class="bolocard lvl-${b.threat}" data-search="${esc((b.subject+' '+b.description+' '+b.lastSeen).toLowerCase())}">
-  <h3>${esc(b.subject)}<span class="lvltag lvl-${b.threat}">${threatLabels[b.threat]||b.threat}</span></h3>
-  <div class="bolo-meta">Last seen: ${esc(b.lastSeen||'Unknown')} • Reported by ${esc(b.officer||'Unknown')} • ${esc(b.time)}</div>
-  <p>${esc(b.description||'No further details.')}</p>
-  <div class="bolo-actions"><button class="btn ghost" onclick="copyBolo(${i})">Copy for Discord</button><button class="btn ghost" onclick="deleteBolo(${i})">Resolved / Delete</button></div>
- </div>`).join(""):'<div class="card"><div class="empty">No active BOLOs. Post one above to alert other units.</div></div>'}
- </div>`;
- return out;
-}
-function buildBoloText(b){
- const tag=b.threat==='armed'?'🔴 ARMED & DANGEROUS':b.threat==='high'?'🟠 HIGH THREAT':b.threat==='medium'?'🟡 MEDIUM':'🟢 LOW';
- return `🚨 **BOLO — ${tag}**
-**Subject/Vehicle:** ${b.subject}
-**Last Seen:** ${b.lastSeen||'Unknown'}
-**Description:** ${b.description||'—'}
-**Reported by:** ${b.officer||'Unknown'}
-**Time:** ${b.time}`;
-}
-function addBolo(){
- const subject=document.getElementById('bSubject').value.trim();
- if(!subject){toast('Enter a subject or vehicle first'); return}
- const b={subject,threat:document.getElementById('bThreat').value,lastSeen:document.getElementById('bLastSeen').value.trim(),officer:document.getElementById('bOfficer').value.trim(),description:document.getElementById('bDesc').value.trim(),time:new Date().toLocaleString()};
- bolos.unshift(b); saveBolos(); toast('BOLO posted'); render('bolo');
-}
-function copyBolo(i){copyText(buildBoloText(bolos[i]),'BOLO copied')}
-function deleteBolo(i){bolos.splice(i,1); saveBolos(); render('bolo')}
-function filterBolo(q){
- q=q.trim().toLowerCase();
- document.querySelectorAll('#boloList .bolocard').forEach(el=>{el.style.display=(!q||el.dataset.search.includes(q))?'':'none'});
-}
-
-/* ---------- RP Script Library ---------- */
-const rpScripts=[
- {title:"Cuffing a Suspect",tag:"Arrest",lines:["/me pulls out handcuffs","/me orders the suspect to place their hands behind their back","/me cuffs the suspect's wrists together","/do the suspect is now restrained and cannot resist"]},
- {title:"Reading Miranda Rights",tag:"Arrest",lines:["/me clears their throat and reads from a card","/me states: \"You have the right to remain silent. Anything you say can be used against you in a court of law.\"","/me states: \"You have the right to an attorney. If you cannot afford one, one will be provided for you.\"","/me asks if the suspect understands their rights"]},
- {title:"Searching a Suspect",tag:"Search",lines:["/me pats down the suspect's outer clothing for weapons","/me checks the suspect's pockets for illegal items","/do lists anything found on the suspect"]},
- {title:"Searching a Vehicle",tag:"Search",lines:["/me asks the driver to step out of the vehicle","/me opens the vehicle door and begins searching the interior","/me checks the glovebox and center console","/me checks the trunk of the vehicle","/do lists anything found in the vehicle"]},
- {title:"Requesting Backup",tag:"Radio",lines:["/me keys their radio","/me requests backup at their current location, Code 2","/do waits for a response from dispatch or nearby units"]},
- {title:"Requesting EMS",tag:"Radio",lines:["/me keys their radio","/me requests EMS to their location for an injured party","/do describes the nature of the injury to dispatch"]},
- {title:"Weapon Check / Draw",tag:"Tactical",lines:["/me unholsters their sidearm and points it at the suspect","/me orders the suspect to show their hands","/do waits to see if the suspect complies"]},
- {title:"Vehicle Felony Stop",tag:"Traffic",lines:["/me draws their sidearm and takes cover behind the vehicle door","/me orders the driver to turn off the engine and throw the keys out the window","/me orders all occupants to exit the vehicle one at a time with hands visible"]},
- {title:"Interrogation Opening",tag:"Investigation",lines:["/me sits across the table from the suspect","/me places a folder of evidence on the table","/me asks the suspect if they would like to explain what happened"]},
- {title:"Releasing a Suspect",tag:"Arrest",lines:["/me removes the handcuffs from the suspect's wrists","/me returns the suspect's personal belongings","/do informs the suspect they are free to go"]}
-];
-function scriptsPage(){
- return `<h1 class="section-title">RP Script Library</h1><p class="section-sub">Common /me and /do scripts for arrests, searches, radio calls and tactical situations — beyond the bodycam-specific commands. Tap ⧉ to copy a line or copy the full sequence for a scenario.</p>
- <div class="calc-search"><input id="scriptFilter" placeholder="Filter scripts by title or tag..." oninput="filterScripts(this.value)"></div>
- <div id="scriptList">
- ${rpScripts.map((g,gi)=>`<div class="cmdgroup" data-search="${esc((g.title+' '+g.tag).toLowerCase())}"><div class="cmdgroup-head"><h3>${esc(g.title)}</h3><span class="badge">${esc(g.tag)}</span></div>
-  ${g.lines.map(l=>`<div class="cmdline"><span class="cmdtxt">${esc(l)}</span><button class="copybtn" title="Copy line" onclick="cmdCopy('${l.replace(/'/g,"\\'")}')">⧉</button></div>`).join("")}
-  <div class="cmdgroup-foot"><button class="btn secondary" onclick="cmdCopy('${g.lines.join('\\n').replace(/'/g,"\\'")}')">Copy full sequence (${g.lines.length} line${g.lines.length===1?'':'s'})</button></div>
- </div>`).join("")}
- </div>
- <div class="notice"><b>Note:</b> These are common-practice community scripts, not reproduced from the supplied PDFs — adapt wording to match your department's own SOP.</div>`;
-}
-function filterScripts(q){
- q=q.trim().toLowerCase();
- document.querySelectorAll('#scriptList .cmdgroup').forEach(el=>{el.style.display=(!q||el.dataset.search.includes(q))?'':'none'});
 }
 
 function bookmarksPage(){
@@ -1311,7 +1563,8 @@ function bookmarksPage(){
   return `<details class="rule" open><summary><span style="font-weight:500;flex:1">${esc(f.label)}</span><span class="rowflex"><button class="copybtn" title="Copy" onclick="event.preventDefault();event.stopPropagation();copyText('${f.label.replace(/'/g,"\\'")}','Copied')">⧉</button>${starBtn(f.id,f.label)}</span></summary></details>`;
  }).join("")}</div></div>`;
 }
-const pageFns={dashboard,penal:penalPage,traffic:trafficPage,arrest:procedurePage,'traffic-stop':trafficStopPage,events:eventsPage,map:mapPage,terms:termsPage,calculator:calculatorPage,codes:codesPage,bookmarks:bookmarksPage,bodycam:bodycamPage,vehicle:vehiclePage,bolo:boloPage,scripts:scriptsPage};
+
+const pageFns={dashboard,penal:penalPage,traffic:trafficPage,arrest:procedurePage,'traffic-stop':trafficStopPage,events:eventsPage,map:mapPage,terms:termsPage,calculator:calculatorPage,codes:codesPage,bookmarks:bookmarksPage,bodycam:bodycamPage,deptradio:deptRadioPage,vehicle:vehiclePage,notepad:notepadPage};
 function render(page){
  clearDutyInterval();
  stopOcrPhrases();
@@ -1344,8 +1597,8 @@ function applyDark(on){
 }
 document.getElementById('themeBtn').addEventListener('click',()=>applyDark(document.documentElement.dataset.dark==='0'));
 (function initTheme(){
- let saved=null; try{saved=localStorage.getItem('grwiki_dark')}catch(e){}
- applyDark(saved!=='0'); // defaults to the premium dark theme unless the user chose light
+ let saved=null; try{localStorage.getItem('grwiki_dark')}catch(e){} 
+ applyDark(saved!=='0'); 
 })();
 
 /* ---------- Print & help ---------- */
@@ -1383,7 +1636,7 @@ function exportBackup(){
   dutyState:loadDuty(),
   vehicleLogs:loadVehicleLogs(),
   citationLogs:loadCitationLogs(),
-  bolos:loadBolos(),
+  notepad:localStorage.getItem('grwiki_notepad')||'',
   webhook:loadWebhook(),
   theme:localStorage.getItem('grwiki_dark')||'1'
  };
@@ -1405,7 +1658,7 @@ document.getElementById('importInput').addEventListener('change',e=>{
    if(data.dutyState!==undefined){dutyState=data.dutyState; saveDuty()}
    if(data.vehicleLogs){vehicleLogs=data.vehicleLogs; saveVehicleLogs()}
    if(data.citationLogs){citationLogs=data.citationLogs; saveCitationLogs()}
-   if(data.bolos){bolos=data.bolos; saveBolos()}
+   if(data.notepad)localStorage.setItem('grwiki_notepad',data.notepad);
    if(data.webhook!==undefined)localStorage.setItem('grwiki_webhook',data.webhook);
    if(data.theme)localStorage.setItem('grwiki_dark',data.theme);
    toast('Backup restored');
@@ -1424,25 +1677,92 @@ const toTopBtn=document.getElementById('toTop');
 window.addEventListener('scroll',()=>toTopBtn.classList.toggle('show',window.scrollY>400));
 toTopBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-/* ---------- Live dual clock: Grand RP (London) + India (IST) ---------- */
+
+/* ---------- Selectable Timezone System ---------- */
+let activeTz = localStorage.getItem('grwiki_tz_val') || 'Asia/Kolkata';
+let activeTzLabel = localStorage.getItem('grwiki_tz_label') || '🇮🇳 India (IST)';
+
+function setTz(val, label) {
+    activeTz = val;
+    activeTzLabel = label;
+    localStorage.setItem('grwiki_tz_val', val);
+    localStorage.setItem('grwiki_tz_label', label);
+    document.getElementById('tzLabel').textContent = label + ' ▾';
+    toggleTzMenu();
+    updateClocks();
+}
+
+function toggleTzMenu() {
+    document.getElementById('tzMenu').classList.toggle('show');
+}
+
+document.addEventListener('click', e => {
+    const box = document.querySelector('.tz-dropdown-container');
+    const menu = document.getElementById('tzMenu');
+    if(menu && box && !box.contains(e.target)) {
+        menu.classList.remove('show');
+    }
+});
+
 function fmtZone(now,zone,opts){return new Intl.DateTimeFormat('en-GB',Object.assign({timeZone:zone,hour12:false},opts)).format(now)}
 function updateClocks(){
  const now=new Date();
  const lonTime=fmtZone(now,'Europe/London',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
- const istTime=fmtZone(now,'Asia/Kolkata',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+ 
  const tL=document.getElementById('clockLondon'); if(tL)tL.textContent=lonTime;
- const tI=document.getElementById('clockIndia'); if(tI)tI.textContent=istTime;
+ 
+ try {
+     const localTime=fmtZone(now, activeTz, {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+     const tI=document.getElementById('clockLocal'); if(tI)tI.textContent=localTime;
+     const dI=document.getElementById('dashClockIndia'); if(dI)dI.textContent=localTime;
+     const ddI=document.getElementById('dashDateIndia'); if(ddI)ddI.textContent=fmtZone(now, activeTz, {weekday:'short',day:'numeric',month:'short'});
+ } catch(e) {
+     console.error("Invalid Timezone", e);
+ }
+
  const dL=document.getElementById('dashClockLondon');
  if(dL){
   dL.textContent=lonTime;
-  const dI=document.getElementById('dashClockIndia'); if(dI)dI.textContent=istTime;
   const ddL=document.getElementById('dashDateLondon'); if(ddL)ddL.textContent=fmtZone(now,'Europe/London',{weekday:'short',day:'numeric',month:'short'});
-  const ddI=document.getElementById('dashDateIndia'); if(ddI)ddI.textContent=fmtZone(now,'Asia/Kolkata',{weekday:'short',day:'numeric',month:'short'});
   const cyc=document.getElementById('dashCycle');
   if(cyc){const lonHour=parseInt(fmtZone(now,'Europe/London',{hour:'2-digit'}),10); cyc.textContent=(lonHour>=6&&lonHour<19)?'☀ Daytime in London':'🌙 Night in London'}
  }
+ 
+ // Dynamic nodes update
+ if(document.querySelector('.dyn-cmd')) updateDynamicNodes();
+ 
+ // Update the dropdown preview times
+ document.querySelectorAll('.tz-item-time').forEach(el => {
+     let tzid = el.id.replace('tz_', '');
+     let tzStr = '';
+     if(tzid === 'AFT') tzStr = 'Asia/Kabul';
+     else if(tzid === 'PKT') tzStr = 'Asia/Karachi';
+     else if(tzid === 'IST') tzStr = 'Asia/Kolkata';
+     else if(tzid === 'NPT') tzStr = 'Asia/Kathmandu';
+     else if(tzid === 'BST') tzStr = 'Asia/Dhaka';
+     else if(tzid === 'MMT') tzStr = 'Asia/Yangon';
+     else if(tzid === 'ICT') tzStr = 'Asia/Bangkok';
+     else if(tzid === 'SGT') tzStr = 'Asia/Singapore';
+     else if(tzid === 'JST') tzStr = 'Asia/Tokyo';
+     else if(tzid === 'AEST') tzStr = 'Australia/Sydney';
+     else if(tzid === 'NZST') tzStr = 'Pacific/Auckland';
+     
+     if(tzStr) {
+         try {
+             el.textContent = fmtZone(now, tzStr, {hour:'2-digit',minute:'2-digit'});
+         } catch(e) {}
+     }
+ });
 }
-setInterval(updateClocks,1000); updateClocks();
+
+// Initial setup of TZ label
+document.addEventListener("DOMContentLoaded", () => {
+    const lbl = document.getElementById('tzLabel');
+    if(lbl) lbl.textContent = activeTzLabel + ' ▾';
+    updateClocks();
+});
+
+setInterval(updateClocks,1000);
 
 /* ---------- Rotating dashboard tip ticker ---------- */
 const tips=[
@@ -1465,7 +1785,7 @@ function startTicker(){clearInterval(tipTimer); cycleTip(); tipTimer=setInterval
 (function boot(){
  const splash=document.getElementById('bootSplash'); if(!splash)return;
  let skipped=false;
- const hide=()=>{if(skipped)return; skipped=true; splash.classList.add('hide'); setTimeout(()=>splash.remove(),650)};
+ const hide=()=>{if(skipped)return; skipped=true; splash.classList.add('hide'); setTimeout(()=>splash.remove(),650); initAuth();};
  const l2=document.getElementById('bootLine2'), l3=document.getElementById('bootLine3');
  setTimeout(()=>{if(l2)l2.style.transition='opacity .4s';if(l2)l2.style.opacity=1},500);
  setTimeout(()=>{if(l3)l3.style.transition='opacity .4s';if(l3)l3.style.opacity=1},1000);
@@ -1497,9 +1817,9 @@ terms.forEach(x=>searchIndex.push({page:'terms',title:`${x[0]}`,text:x[1]}));
 tenCodes.forEach(x=>searchIndex.push({page:'codes',title:x[0],text:x[1]}));
 searchIndex.push({page:'calculator',title:'Fine Calculator',text:'Build a citation and total fines, time and stars'});
 bodycam.forEach(g=>searchIndex.push({page:'bodycam',title:'Bodycam — '+g.title,text:g.lines.join(' ')}));
-searchIndex.push({page:'vehicle',title:'Vehicle Ticket Log',text:'Upload vehicle photo, log plate, charges and fine, copy or send to Discord webhook'});
-bolos.forEach((b,i)=>searchIndex.push({page:'bolo',title:'BOLO — '+b.subject,text:b.description+' '+b.lastSeen}));
-rpScripts.forEach(g=>searchIndex.push({page:'scripts',title:'RP Script — '+g.title,text:g.lines.join(' ')}));
+searchIndex.push({page:'vehicle',title:'Vehicle Ticket Log',text:'Upload vehicle photo, log plate, car name and owner, copy or send to Discord webhook'});
+searchIndex.push({page:'notepad',title:'Dispatch Notepad',text:'Scratchpad for active pursuits, license plates, and rapid notes'});
+searchIndex.push({page:'deptradio',title:'Department Radio',text:'Dynamic radio commands for LSPD, SAHP, FIB, GOV, NG'});
 
 /* ---------- Command palette actions (triggered with "> ") ---------- */
 const paletteActions=[
@@ -1508,13 +1828,14 @@ const paletteActions=[
  {icon:'●',label:'Start / End duty',run:()=>toggleDuty()},
  {icon:'＋',label:'Go to Fine Calculator',run:()=>go('calculator')},
  {icon:'●',label:'Go to Bodycam Commands',run:()=>go('bodycam')},
+ {icon:'📻',label:'Go to Department Radio',run:()=>go('deptradio')},
  {icon:'🚗',label:'Go to Vehicle Ticket Log',run:()=>go('vehicle')},
- {icon:'⚠',label:'Go to BOLO Board',run:()=>go('bolo')},
- {icon:'✎',label:'Go to RP Script Library',run:()=>go('scripts')},
+ {icon:'📝',label:'Go to Dispatch Notepad',run:()=>go('notepad')},
  {icon:'👤',label:'Open Officer Profile & Backup',run:()=>{fillProfileModal();profileModal.classList.add('show')}},
- {icon:'10',label:'Go to 10-Codes & Phonetics',run:()=>go('codes')},
+ {icon:'10',label:'Go to Radio Codes & Phonetics',run:()=>go('codes')},
  {icon:'★',label:'Go to Bookmarks',run:()=>go('bookmarks')},
  {icon:'⌂',label:'Go to Dashboard',run:()=>go('dashboard')},
+ {icon:'🔒',label:'Admin: View Registered Users',run:()=>{showAdminUsers()}},
  {icon:'🗑',label:'Clear all bookmarks',run:()=>{if(confirm('Remove all bookmarks?')){favs=[];saveFav();toast('Bookmarks cleared')}}}
 ];
 
@@ -1548,14 +1869,13 @@ document.addEventListener('keydown',e=>{
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='j'){e.preventDefault();applyDark(document.documentElement.dataset.dark!=='1')}
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='d'){e.preventDefault();toggleDuty()}
  if(!typing&&e.key==='?'){e.preventDefault();helpModal.classList.add('show')}
- if(e.key==='Escape'){modal.classList.remove('show');helpModal.classList.remove('show')}
+ if(e.key==='Escape'){modal.classList.remove('show');helpModal.classList.remove('show');document.getElementById('tzMenu').classList.remove('show');}
 });
 modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show')});
 modalSearch.addEventListener('input',e=>doSearch(e.target.value));
 document.getElementById('searchInput').addEventListener('input',e=>{if(e.target.value){modal.classList.add('show');modalSearch.value=e.target.value;doSearch(e.target.value)}});
 
 updateFavCount();
-updateBoloCount();
 let startPage='dashboard';
 try{const lp=localStorage.getItem('grwiki_lastpage'); if(lp&&(pageFns[lp]||rules[lp]))startPage=lp}catch(e){}
 render(startPage);
